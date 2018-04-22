@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_questions"
+        android:title="@string/questions"
+        android:icon="@drawable/ic_comment"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_inbox"
+        android:title="@string/inbox"
+        android:icon="@drawable/ic_inbox"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_achievements"
+        android:title="@string/achievements"
+        android:icon="@drawable/ic_trophy"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+</menu>

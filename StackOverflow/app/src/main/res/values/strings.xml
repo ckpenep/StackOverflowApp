@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Stack Overflow</string>
+    <string name="questions">Questions</string>
+    <string name="inbox">Inbox</string>
+    <string name="achievements">Achievements</string>
+    <string name="more">More</string>
+
+
+    <string-array name="menu_actions">
+        <item>Login or sign up</item>
+        <item>Ask Question</item>
+        <item>Drafts</item>
+        <item>Browsing history</item>
+    </string-array>
+</resources>
