@@ -33,4 +33,8 @@ public interface QuestionView extends MvpView {
 
     @StateStrategyType(AddToEndStrategy.class)
     void addRepositories(List<Question> repositories, boolean maybeMore);
+
+    void hideFloatingActionButton();
+
+    void showFloatingActionButton();
 }

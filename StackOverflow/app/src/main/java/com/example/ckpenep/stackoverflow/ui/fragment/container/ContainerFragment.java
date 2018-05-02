@@ -14,10 +14,12 @@ import com.example.ckpenep.stackoverflow.R;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.common.RouterProvider;
 import com.example.ckpenep.stackoverflow.di.LocalCiceroneHolder;
+import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.ui.Screens;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 import com.example.ckpenep.stackoverflow.ui.fragment.AchievementFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.InboxFragment;
+import com.example.ckpenep.stackoverflow.ui.fragment.QuestionDetailsFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.QuestionsListFragment;
 
 import javax.inject.Inject;
@@ -112,6 +114,9 @@ public class ContainerFragment extends Fragment implements RouterProvider, BackB
 
                         case Screens.ACHIEVEMENTS_SCREEN:
                             return AchievementFragment.newInstance();
+
+                        case Screens.QUESTIONS_DETAILS_SCREEN:
+                            return QuestionDetailsFragment.newInstance((Question) data);
                     }
 
                     return null;

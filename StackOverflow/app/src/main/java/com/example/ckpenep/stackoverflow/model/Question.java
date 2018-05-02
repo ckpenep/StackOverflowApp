@@ -1,10 +1,20 @@
 package com.example.ckpenep.stackoverflow.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Question {
+@Entity
+public class Question implements Parcelable {
+    @NonNull
+    @PrimaryKey
     private Integer mId;
     private Boolean isAnswered;
     private Integer viewCount;
@@ -36,6 +46,7 @@ public class Question {
         this.tags = tags;
     }
 
+    @NonNull
     public Integer getId() {
         return mId;
     }
@@ -141,4 +152,57 @@ public class Question {
 
         return result;
     }
+
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if(this.link != null)dest.writeString(this.link);
+        if(this.title != null)dest.writeString(this.title);
+        if(this.acceptedAnswerId != null)dest.writeInt(this.acceptedAnswerId);
+        if(this.answerCount != null)dest.writeInt(this.answerCount);
+        if(this.creationDate != null)dest.writeInt(this.creationDate);
+        if(this.isAnswered != null)dest.writeByte((byte) (this.isAnswered ? 1 : 0));
+        if(this.lastActivityDate != null)dest.writeInt(this.lastActivityDate);
+        if(this.lastEditDate != null)dest.writeInt(this.lastEditDate);
+        if(this.mId != null)dest.writeInt(this.mId);
+        if(this.protectedDate != null)dest.writeInt(this.protectedDate);
+        if(this.score != null)dest.writeInt(this.score);
+        if(this.tags != null)dest.writeStringList(this.tags);
+        if(this.viewCount != null)dest.writeInt(this.viewCount);
+    }
+
+    protected Question(Parcel in) {
+        this.tags = new ArrayList<>();
+        in.readStringList(tags);
+        this.acceptedAnswerId = in.readInt();
+        this.answerCount = in.readInt();
+        this.creationDate = in.readInt();
+        this.isAnswered = in.readByte() != 0;
+        this.lastActivityDate = in.readInt();
+        this.lastEditDate = in.readInt();
+        this.link = in.readString();
+        this.mId = in.readInt();
+        this.protectedDate = in.readInt();
+        this.score = in.readInt();
+        this.title = in.readString();
+        this.viewCount = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel source) {
+            return new Question(source);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
 }

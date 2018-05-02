@@ -11,17 +11,23 @@ import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionItem;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionsList;
 import com.example.ckpenep.stackoverflow.presentation.mappers.QuestionMapper;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionView;
+import com.example.ckpenep.stackoverflow.ui.Screens;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
+import ru.terrakok.cicerone.Router;
 
 @InjectViewState
 public class QuestionPresenter extends MvpPresenter<QuestionView> {
+
+    private Router router;
 
     @Inject
     StackoverflowService mStackoverflowService;
@@ -30,8 +36,9 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
 
     private boolean mIsInLoading;
 
-    public QuestionPresenter() {
+    public QuestionPresenter(Router router) {
         App.getAppComponent().inject(this);
+        this.router = router;
     }
 
     @Override
@@ -44,20 +51,20 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        loadRepositories(false);
+        loadRepositories(1, null, "activity", false);
     }
 
-    public void loadNextRepositories(int currentCount) {
+    public void loadNextRepositories(int currentCount, String tagged, String sort) {
         int page = currentCount / Api.PAGE_SIZE + 1;
 
-        loadData(page, true, false);
+        loadData(page, tagged, sort, true, false);
     }
 
-    public void loadRepositories(boolean isRefreshing) {
-        loadData(1, false, isRefreshing);
+    public void loadRepositories(int page, String tagged, String sort, boolean isRefreshing) {
+        loadData(page, tagged, sort, false, isRefreshing);
     }
 
-    private void loadData(int page, boolean isPageLoading, boolean isRefreshing) {
+    private void loadData(int page, String tagged, String sort, boolean isPageLoading, boolean isRefreshing) {
         if (mIsInLoading) {
             return;
         }
@@ -67,7 +74,16 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         getViewState().disableLastItemViewListener();
         showProgress(isPageLoading, isRefreshing);
 
-        final Observable<QuestionsList> observable = mStackoverflowService.getUserRepos(page, Api.PAGE_SIZE, "react-native");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("page", Integer.toString(page));
+        params.put("pagesize", Integer.toString(Api.PAGE_SIZE));
+        params.put("sort", sort);
+        if(tagged != null && !tagged.isEmpty())
+        {
+            params.put("tagged", tagged);
+        }
+
+        final Observable<QuestionsList> observable = mStackoverflowService.getUserRepos(params);
 
         if (!subscription.isDisposed()) {
             subscription.dispose();
@@ -113,6 +129,10 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         getViewState().hideError();
     }
 
+    public void clickItem(Question question) {
+        router.navigateTo(Screens.QUESTIONS_DETAILS_SCREEN, question);
+    }
+
     private void showProgress(boolean isPageLoading, boolean isRefreshing) {
         if (isPageLoading) {
             return;
@@ -136,5 +156,15 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         } else {
             getViewState().hideListProgress();
         }
+    }
+
+    public void hideFloatingActionButton()
+    {
+        getViewState().hideFloatingActionButton();
+    }
+
+    public void showFloatingActionButton()
+    {
+        getViewState().showFloatingActionButton();
     }
 }

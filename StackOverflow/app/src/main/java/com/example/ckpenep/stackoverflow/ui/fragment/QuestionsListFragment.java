@@ -1,40 +1,75 @@
 package com.example.ckpenep.stackoverflow.ui.fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.ckpenep.stackoverflow.R;
+import com.example.ckpenep.stackoverflow.common.RouterProvider;
 import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionView;
 import com.example.ckpenep.stackoverflow.ui.adapters.QuestionListAdapter;
 import com.example.ckpenep.stackoverflow.utils.FrameSwipeRefreshLayout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class QuestionsListFragment extends MvpAppCompatFragment implements QuestionView {
+public class QuestionsListFragment extends MvpAppCompatFragment implements QuestionView, QuestionListAdapter.OnItemClickListener {
+
+    Map<String, String> sortList = new HashMap<String, String>() {{
+        put("Active", "activity");
+        put("Votes", "votes");
+        put("Newest", "creation");
+
+    }};
 
     @InjectPresenter
     QuestionPresenter mPresenter;
+
+    @ProvidePresenter
+    QuestionPresenter providePlacePresenter() {
+        return new QuestionPresenter(((RouterProvider) getParentFragment()).getRouter());
+    }
 
     protected View mFooter;
     FrameSwipeRefreshLayout mSwipeRefreshLayout;
     ProgressBar progressBar;
     TextView noQuestionsTextView;
+    EditText search;
+    Button clearButton;
     RecyclerView mRecyclerView;
+    FloatingActionButton mFloatingActionButton;
+    Spinner mSpinner;
 
     private AlertDialog mErrorDialog;
     private LinearLayoutManager layoutManager;
@@ -54,6 +89,17 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         mSwipeRefreshLayout = (FrameSwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
         noQuestionsTextView = (TextView) view.findViewById(R.id.text_view_no_questions);
+        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        mSpinner = (Spinner) view.findViewById(R.id.categories);
+        search = (EditText) view.findViewById(R.id.search);
+        clearButton = (Button) view.findViewById(R.id.clearable_button_clear);
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search.setText("");
+            }
+        });
 
         return view;
     }
@@ -63,12 +109,25 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         super.onViewCreated(view, savedInstanceState);
 
         initList();
+        initSpinner();
+        initEditText();
 
         // SwipeRefreshLayout
-        mSwipeRefreshLayout.setOnRefreshListener(() -> mPresenter.loadRepositories(true));
+        mSwipeRefreshLayout.setOnRefreshListener(() ->
+        {
+            String searchText = search.getText().toString().replace(' ','-');
+            String sort = sortList.get(mSpinner.getSelectedItem().toString());
+            mPresenter.loadRepositories(1, searchText, sort, true);
+        });
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 
         mFooter = getLayoutInflater(savedInstanceState).inflate(R.layout.item_loading, mRecyclerView, false);
+
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("FAB CLICK", "CLICK");
+            }
+        });
     }
 
     @Override
@@ -81,8 +140,33 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         super.onDestroy();
     }
 
-    protected void initList() {
+    private void initSpinner() {
+        List<String> result2 = new ArrayList(sortList.keySet());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, result2);
+        // Определяем разметку для использования при выборе элемента
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Применяем адаптер к элементу spinner
+        mSpinner.setAdapter(adapter);
+
+        AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String searchText = search.getText().toString().replace(' ','-');
+                String sort = sortList.get(parent.getItemAtPosition(position).toString());
+                mPresenter.loadRepositories(1, searchText, sort, true);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+        mSpinner.setOnItemSelectedListener(itemSelectedListener);
+    }
+
+    private void initList() {
         mAdapter = new QuestionListAdapter();
+        mAdapter.setOnItemClickListener(this);
         layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -90,17 +174,77 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    // Scrolling up
-                } else {
-                    // Scrolling down
+
+                if (dy > 0 && mFloatingActionButton.getVisibility() == View.VISIBLE) {
+                    mPresenter.hideFloatingActionButton();
+                } else if (dy < 0 && mFloatingActionButton.getVisibility() != View.VISIBLE) {
+                    mPresenter.showFloatingActionButton();
                 }
             }
         });
+    }
+
+    private void initEditText()
+    {
+        search.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                if (s.length() > 0)
+                    clearButton.setVisibility(RelativeLayout.VISIBLE);
+                else
+                    clearButton.setVisibility(RelativeLayout.INVISIBLE);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    String searchText = search.getText().toString().replace(' ','-');
+                    String sort = sortList.get(mSpinner.getSelectedItem().toString());
+                    if(!searchText.isEmpty()) {
+                        mPresenter.loadRepositories(1, searchText, sort, true);
+                        View view = getActivity().getCurrentFocus();
+                        if (view != null) {
+                            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onItemClick(Question question) {
+        mPresenter.clickItem(question);
+    }
+
+    @Override
+    public void hideFloatingActionButton() {
+        mFloatingActionButton.hide();
+    }
+
+    @Override
+    public void showFloatingActionButton() {
+        mFloatingActionButton.show();
     }
 
     @Override
@@ -163,10 +307,11 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition() + 1;
             int modelsCount = mAdapter.getItemCount();
-            //boolean isRefresh = mAdapter.
 
-            if (lastVisibleItemPosition == modelsCount && modelsCount > 10 ) {
-                mPresenter.loadNextRepositories(layoutManager.getItemCount());
+            if (lastVisibleItemPosition == modelsCount && modelsCount > 10) {
+                String searchText = search.getText().toString().replace(' ','-');
+                String sort = sortList.get(mSpinner.getSelectedItem().toString());
+                mPresenter.loadNextRepositories(layoutManager.getItemCount(), searchText, sort);
             }
         }
     }

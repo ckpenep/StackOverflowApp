@@ -3,6 +3,8 @@ package com.example.ckpenep.stackoverflow.model;
 import com.example.ckpenep.stackoverflow.app.Api;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionsList;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 public class StackoverflowService {
@@ -12,7 +14,7 @@ public class StackoverflowService {
         api = mApi;
     }
 
-    public Observable<QuestionsList> getUserRepos(int page, int pagesize, String order) {
-        return api.searchQuestions(page, pagesize, order);
+    public Observable<QuestionsList> getUserRepos(Map<String, String> params) {
+        return api.searchQuestions(params);
     }
 }

@@ -4,6 +4,7 @@
     <string name="inbox">Inbox</string>
     <string name="achievements">Achievements</string>
     <string name="more">More</string>
+    <string name="search">Search</string>
 
 
     <string-array name="menu_actions">

@@ -1,46 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorWhite"
-              android:orientation="vertical">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
 
-    <com.example.ckpenep.stackoverflow.utils.FrameSwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/colorWhite">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:ignore="ScrollViewSize">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:orientation="horizontal">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/questions_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
-
-            <TextView
-                android:id="@+id/text_view_no_questions"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="No repositories"
-                android:visibility="gone"/>
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:src="@drawable/ic_magnify"/>
 
-        </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1">
+                <EditText
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:paddingRight="35dp"
+                    android:ems="10"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:background="#00000000"
+                    android:hint="@string/search"/>
 
-    </com.example.ckpenep.stackoverflow.utils.FrameSwipeRefreshLayout>
-</LinearLayout>
+                <Button
+                    android:id="@+id/clearable_button_clear"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:background="@drawable/ic_close"
+                    android:visibility="invisible"/>
+            </FrameLayout>
+
+            <Spinner
+                android:id="@+id/categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="0.5dp"
+              android:layout_marginTop="12dp"
+              android:background="#737373" />
+
+        <com.example.ckpenep.stackoverflow.utils.FrameSwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorWhite">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="ScrollViewSize">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/questions_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/text_view_no_questions"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="No repositories"
+                    android:visibility="gone"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+            </FrameLayout>
+
+        </com.example.ckpenep.stackoverflow.utils.FrameSwipeRefreshLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:src="@drawable/ic_plus"
+        app:backgroundTint="@color/colorAccent"
+        app:fabSize="normal"/>
+</FrameLayout>

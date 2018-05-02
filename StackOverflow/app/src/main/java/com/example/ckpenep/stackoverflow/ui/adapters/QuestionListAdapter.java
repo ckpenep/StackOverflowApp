@@ -15,6 +15,8 @@ import butterknife.ButterKnife;
 
 public class QuestionListAdapter extends RecyclerBindableAdapter<Question, QuestionListAdapter.ItemViewHolder> {
 
+    private OnItemClickListener onItemClickListener;
+
     @Override
     protected int layoutId(int type) {
         return R.layout.item_question;
@@ -35,14 +37,6 @@ public class QuestionListAdapter extends RecyclerBindableAdapter<Question, Quest
         viewHolder.bind(getItem(position));
     }
 
-    @Override
-    protected int getGridSpan(int position) {
-        if (isFooter(position)) {
-            return getMaxGridSpan();
-        }
-        return (position % 3 == 0 ? 2 : 1);
-    }
-
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title)
         TextView title;
@@ -54,11 +48,18 @@ public class QuestionListAdapter extends RecyclerBindableAdapter<Question, Quest
         TextView tags;
         public View view;
 
-        public ItemViewHolder(View v) {
-            super(v);
-            view = v;
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+            view = itemView;
 
             ButterKnife.bind(this, itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(getItem(getAdapterPosition()));
+                }
+            });
         }
 
         void bind(Question item)
@@ -88,5 +89,13 @@ public class QuestionListAdapter extends RecyclerBindableAdapter<Question, Quest
             }
 
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener  onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Question question);
     }
 }
