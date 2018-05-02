@@ -2,9 +2,12 @@ package com.example.ckpenep.stackoverflow.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import com.example.ckpenep.stackoverflow.model.converters.TagConverter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +30,7 @@ public class Question implements Parcelable {
     private Integer lastEditDate;
     private Integer acceptedAnswerId;
     private Integer protectedDate;
+    @TypeConverters(TagConverter.class)
     private List<String> tags = null;
 
     public Question(Integer id, String title, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags)
@@ -152,8 +156,6 @@ public class Question implements Parcelable {
 
         return result;
     }
-
-
 
     @Override
     public int describeContents() {
