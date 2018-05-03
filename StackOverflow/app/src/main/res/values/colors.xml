@@ -14,4 +14,6 @@
     <color name="answer_background">#5ab97d</color>
     <color name="answer_color_foreground">#6a727b</color>
     <color name="views_foreground">#f38228</color>
+
+    <color name="colorPressedButton">#f1f1f1</color>
 </resources>

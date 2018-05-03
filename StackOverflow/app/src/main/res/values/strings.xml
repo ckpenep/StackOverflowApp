@@ -5,6 +5,12 @@
     <string name="achievements">Achievements</string>
     <string name="more">More</string>
     <string name="search">Search</string>
+    <string name="settings">Settings</string>
+    <string name="ask_question">Ask Question</string>
+    <string name="drafts">Drafts</string>
+    <string name="sign_in">Sign In</string>
+    <string name="favorite">Favorite Questions</string>
+    <string name="history">Browsing History</string>
 
 
     <string-array name="menu_actions">

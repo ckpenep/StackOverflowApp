@@ -1,6 +1,10 @@
 package com.example.ckpenep.stackoverflow.di.modules;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
+
+import com.example.ckpenep.stackoverflow.db.DataDao;
+import com.example.ckpenep.stackoverflow.db.DatabaseHelper;
 
 import javax.inject.Singleton;
 
@@ -19,5 +23,15 @@ public class ContextModule {
     @Singleton
     public Context provideContext() {
         return mContext;
+    }
+
+    @Singleton @Provides
+    public DatabaseHelper provideMyDatabase(Context context){
+        return Room.databaseBuilder(context, DatabaseHelper.class, "my-db").allowMainThreadQueries().build();
+    }
+
+    @Singleton @Provides
+    public DataDao provideUserDao(DatabaseHelper myDatabase){
+        return myDatabase.getDataDao();
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:elevation="2dp"
+        android:translationZ="2dp"
+        android:stateListAnimator="@null"
+
+        android:background="@color/colorWhite">
+        <Button
+            android:id="@+id/sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="@string/sign_in"
+            android:textColor="@color/colorTextPrimary"
+            android:padding="24dp"
+            android:textSize="@dimen/text.14"
+            android:textAllCaps="false"/>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/ask_question_button"
+        style="@style/Button"
+        android:layout_marginTop="@dimen/margin_xxlarge"
+        android:text="@string/ask_question"/>
+
+    <Button
+        android:id="@+id/drafts_button"
+        style="@style/Button"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/drafts"/>
+
+    <Button
+        android:id="@+id/favorite_button"
+        style="@style/Button"
+        android:layout_marginTop="@dimen/margin_xxlarge"
+        android:text="@string/favorite"/>
+
+    <Button
+        android:id="@+id/history_button"
+        style="@style/Button"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/history"/>
+
+</LinearLayout>

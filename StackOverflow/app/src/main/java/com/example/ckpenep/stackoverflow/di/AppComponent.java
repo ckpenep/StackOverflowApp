@@ -7,6 +7,7 @@ import com.example.ckpenep.stackoverflow.di.modules.LocalNavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.NavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.StackoverflowModule;
 import com.example.ckpenep.stackoverflow.presentation.presenter.MainPresenter;
+import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionPresenter;
 import com.example.ckpenep.stackoverflow.ui.activity.MainActivity;
 import com.example.ckpenep.stackoverflow.ui.fragment.container.ContainerFragment;
@@ -33,4 +34,6 @@ public interface AppComponent {
     void inject (ContainerFragment containerFragment);
 
     void inject (QuestionPresenter questionPresenter);
+
+    void inject (QuestionDetailsPresenter questionDetailsPresenter);
 }

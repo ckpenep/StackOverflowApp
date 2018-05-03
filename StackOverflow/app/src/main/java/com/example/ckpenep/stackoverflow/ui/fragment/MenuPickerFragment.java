@@ -20,8 +20,7 @@ public class MenuPickerFragment extends DialogFragment {
         try {
             interfaceCommunicator = (InterfaceCommunicator) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement InterfaceCommunicator");
+            throw new ClassCastException(context.toString() + " must implement InterfaceCommunicator");
         }
     }
 

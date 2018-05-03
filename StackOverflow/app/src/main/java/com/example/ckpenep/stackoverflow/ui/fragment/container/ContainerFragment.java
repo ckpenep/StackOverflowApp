@@ -18,7 +18,9 @@ import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.ui.Screens;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 import com.example.ckpenep.stackoverflow.ui.fragment.AchievementFragment;
+import com.example.ckpenep.stackoverflow.ui.fragment.HistoryFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.InboxFragment;
+import com.example.ckpenep.stackoverflow.ui.fragment.MoreFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.QuestionDetailsFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.QuestionsListFragment;
 
@@ -115,8 +117,14 @@ public class ContainerFragment extends Fragment implements RouterProvider, BackB
                         case Screens.ACHIEVEMENTS_SCREEN:
                             return AchievementFragment.newInstance();
 
+                        case Screens.MORE_SCREEN:
+                            return MoreFragment.newInstance();
+
                         case Screens.QUESTIONS_DETAILS_SCREEN:
                             return QuestionDetailsFragment.newInstance((Question) data);
+
+                        case Screens.IHISTORY_SCREEN:
+                            return HistoryFragment.newInstance();
                     }
 
                     return null;

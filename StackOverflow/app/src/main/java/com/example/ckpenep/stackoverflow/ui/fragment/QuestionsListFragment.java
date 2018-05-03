@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -140,6 +141,7 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         super.onDestroy();
     }
 
+    boolean userSelect = false;
     private void initSpinner() {
         List<String> result2 = new ArrayList(sortList.keySet());
 
@@ -152,9 +154,14 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String searchText = search.getText().toString().replace(' ','-');
-                String sort = sortList.get(parent.getItemAtPosition(position).toString());
-                mPresenter.loadRepositories(1, searchText, sort, true);
+                if (userSelect) {
+                    // Your selection handling code here
+                    userSelect = false;
+
+                    String searchText = search.getText().toString().replace(' ','-');
+                    String sort = sortList.get(parent.getItemAtPosition(position).toString());
+                    mPresenter.loadRepositories(1, searchText, sort, true);
+                }
             }
 
             @Override
@@ -162,6 +169,15 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
             }
         };
         mSpinner.setOnItemSelectedListener(itemSelectedListener);
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                userSelect = true;
+                return false;
+            }
+        };
+        mSpinner.setOnTouchListener(touchListener);
     }
 
     private void initList() {

@@ -46,7 +46,7 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
 
     @ProvidePresenter
     QuestionDetailsPresenter providePlacePresenter() {
-        return new QuestionDetailsPresenter(((RouterProvider) getParentFragment()).getRouter());
+        return new QuestionDetailsPresenter(((RouterProvider) getParentFragment()).getRouter(), getArguments().getParcelable("QUESTION"));
     }
 
     @Override

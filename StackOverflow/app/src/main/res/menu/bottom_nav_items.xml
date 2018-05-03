@@ -21,4 +21,11 @@
         android:icon="@drawable/ic_trophy"
         android:enabled="true"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_more"
+        android:title="@string/more"
+        android:icon="@drawable/ic_dots_horizontal"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
 </menu>

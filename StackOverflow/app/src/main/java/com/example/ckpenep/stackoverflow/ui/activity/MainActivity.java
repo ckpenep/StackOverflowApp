@@ -1,5 +1,6 @@
 package com.example.ckpenep.stackoverflow.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -22,7 +23,9 @@ import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 import com.example.ckpenep.stackoverflow.ui.fragment.MenuPickerFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.container.AchievementsFragmentContainer;
 import com.example.ckpenep.stackoverflow.ui.fragment.container.InboxFragmentContainer;
+import com.example.ckpenep.stackoverflow.ui.fragment.container.MoreFragmentContainer;
 import com.example.ckpenep.stackoverflow.ui.fragment.container.QuestionsFragmentContainer;
+import com.example.ckpenep.stackoverflow.utils.BottomNavigationViewHelper;
 
 import javax.inject.Inject;
 
@@ -33,6 +36,7 @@ import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.commands.Back;
 import ru.terrakok.cicerone.commands.Command;
+import ru.terrakok.cicerone.commands.Forward;
 import ru.terrakok.cicerone.commands.Replace;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView, RouterProvider, InterfaceCommunicator {
@@ -55,6 +59,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
     private QuestionsFragmentContainer mQuestionsFragmentContainer;
     private InboxFragmentContainer mInboxFragmentContainer;
     private AchievementsFragmentContainer mAchievementsFragmentContainer;
+    private MoreFragmentContainer mMoreFragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
         setSupportActionBar(mToolbar);
 
 
+        BottomNavigationViewHelper.disableShiftMode(mBottomNavigationView);
         initContainers();
         setupBottomNavigationView();
 
@@ -106,8 +112,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_more:
-                mMainPresenter.showDialog();
+            case R.id.menu_settings:
+                mMainPresenter.onTabSettingsClick();
                 break;
             default:
                 break;
@@ -124,6 +130,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
         Integer sFragmentQuestion = 0;
         Integer sFragmentInbox = 1;
         Integer sFragmentAchievement = 2;
+        Integer sFragmentMore = 3;
         FragmentManager fm = getSupportFragmentManager();
         mQuestionsFragmentContainer = (QuestionsFragmentContainer) fm.findFragmentByTag("QUESTION");
         if (mQuestionsFragmentContainer == null) {
@@ -147,6 +154,14 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
             fm.beginTransaction()
                     .add(R.id.activity_main_container, mAchievementsFragmentContainer, "ACHIEVEMENT")
                     .detach(mAchievementsFragmentContainer).commitNow();
+        }
+
+        mMoreFragmentContainer = (MoreFragmentContainer) fm.findFragmentByTag("MORE");
+        if (mMoreFragmentContainer == null) {
+            mMoreFragmentContainer = MoreFragmentContainer.getNewInstance(sFragmentMore);
+            fm.beginTransaction()
+                    .add(R.id.activity_main_container, mMoreFragmentContainer, "MORE")
+                    .detach(mMoreFragmentContainer).commitNow();
         }
     }
 
@@ -178,6 +193,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
                 case R.id.menu_achievements:
                     mMainPresenter.onTabAchievementClick();
                     break;
+                case R.id.menu_more:
+                    mMainPresenter.onTabMoreClick();
+                    break;
             }
             return true;
         });
@@ -193,31 +211,62 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
             if (command instanceof Back) {
                 finish();
             } else if (command instanceof Replace) {
-                FragmentManager fm = getSupportFragmentManager();
+               replace(((Replace) command));
+            }
+            if (command instanceof Forward) {
+                forward((Forward) command);
+            }
+        }
 
-                switch (((Replace) command).getScreenKey()) {
-                    case Screens.QUESTIONS_SCREEN:
-                        fm.beginTransaction()
-                                .detach(mInboxFragmentContainer)
-                                .detach(mAchievementsFragmentContainer)
-                                .attach(mQuestionsFragmentContainer)
-                                .commitNow();
-                        break;
-                    case Screens.INBOX_SCREEN:
-                        fm.beginTransaction()
-                                .detach(mAchievementsFragmentContainer)
-                                .detach(mQuestionsFragmentContainer)
-                                .attach(mInboxFragmentContainer)
-                                .commitNow();
-                        break;
-                    case Screens.ACHIEVEMENTS_SCREEN:
-                        fm.beginTransaction()
-                                .detach(mInboxFragmentContainer)
-                                .detach(mQuestionsFragmentContainer)
-                                .attach(mAchievementsFragmentContainer)
-                                .commitNow();
-                        break;
-                }
+        private void forward(Forward command) {
+            switch (command.getScreenKey()) {
+                case Screens.SETTINGS_ACTIVITY_SCREEN:
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                    break;
+                default:
+                    Log.e("Cicerone", "Unknown screen: " + command.getScreenKey());
+                    break;
+            }
+        }
+
+        private void replace(Replace command)
+        {
+            FragmentManager fm = getSupportFragmentManager();
+
+            switch (command.getScreenKey()) {
+                case Screens.QUESTIONS_SCREEN:
+                    fm.beginTransaction()
+                            .detach(mInboxFragmentContainer)
+                            .detach(mAchievementsFragmentContainer)
+                            .detach(mMoreFragmentContainer)
+                            .attach(mQuestionsFragmentContainer)
+                            .commitNow();
+                    break;
+                case Screens.INBOX_SCREEN:
+                    fm.beginTransaction()
+                            .detach(mAchievementsFragmentContainer)
+                            .detach(mQuestionsFragmentContainer)
+                            .detach(mMoreFragmentContainer)
+                            .attach(mInboxFragmentContainer)
+                            .commitNow();
+                    break;
+                case Screens.ACHIEVEMENTS_SCREEN:
+                    fm.beginTransaction()
+                            .detach(mInboxFragmentContainer)
+                            .detach(mQuestionsFragmentContainer)
+                            .detach(mMoreFragmentContainer)
+                            .attach(mAchievementsFragmentContainer)
+                            .commitNow();
+                    break;
+                case Screens.MORE_SCREEN:
+                    fm.beginTransaction()
+                            .detach(mInboxFragmentContainer)
+                            .detach(mQuestionsFragmentContainer)
+                            .detach(mAchievementsFragmentContainer)
+                            .attach(mMoreFragmentContainer)
+                            .commitNow();
+                    break;
+
             }
         }
     };

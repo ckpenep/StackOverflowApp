@@ -45,4 +45,11 @@ public class MainPresenter extends MvpPresenter<MainView> {
     public void onTabAchievementClick() {
         router.replaceScreen(Screens.ACHIEVEMENTS_SCREEN);
     }
+
+    public void onTabMoreClick() {router.replaceScreen(Screens.MORE_SCREEN);}
+
+    public void onTabSettingsClick()
+    {
+        router.navigateTo(Screens.SETTINGS_ACTIVITY_SCREEN);
+    }
 }
