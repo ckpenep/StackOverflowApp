@@ -123,7 +123,7 @@ public class ContainerFragment extends Fragment implements RouterProvider, BackB
                         case Screens.QUESTIONS_DETAILS_SCREEN:
                             return QuestionDetailsFragment.newInstance((Question) data);
 
-                        case Screens.IHISTORY_SCREEN:
+                        case Screens.HISTORY_SCREEN:
                             return HistoryFragment.newInstance();
                     }
 

@@ -6,4 +6,7 @@ import com.example.ckpenep.stackoverflow.presentation.view.InboxView;
 
 @InjectViewState
 public class InboxPresenter extends MvpPresenter<InboxView> {
+
+
+
 }

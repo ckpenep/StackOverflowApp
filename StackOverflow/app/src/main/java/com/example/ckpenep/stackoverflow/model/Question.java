@@ -32,6 +32,7 @@ public class Question implements Parcelable {
     private Integer protectedDate;
     @TypeConverters(TagConverter.class)
     private List<String> tags = null;
+    private String saveDate;
 
     public Question(Integer id, String title, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags)
     {
@@ -101,6 +102,12 @@ public class Question implements Parcelable {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public String getSaveDate(){ return  saveDate; }
+
+    public void setSaveDate(String saveDate) {
+        this.saveDate = saveDate;
     }
 
     public String getTagsByString()
@@ -177,6 +184,7 @@ public class Question implements Parcelable {
         if(this.score != null)dest.writeInt(this.score);
         if(this.tags != null)dest.writeStringList(this.tags);
         if(this.viewCount != null)dest.writeInt(this.viewCount);
+        if(this.saveDate != null) dest.writeString(this.saveDate);
     }
 
     protected Question(Parcel in) {
@@ -194,6 +202,7 @@ public class Question implements Parcelable {
         this.score = in.readInt();
         this.title = in.readString();
         this.viewCount = in.readInt();
+        this.saveDate = in.readString();
     }
 
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {

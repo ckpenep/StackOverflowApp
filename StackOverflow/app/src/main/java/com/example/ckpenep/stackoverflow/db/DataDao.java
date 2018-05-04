@@ -9,6 +9,8 @@ import com.example.ckpenep.stackoverflow.model.Question;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface DataDao {
     @Insert
@@ -18,5 +20,5 @@ public interface DataDao {
     void delete(Question question);
 
     @Query("SELECT * FROM Question")
-    List<Question> getAllData();
+    Flowable<List<Question>> getAllData();
 }

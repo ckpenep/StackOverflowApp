@@ -11,6 +11,7 @@
     <string name="sign_in">Sign In</string>
     <string name="favorite">Favorite Questions</string>
     <string name="history">Browsing History</string>
+    <string name="history_list_is_empty">Your history list is empty</string>
 
 
     <string-array name="menu_actions">

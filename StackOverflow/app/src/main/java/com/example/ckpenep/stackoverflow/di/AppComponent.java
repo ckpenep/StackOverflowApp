@@ -6,6 +6,7 @@ import com.example.ckpenep.stackoverflow.di.modules.ContextModule;
 import com.example.ckpenep.stackoverflow.di.modules.LocalNavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.NavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.StackoverflowModule;
+import com.example.ckpenep.stackoverflow.presentation.presenter.HistoryPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.MainPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionPresenter;
@@ -36,4 +37,6 @@ public interface AppComponent {
     void inject (QuestionPresenter questionPresenter);
 
     void inject (QuestionDetailsPresenter questionDetailsPresenter);
+
+    void inject (HistoryPresenter historyPresenter);
 }

@@ -11,5 +11,5 @@ public class Screens {
     public static final String MORE_SCREEN = "MoreFragment";
 
     public static final String QUESTIONS_DETAILS_SCREEN = "QuestionDetailsFragment";
-    public static final String IHISTORY_SCREEN = "HistoryFragment";
+    public static final String HISTORY_SCREEN = "HistoryFragment";
 }
