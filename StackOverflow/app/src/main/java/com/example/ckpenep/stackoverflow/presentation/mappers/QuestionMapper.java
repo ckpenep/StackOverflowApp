@@ -12,7 +12,6 @@ public class QuestionMapper {
         return Observable.fromIterable(getResultsItems)
                 .map(showDTO -> new Question(
                         showDTO.getQuestionId(),
-                        showDTO.getTitle(),
                         showDTO.getIsAnswered(),
                         showDTO.getViewCount(),
                         showDTO.getAnswerCount(),
@@ -20,11 +19,15 @@ public class QuestionMapper {
                         showDTO.getLastActivityDate(),
                         showDTO.getCreationDate(),
                         showDTO.getLink(),
+                        showDTO.getTitle(),
                         showDTO.getLastEditDate(),
                         showDTO.getAcceptedAnswerId(),
                         showDTO.getProtectedDate(),
-                        showDTO.getTags()
-                ))
+                        showDTO.getTags(),
+                        showDTO.getBodyMarkdown(),
+                        showDTO.getBody(),
+                        OwnerMapper.fromResultsItemToTasks(showDTO.getOwner())
+                        ))
                 .toList()
                 .toObservable()
                 .blockingFirst();

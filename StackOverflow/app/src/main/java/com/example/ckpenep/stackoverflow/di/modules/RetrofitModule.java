@@ -55,7 +55,7 @@ public class RetrofitModule {
     @Singleton
     OkHttpClient getHttpClientBuilder() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .readTimeout(60, TimeUnit.SECONDS)

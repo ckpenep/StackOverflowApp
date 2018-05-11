@@ -1,5 +1,7 @@
 package com.example.ckpenep.stackoverflow.model.dto.questions;
 
+import com.example.ckpenep.stackoverflow.model.dto.datails.AnswerItem;
+import com.example.ckpenep.stackoverflow.model.dto.datails.OwnerItem;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,9 +11,15 @@ public class QuestionItem {
     @SerializedName("tags")
     @Expose
     private List<String> tags = null;
-    //    @SerializedName("owner")
-//    @Expose
-//    private Owner owner;
+    @SerializedName("answers")
+    @Expose
+    private List<AnswerItem> answers = null;
+    @SerializedName("owner")
+    @Expose
+    private OwnerItem owner;
+    @SerializedName("comment_count")
+    @Expose
+    private Integer commentCount;
     @SerializedName("is_answered")
     @Expose
     private Boolean isAnswered;
@@ -48,6 +56,12 @@ public class QuestionItem {
     @SerializedName("protected_date")
     @Expose
     private Integer protectedDate;
+    @SerializedName("body_markdown")
+    @Expose
+    private String bodyMarkdown;
+    @SerializedName("body")
+    @Expose
+    private String body;
 
     public List<String> getTags() {
         return tags;
@@ -151,5 +165,53 @@ public class QuestionItem {
 
     public void setProtectedDate(Integer protectedDate) {
         this.protectedDate = protectedDate;
+    }
+
+    public List<AnswerItem> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<AnswerItem> answers) {
+        this.answers = answers;
+    }
+
+    public OwnerItem getOwner() {
+        return owner;
+    }
+
+    public void setOwner(OwnerItem owner) {
+        this.owner = owner;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public Boolean getAnswered() {
+        return isAnswered;
+    }
+
+    public void setAnswered(Boolean answered) {
+        isAnswered = answered;
+    }
+
+    public String getBodyMarkdown() {
+        return bodyMarkdown;
+    }
+
+    public void setBodyMarkdown(String bodyMarkdown) {
+        this.bodyMarkdown = bodyMarkdown;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

@@ -11,8 +11,8 @@
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
-        android:elevation="2dp"
-        android:translationZ="2dp"
+        android:elevation="3dp"
+        android:translationZ="3dp"
         android:stateListAnimator="@null"
 
         android:background="@color/colorWhite">
@@ -24,7 +24,7 @@
             android:text="@string/sign_in"
             android:textColor="@color/colorTextPrimary"
             android:padding="24dp"
-            android:textSize="@dimen/text.14"
+            android:textSize="@dimen/text.18"
             android:textAllCaps="false"/>
     </FrameLayout>
 

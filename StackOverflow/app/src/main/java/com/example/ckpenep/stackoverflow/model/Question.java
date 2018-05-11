@@ -7,6 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.example.ckpenep.stackoverflow.model.converters.OwnerConverter;
 import com.example.ckpenep.stackoverflow.model.converters.TagConverter;
 
 import java.util.ArrayList;
@@ -33,11 +34,13 @@ public class Question implements Parcelable {
     @TypeConverters(TagConverter.class)
     private List<String> tags = null;
     private String saveDate;
+    private String bodyMarkdown;
+    private String body;
+    @TypeConverters(OwnerConverter.class)
+    private Owner owner;
 
-    public Question(Integer id, String title, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags)
-    {
-        this.mId = id;
-        this.title = title;
+    public Question(@NonNull Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, Owner owner) {
+        mId = id;
         this.isAnswered = isAnswered;
         this.viewCount = viewCount;
         this.answerCount = answerCount;
@@ -45,10 +48,14 @@ public class Question implements Parcelable {
         this.lastActivityDate = lastActivityDate;
         this.creationDate = creationDate;
         this.link = link;
+        this.title = title;
         this.lastEditDate = lastEditDate;
         this.acceptedAnswerId = acceptedAnswerId;
         this.protectedDate = protectedDate;
         this.tags = tags;
+        this.bodyMarkdown = bodyMarkdown;
+        this.body = body;
+        this.owner = owner;
     }
 
     @NonNull
@@ -104,7 +111,21 @@ public class Question implements Parcelable {
         return tags;
     }
 
-    public String getSaveDate(){ return  saveDate; }
+    public String getSaveDate(){
+        return  saveDate;
+    }
+
+    public String getBodyMarkdown() {
+        return bodyMarkdown;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
 
     public void setSaveDate(String saveDate) {
         this.saveDate = saveDate;
@@ -185,6 +206,9 @@ public class Question implements Parcelable {
         if(this.tags != null)dest.writeStringList(this.tags);
         if(this.viewCount != null)dest.writeInt(this.viewCount);
         if(this.saveDate != null) dest.writeString(this.saveDate);
+        if(this.bodyMarkdown != null) dest.writeString(this.bodyMarkdown);
+        if(this.body != null) dest.writeString(this.body);
+        if(this.owner != null) dest.writeParcelable(owner, flags);
     }
 
     protected Question(Parcel in) {
@@ -203,6 +227,9 @@ public class Question implements Parcelable {
         this.title = in.readString();
         this.viewCount = in.readInt();
         this.saveDate = in.readString();
+        this.bodyMarkdown = in.readString();
+        this.body = in.readString();
+        this.owner = (Owner) in.readParcelable(Owner.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {

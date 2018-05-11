@@ -63,6 +63,8 @@ public class MoreFragment extends MvpAppCompatFragment implements MoreView, Back
         super.onViewCreated(view, savedInstanceState);
 
         historyButton.setOnClickListener(v -> presenter.clickHistoryButton());
+
+        signInButton.setOnClickListener(k -> presenter.clickSignInButton());
     }
 
     @Override

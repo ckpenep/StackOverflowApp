@@ -24,4 +24,9 @@ public class MorePresenter extends MvpPresenter<MoreView> {
     {
         router.navigateTo(Screens.HISTORY_SCREEN);
     }
+
+    public void clickSignInButton()
+    {
+
+    }
 }

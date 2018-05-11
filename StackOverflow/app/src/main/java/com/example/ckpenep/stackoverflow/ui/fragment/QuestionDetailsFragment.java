@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -19,7 +18,6 @@ import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsP
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionDetailsView;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -33,8 +31,8 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
     @InjectPresenter
     QuestionDetailsPresenter presenter;
 
-    @BindView(R.id.question_name)
-    TextView question_name;
+    //@BindView(R.id.question_name)
+    //TextView question_name;
 
     public static QuestionDetailsFragment newInstance(Question question) {
         QuestionDetailsFragment fragment = new QuestionDetailsFragment();
@@ -79,7 +77,7 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
 
         mQuestion = getArguments().getParcelable("QUESTION");
 
-        if(mQuestion != null && mQuestion.getTitle() != null) question_name.setText(mQuestion.getTitle());
+        //if(mQuestion != null && mQuestion.getTitle() != null) question_name.setText(mQuestion.getTitle());
     }
 
     @Override

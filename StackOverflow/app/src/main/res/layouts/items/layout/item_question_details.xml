@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_small">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_12">
+            <ImageButton
+                android:id="@+id/button_question_up"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_up"
+                android:layout_gravity="center"
+                android:background="@null"/>
+
+            <TextView
+                android:id="@+id/question_count_likes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="1234"
+                android:textSize="@dimen/text.15"
+                android:layout_gravity="center"/>
+
+            <ImageButton
+                android:id="@+id/button_question_down"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_down"
+                android:background="@null"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_12"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Can anyone expla sdsdsd rtert ert 34534 5 345 345 345345345 3453"
+                android:textColor="@color/question_text_color"
+                android:textSize="@dimen/text.20"/>
+
+            <TextView
+                android:id="@+id/tags"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxLines="1"
+                android:textSize="@dimen/text.12"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@color/color_line" />
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_9"
+        android:background="@android:color/transparent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12">
+
+
+    </LinearLayout>
+</LinearLayout>
