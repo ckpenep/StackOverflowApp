@@ -44,7 +44,7 @@
         android:id="@+id/favorite_button"
         style="@style/Button"
         android:layout_marginTop="@dimen/margin_xxlarge"
-        android:text="@string/favorite"/>
+        android:text="@string/favorite_question"/>
 
     <Button
         android:id="@+id/history_button"

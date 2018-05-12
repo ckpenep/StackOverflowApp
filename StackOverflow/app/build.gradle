@@ -74,7 +74,8 @@ dependencies {
     //Cicerone
     implementation 'ru.terrakok.cicerone:cicerone:3.0.0'
 
-
+    //flexBox
+    implementation 'com.google.android:flexbox:0.3.2'
 
     //ROOM
     implementation "android.arch.persistence.room:runtime:1.0.0-alpha9-1"

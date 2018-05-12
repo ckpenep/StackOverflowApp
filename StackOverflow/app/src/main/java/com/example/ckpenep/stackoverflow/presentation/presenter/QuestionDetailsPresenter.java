@@ -9,7 +9,6 @@ import com.example.ckpenep.stackoverflow.db.DataDao;
 import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionDetailsView;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -44,18 +43,20 @@ public class QuestionDetailsPresenter extends MvpPresenter<QuestionDetailsView> 
     private void saveQuestionToDB(Question question)
     {
         try {
+            Calendar cal = Calendar.getInstance();
+            int year  = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            int date  = cal.get(Calendar.DATE);
+            cal.clear();
+            cal.set(year, month, date);
 
-            Calendar cal= Calendar.getInstance();
-            SimpleDateFormat date = new SimpleDateFormat("d MMMM yyyy");
-            String stringDate = date.format(cal.getTime());
-            Log.d("SAVE DATE", stringDate);
-            question.setSaveDate(stringDate);
+            question.setSaveDate(cal.getTimeInMillis());
 
             mDataDao.insert(question);
         }
         catch (Exception ex)
         {
-            Log.e("ROOM", ex.getMessage());
+            Log.e("SAVE ROOM", ex.getMessage());
         }
     }
 }

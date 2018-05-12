@@ -3,20 +3,31 @@ package com.example.ckpenep.stackoverflow.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
+import com.example.ckpenep.stackoverflow.R;
 import com.example.ckpenep.stackoverflow.model.converters.OwnerConverter;
 import com.example.ckpenep.stackoverflow.model.converters.TagConverter;
+import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
+import com.example.ckpenep.stackoverflow.ui.adapters.ViewHolderHistoryFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Entity
-public class Question implements Parcelable {
+public class Question implements Parcelable, HistoryRowType {
     @NonNull
     @PrimaryKey
     private Integer mId;
@@ -33,7 +44,7 @@ public class Question implements Parcelable {
     private Integer protectedDate;
     @TypeConverters(TagConverter.class)
     private List<String> tags = null;
-    private String saveDate;
+    private Long saveDate;
     private String bodyMarkdown;
     private String body;
     @TypeConverters(OwnerConverter.class)
@@ -111,10 +122,6 @@ public class Question implements Parcelable {
         return tags;
     }
 
-    public String getSaveDate(){
-        return  saveDate;
-    }
-
     public String getBodyMarkdown() {
         return bodyMarkdown;
     }
@@ -127,24 +134,25 @@ public class Question implements Parcelable {
         return owner;
     }
 
-    public void setSaveDate(String saveDate) {
+    public Long getSaveDate() {
+        return saveDate;
+    }
+
+    public void setSaveDate(Long saveDate) {
         this.saveDate = saveDate;
     }
 
-    public String getTagsByString()
-    {
+    public String getTagsByString() {
         String result = "";
 
-        for (int i=0; i < tags.size(); i++)
-        {
-            if(i != 0)result += ", ";
+        for (int i = 0; i < tags.size(); i++) {
+            if (i != 0) result += ", ";
             result += tags.get(i);
         }
         return result;
     }
 
-    public String getDateByString()
-    {
+    public String getDateByString() {
         String result = "";
         try {
 
@@ -153,32 +161,22 @@ public class Question implements Parcelable {
 
             long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(nowTime.getTime() - dd.getTime());
 
-            if(differenceInSeconds < 60)
-            {
+            if (differenceInSeconds < 60) {
                 result = differenceInSeconds + " seconds ago";
-            }
-            else if(differenceInSeconds < 3600)
-            {
+            } else if (differenceInSeconds < 3600) {
                 long minutes = differenceInSeconds / 60;
                 result = minutes + " minutes ago";
-            }
-            else if(differenceInSeconds < 86400)
-            {
+            } else if (differenceInSeconds < 86400) {
                 long hours = differenceInSeconds / (60 * 60);
                 result = hours + " hours ago";
-            }
-            else if(differenceInSeconds < 31_536_000)
-            {
+            } else if (differenceInSeconds < 31_536_000) {
                 long days = differenceInSeconds / (60 * 60 * 24);
                 result = days + " days ago";
-            }
-            else
-            {
+            } else {
                 long years = differenceInSeconds / (60 * 60 * 24 * 365);
                 result = years + " years ago";
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
 
@@ -192,23 +190,23 @@ public class Question implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        if(this.link != null)dest.writeString(this.link);
-        if(this.title != null)dest.writeString(this.title);
-        if(this.acceptedAnswerId != null)dest.writeInt(this.acceptedAnswerId);
-        if(this.answerCount != null)dest.writeInt(this.answerCount);
-        if(this.creationDate != null)dest.writeInt(this.creationDate);
-        if(this.isAnswered != null)dest.writeByte((byte) (this.isAnswered ? 1 : 0));
-        if(this.lastActivityDate != null)dest.writeInt(this.lastActivityDate);
-        if(this.lastEditDate != null)dest.writeInt(this.lastEditDate);
-        if(this.mId != null)dest.writeInt(this.mId);
-        if(this.protectedDate != null)dest.writeInt(this.protectedDate);
-        if(this.score != null)dest.writeInt(this.score);
-        if(this.tags != null)dest.writeStringList(this.tags);
-        if(this.viewCount != null)dest.writeInt(this.viewCount);
-        if(this.saveDate != null) dest.writeString(this.saveDate);
-        if(this.bodyMarkdown != null) dest.writeString(this.bodyMarkdown);
-        if(this.body != null) dest.writeString(this.body);
-        if(this.owner != null) dest.writeParcelable(owner, flags);
+        if (this.link != null) dest.writeString(this.link);
+        if (this.title != null) dest.writeString(this.title);
+        if (this.acceptedAnswerId != null) dest.writeInt(this.acceptedAnswerId);
+        if (this.answerCount != null) dest.writeInt(this.answerCount);
+        if (this.creationDate != null) dest.writeInt(this.creationDate);
+        if (this.isAnswered != null) dest.writeByte((byte) (this.isAnswered ? 1 : 0));
+        if (this.lastActivityDate != null) dest.writeInt(this.lastActivityDate);
+        if (this.lastEditDate != null) dest.writeInt(this.lastEditDate);
+        if (this.mId != null) dest.writeInt(this.mId);
+        if (this.protectedDate != null) dest.writeInt(this.protectedDate);
+        if (this.score != null) dest.writeInt(this.score);
+        if (this.tags != null) dest.writeStringList(this.tags);
+        if (this.viewCount != null) dest.writeInt(this.viewCount);
+        if (this.saveDate != null) dest.writeLong(this.saveDate);
+        if (this.bodyMarkdown != null) dest.writeString(this.bodyMarkdown);
+        if (this.body != null) dest.writeString(this.body);
+        if (this.owner != null) dest.writeParcelable(owner, flags);
     }
 
     protected Question(Parcel in) {
@@ -226,7 +224,7 @@ public class Question implements Parcelable {
         this.score = in.readInt();
         this.title = in.readString();
         this.viewCount = in.readInt();
-        this.saveDate = in.readString();
+        this.saveDate = in.readLong();
         this.bodyMarkdown = in.readString();
         this.body = in.readString();
         this.owner = (Owner) in.readParcelable(Owner.class.getClassLoader());
@@ -243,4 +241,65 @@ public class Question implements Parcelable {
             return new Question[size];
         }
     };
+
+    @Override
+    public int getItemViewType(Long millis) {
+        if (millis == null || !millis.equals(getSaveDate())) {
+            return HistoryRowType.DATE_ROW_TYPE;
+        } else {
+            return HistoryRowType.HISTORY_ROW_TYPE;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int type) {
+        if (HistoryRowType.HISTORY_ROW_TYPE == type) {
+            ViewHolderHistoryFactory.HistoryViewHolder historyViewHolder = (ViewHolderHistoryFactory.HistoryViewHolder) viewHolder;
+
+            historyViewHolder.title.setText(getTitle());
+            historyViewHolder.count_answers.setText(getAnswerCount().toString());
+            historyViewHolder.tags.setText(getTagsByString());
+
+            setBorderColor(historyViewHolder.count_answers, getAnswerCount());
+
+        } else if (HistoryRowType.DATE_ROW_TYPE == type) {
+            ViewHolderHistoryFactory.HistoryWithDateViewHolder dateViewHolder = (ViewHolderHistoryFactory.HistoryWithDateViewHolder) viewHolder;
+
+            dateViewHolder.title.setText(getTitle());
+            dateViewHolder.count_answers.setText(getAnswerCount().toString());
+            dateViewHolder.tags.setText(getTagsByString());
+
+            dateViewHolder.date.setText(getHistoryDateByString());
+
+            setBorderColor(dateViewHolder.count_answers, getAnswerCount());
+        }
+    }
+
+    private String getHistoryDateByString()
+    {
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTimeInMillis(getSaveDate());
+
+        SimpleDateFormat date = new SimpleDateFormat("d MMMM yyyy");
+        return date.format(cal.getTime());
+    }
+
+    private void setBorderColor(View view, int count)
+    {
+        GradientDrawable bgShape = (GradientDrawable)view.getBackground();
+        if(count <= 0)
+        {
+            bgShape.setStroke(4, Color.BLACK);
+            bgShape.setAlpha(45);
+            ((TextView)view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.answer_color_foreground));
+        }
+        else {
+
+            bgShape.setStroke(4, ContextCompat.getColor(view.getContext(), R.color.answer_background));
+            bgShape.setAlpha(255);
+            ((TextView)view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.answer_background));
+        }
+
+    }
 }

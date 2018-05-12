@@ -9,10 +9,12 @@
     <string name="ask_question">Ask Question</string>
     <string name="drafts">Drafts</string>
     <string name="sign_in">Sign In</string>
-    <string name="favorite">Favorite Questions</string>
+    <string name="favorite_question">Favorite Questions</string>
     <string name="history">Browsing History</string>
     <string name="history_list_is_empty">Your history list is empty</string>
-
+    <string name="favorite">Favorite</string>
+    <string name="edit">Edit</string>
+    <string name="share">Share</string>
 
     <string-array name="menu_actions">
         <item>Login or sign up</item>
