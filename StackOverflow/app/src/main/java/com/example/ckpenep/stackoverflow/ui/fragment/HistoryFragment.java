@@ -20,11 +20,10 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.ckpenep.stackoverflow.R;
 import com.example.ckpenep.stackoverflow.common.RouterProvider;
-import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.presentation.presenter.HistoryPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.HistoryView;
 import com.example.ckpenep.stackoverflow.ui.adapters.HistoryQuestionsAdapter;
-import com.example.ckpenep.stackoverflow.ui.adapters.QuestionListAdapter;
+import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 
 import java.util.List;
@@ -33,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class HistoryFragment extends MvpAppCompatFragment implements HistoryView, BackButtonListener, QuestionListAdapter.OnItemClickListener {
+public class HistoryFragment extends MvpAppCompatFragment implements HistoryView, BackButtonListener, HistoryQuestionsAdapter.OnItemClickListener {
 
     @InjectPresenter
     HistoryPresenter presenter;
@@ -116,7 +115,7 @@ public class HistoryFragment extends MvpAppCompatFragment implements HistoryView
     }
 
     @Override
-    public void onItemClick(Question question) {
+    public void onItemClick(HistoryRowType question) {
         presenter.clickItem(question);
     }
 
@@ -131,7 +130,7 @@ public class HistoryFragment extends MvpAppCompatFragment implements HistoryView
     }
 
     @Override
-    public void showResultsItemList(List<Question> questionsList) {
+    public void showResultsItemList(List<HistoryRowType> questionsList) {
         mAdapter.updateContacts(questionsList);
     }
 }

@@ -20,5 +20,5 @@ public interface DataDao {
     void delete(Question question);
 
     @Query("SELECT * FROM Question")
-    Flowable<List<Question>> getAllData();
+    Flowable<List<Question>> getAllQuestions();
 }

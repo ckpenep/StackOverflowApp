@@ -26,19 +26,12 @@ public class ViewHolderHistoryFactory {
     }
 
     public static  class HistoryWithDateViewHolder extends RecyclerView.ViewHolder {
-        public TextView title;
-        public TextView count_answers;
-        public TextView tags;
         public TextView date;
 
         public HistoryWithDateViewHolder(View itemView) {
             super(itemView);
 
-            title = (TextView) itemView.findViewById(R.id.title);
-            count_answers = (TextView) itemView.findViewById(R.id.count_answers);
-            tags = (TextView) itemView.findViewById(R.id.tags);
-
-            date = (TextView) itemView.findViewById(R.id.date_textview);
+            date = (TextView) itemView.findViewById(R.id.textview_date);
         }
     }
 
@@ -50,7 +43,7 @@ public class ViewHolderHistoryFactory {
                 return new ViewHolderHistoryFactory.HistoryViewHolder(historyTypeView);
 
             case HistoryRowType.DATE_ROW_TYPE:
-                View dateTypeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history_with_date, parent, false);
+                View dateTypeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_date_separator, parent, false);
                 return new ViewHolderHistoryFactory.HistoryWithDateViewHolder(dateTypeView);
 
             default:

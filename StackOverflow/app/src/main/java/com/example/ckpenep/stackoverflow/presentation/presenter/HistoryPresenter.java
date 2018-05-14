@@ -7,9 +7,14 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.db.DataDao;
 import com.example.ckpenep.stackoverflow.model.Question;
+import com.example.ckpenep.stackoverflow.model.QuestionDate;
 import com.example.ckpenep.stackoverflow.presentation.view.HistoryView;
 import com.example.ckpenep.stackoverflow.ui.Screens;
+import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,7 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
@@ -62,11 +66,15 @@ public class HistoryPresenter extends MvpPresenter<HistoryView> {
                 subscription.dispose();
             }
 
-            mDataDao.getAllData().subscribeOn(Schedulers.computation())
+            mDataDao.getAllQuestions()
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<Question>>() {
+                    .map(unsortedList ->
+                    {
+                       return sortedList(unsortedList);
+                    })
+                    .subscribe(new Consumer<List<HistoryRowType>>() {
                         @Override
-                        public void accept(List<Question> questions) throws Exception {
+                        public void accept(List<HistoryRowType> questions) throws Exception {
                             onLoadingSuccess(questions);
                             onLoadingFinish();
                         }
@@ -82,12 +90,35 @@ public class HistoryPresenter extends MvpPresenter<HistoryView> {
         }
     }
 
+    private List<HistoryRowType> sortedList(List<Question> unsortedList)
+    {
+        Comparator<Question> comparator = (left, right) -> (int)(left.getSaveDate() - right.getSaveDate());
+        Collections.sort(unsortedList, comparator);
+
+        List<HistoryRowType> separatedList = new ArrayList<>();
+        Long date = 0L;
+        int separateCount =0;
+        for (int i=0; i < unsortedList.size(); i++)
+        {
+            Log.d("DATES", "Date: " + date + "   Qdate: " + unsortedList.get(i).getSaveDate());
+            if(!date.equals(unsortedList.get(i).getSaveDate()))
+            {
+                separatedList.add(i + separateCount, new QuestionDate(unsortedList.get(i).getSaveDate()));
+                separateCount++;
+                date = unsortedList.get(i).getSaveDate();
+            }
+            separatedList.add(i + separateCount, unsortedList.get(i));
+        }
+        return separatedList;
+    }
+
     private void onLoadingFinish() {
         mIsInLoading = false;
         getViewState().hideProgressBar();
     }
 
-    private void onLoadingSuccess(List<Question> questions) {
+    private void onLoadingSuccess(List<HistoryRowType> questions) {
+        Log.d("SEPARATED", questions.toString());
         getViewState().showResultsItemList(questions);
     }
 
@@ -96,8 +127,8 @@ public class HistoryPresenter extends MvpPresenter<HistoryView> {
         getViewState().showError(error);
     }
 
-    public void clickItem(Question question) {
-        router.navigateTo(Screens.QUESTIONS_DETAILS_SCREEN, question);
+    public void clickItem(HistoryRowType question) {
+        if(question instanceof Question) router.navigateTo(Screens.QUESTIONS_DETAILS_SCREEN, (Question)question);
     }
 
     public void onBackPressed() {

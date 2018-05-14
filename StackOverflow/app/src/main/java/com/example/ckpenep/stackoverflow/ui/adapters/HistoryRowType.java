@@ -6,7 +6,7 @@ public interface HistoryRowType {
     int HISTORY_ROW_TYPE =   0;
     int DATE_ROW_TYPE = 1;
 
-    int getItemViewType(Long millis);
+    int getItemViewType();
 
-    void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int type);
+    void onBindViewHolder(RecyclerView.ViewHolder viewHolder);
 }

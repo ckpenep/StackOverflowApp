@@ -19,15 +19,13 @@ import com.example.ckpenep.stackoverflow.model.converters.TagConverter;
 import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
 import com.example.ckpenep.stackoverflow.ui.adapters.ViewHolderHistoryFactory;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Entity
-public class Question implements Parcelable, HistoryRowType {
+public class Question implements Parcelable, HistoryRowType, Comparable<Question>  {
     @NonNull
     @PrimaryKey
     private Integer mId;
@@ -243,63 +241,38 @@ public class Question implements Parcelable, HistoryRowType {
     };
 
     @Override
-    public int getItemViewType(Long millis) {
-        if (millis == null || !millis.equals(getSaveDate())) {
-            return HistoryRowType.DATE_ROW_TYPE;
-        } else {
-            return HistoryRowType.HISTORY_ROW_TYPE;
-        }
+    public int getItemViewType() {
+        return HistoryRowType.HISTORY_ROW_TYPE;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int type) {
-        if (HistoryRowType.HISTORY_ROW_TYPE == type) {
-            ViewHolderHistoryFactory.HistoryViewHolder historyViewHolder = (ViewHolderHistoryFactory.HistoryViewHolder) viewHolder;
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder) {
+        ViewHolderHistoryFactory.HistoryViewHolder historyViewHolder = (ViewHolderHistoryFactory.HistoryViewHolder) viewHolder;
 
-            historyViewHolder.title.setText(getTitle());
-            historyViewHolder.count_answers.setText(getAnswerCount().toString());
-            historyViewHolder.tags.setText(getTagsByString());
+        historyViewHolder.title.setText(getTitle());
+        historyViewHolder.count_answers.setText(getAnswerCount().toString());
+        historyViewHolder.tags.setText(getTagsByString());
 
-            setBorderColor(historyViewHolder.count_answers, getAnswerCount());
-
-        } else if (HistoryRowType.DATE_ROW_TYPE == type) {
-            ViewHolderHistoryFactory.HistoryWithDateViewHolder dateViewHolder = (ViewHolderHistoryFactory.HistoryWithDateViewHolder) viewHolder;
-
-            dateViewHolder.title.setText(getTitle());
-            dateViewHolder.count_answers.setText(getAnswerCount().toString());
-            dateViewHolder.tags.setText(getTagsByString());
-
-            dateViewHolder.date.setText(getHistoryDateByString());
-
-            setBorderColor(dateViewHolder.count_answers, getAnswerCount());
-        }
+        setBorderColor(historyViewHolder.count_answers, getAnswerCount());
     }
 
-    private String getHistoryDateByString()
-    {
-        Calendar cal = Calendar.getInstance();
-
-        cal.setTimeInMillis(getSaveDate());
-
-        SimpleDateFormat date = new SimpleDateFormat("d MMMM yyyy");
-        return date.format(cal.getTime());
-    }
-
-    private void setBorderColor(View view, int count)
-    {
-        GradientDrawable bgShape = (GradientDrawable)view.getBackground();
-        if(count <= 0)
-        {
+    private void setBorderColor(View view, int count) {
+        GradientDrawable bgShape = (GradientDrawable) view.getBackground();
+        if (count <= 0) {
             bgShape.setStroke(4, Color.BLACK);
             bgShape.setAlpha(45);
-            ((TextView)view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.answer_color_foreground));
-        }
-        else {
+            ((TextView) view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.answer_color_foreground));
+        } else {
 
             bgShape.setStroke(4, ContextCompat.getColor(view.getContext(), R.color.answer_background));
             bgShape.setAlpha(255);
-            ((TextView)view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.answer_background));
+            ((TextView) view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.answer_background));
         }
 
+    }
+
+    @Override
+    public int compareTo(@NonNull Question o) {
+        return (int)(this.getSaveDate() - o.getSaveDate());
     }
 }

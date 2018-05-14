@@ -13,11 +13,9 @@ import java.util.List;
 
 public class HistoryQuestionsAdapter extends RecyclerView.Adapter {
 
-    private int type;
-    private Long currentMillis;
-    private QuestionListAdapter.OnItemClickListener onItemClickListener;
+    private HistoryQuestionsAdapter.OnItemClickListener onItemClickListener;
 
-    private List<Question> mQuestions;
+    private List<HistoryRowType> mQuestions;
 
     public HistoryQuestionsAdapter() {
         mQuestions = new ArrayList<>();
@@ -25,32 +23,31 @@ public class HistoryQuestionsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        type = mQuestions.get(position).getItemViewType(currentMillis);
-        currentMillis = mQuestions.get(position).getSaveDate();
-
-        return type;
+        return mQuestions.get(position).getItemViewType();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder = ViewHolderHistoryFactory.create(parent, viewType);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onItemClick(mQuestions.get(holder.getAdapterPosition()));
-            }
-        });
+        if(holder instanceof ViewHolderHistoryFactory.HistoryViewHolder) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(mQuestions.get(holder.getAdapterPosition()));
+                }
+            });
+        }
 
         return holder;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        mQuestions.get(position).onBindViewHolder(holder, type);
+        mQuestions.get(position).onBindViewHolder(holder);
     }
 
-    public void updateContacts(List<Question> questions) {
+    public void updateContacts(List<HistoryRowType> questions) {
         final QuestionDiffCallback diffCallback = new QuestionDiffCallback(this.mQuestions, questions);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
@@ -71,11 +68,11 @@ public class HistoryQuestionsAdapter extends RecyclerView.Adapter {
         return mQuestions.size();
     }
 
-    public void setOnItemClickListener(QuestionListAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(HistoryQuestionsAdapter.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(Question question);
+    public interface OnItemClickListener{
+        void onItemClick(HistoryRowType question);
     }
 }
