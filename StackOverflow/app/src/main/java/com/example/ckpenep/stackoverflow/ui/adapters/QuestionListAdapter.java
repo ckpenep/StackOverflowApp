@@ -1,6 +1,5 @@
 package com.example.ckpenep.stackoverflow.ui.adapters;
 
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -77,8 +76,8 @@ public class QuestionListAdapter extends RecyclerBindableAdapter<Question, Quest
             GradientDrawable bgShape = (GradientDrawable)count_answers.getBackground();
             if(count <= 0)
             {
-                bgShape.setStroke(4, Color.BLACK);
-                bgShape.setAlpha(45);
+                bgShape.setStroke(4,  ContextCompat.getColor(count_answers.getContext(), R.color.color_line));
+                //bgShape.setAlpha(45);
                 count_answers.setTextColor(ContextCompat.getColor(count_answers.getContext(), R.color.answer_color_foreground));
             }
             else {

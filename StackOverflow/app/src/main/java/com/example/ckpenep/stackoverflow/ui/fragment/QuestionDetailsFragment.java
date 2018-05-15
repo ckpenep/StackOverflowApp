@@ -3,6 +3,7 @@ package com.example.ckpenep.stackoverflow.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,9 @@ import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionDetailsView;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
+import com.example.ckpenep.stackoverflow.utils.FrameSwipeRefreshLayout;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -25,14 +28,15 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
 
     private Unbinder mUnbinder;
 
-    private Question mQuestion;
     private Toolbar mToolbar;
 
     @InjectPresenter
     QuestionDetailsPresenter presenter;
 
-    //@BindView(R.id.question_name)
-    //TextView question_name;
+    @BindView(R.id.swipe_refresh_layout)
+    FrameSwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.question_details_list)
+    RecyclerView mRecyclerView;
 
     public static QuestionDetailsFragment newInstance(Question question) {
         QuestionDetailsFragment fragment = new QuestionDetailsFragment();
@@ -44,7 +48,8 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
 
     @ProvidePresenter
     QuestionDetailsPresenter providePlacePresenter() {
-        return new QuestionDetailsPresenter(((RouterProvider) getParentFragment()).getRouter(), getArguments().getParcelable("QUESTION"));
+        Question mQuestion = getArguments().getParcelable("QUESTION");
+        return new QuestionDetailsPresenter(((RouterProvider) getParentFragment()).getRouter(), mQuestion);
     }
 
     @Override
@@ -75,9 +80,18 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mQuestion = getArguments().getParcelable("QUESTION");
+        initList();
 
-        //if(mQuestion != null && mQuestion.getTitle() != null) question_name.setText(mQuestion.getTitle());
+        // SwipeRefreshLayout
+        mSwipeRefreshLayout.setOnRefreshListener(() ->
+        {
+
+        });
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+    }
+
+    private void initList() {
+
     }
 
     @Override

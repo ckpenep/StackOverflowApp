@@ -23,7 +23,7 @@ import com.example.ckpenep.stackoverflow.common.RouterProvider;
 import com.example.ckpenep.stackoverflow.presentation.presenter.HistoryPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.HistoryView;
 import com.example.ckpenep.stackoverflow.ui.adapters.HistoryQuestionsAdapter;
-import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 
 import java.util.List;

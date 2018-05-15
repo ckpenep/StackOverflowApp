@@ -3,7 +3,7 @@ package com.example.ckpenep.stackoverflow.model.dto.datails;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OwnerItem {
+public class OwnerDetail {
     @SerializedName("reputation")
     @Expose
     private Integer reputation;

@@ -7,10 +7,10 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.db.DataDao;
 import com.example.ckpenep.stackoverflow.model.Question;
-import com.example.ckpenep.stackoverflow.model.QuestionDate;
+import com.example.ckpenep.stackoverflow.model.dto.history.QuestionDate;
 import com.example.ckpenep.stackoverflow.presentation.view.HistoryView;
 import com.example.ckpenep.stackoverflow.ui.Screens;
-import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
 
 import java.util.ArrayList;
 import java.util.Collections;

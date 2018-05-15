@@ -4,7 +4,7 @@ import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
-import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
 
 import java.util.List;
 

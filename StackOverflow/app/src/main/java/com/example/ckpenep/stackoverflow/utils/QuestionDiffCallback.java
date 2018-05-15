@@ -4,8 +4,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
 import com.example.ckpenep.stackoverflow.model.Question;
-import com.example.ckpenep.stackoverflow.model.QuestionDate;
-import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
+import com.example.ckpenep.stackoverflow.model.dto.history.QuestionDate;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
 
 import java.util.List;
 

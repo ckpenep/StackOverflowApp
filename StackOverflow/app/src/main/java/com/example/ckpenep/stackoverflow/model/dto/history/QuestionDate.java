@@ -1,9 +1,9 @@
-package com.example.ckpenep.stackoverflow.model;
+package com.example.ckpenep.stackoverflow.model.dto.history;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
-import com.example.ckpenep.stackoverflow.ui.adapters.ViewHolderHistoryFactory;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderHistoryFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

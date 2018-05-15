@@ -1,4 +1,4 @@
-package com.example.ckpenep.stackoverflow.ui.adapters;
+package com.example.ckpenep.stackoverflow.ui.adapters.factories;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,7 +38,7 @@ public class ViewHolderHistoryFactory {
     public static RecyclerView.ViewHolder create(ViewGroup parent, int viewType) {
 
         switch (viewType) {
-            case HistoryRowType.HISTORY_ROW_TYPE:
+            case HistoryRowType.QUESTION_ROW_TYPE:
                 View historyTypeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history, parent, false);
                 return new ViewHolderHistoryFactory.HistoryViewHolder(historyTypeView);
 

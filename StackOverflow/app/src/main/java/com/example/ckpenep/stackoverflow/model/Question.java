@@ -3,7 +3,6 @@ package com.example.ckpenep.stackoverflow.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,8 +15,8 @@ import android.widget.TextView;
 import com.example.ckpenep.stackoverflow.R;
 import com.example.ckpenep.stackoverflow.model.converters.OwnerConverter;
 import com.example.ckpenep.stackoverflow.model.converters.TagConverter;
-import com.example.ckpenep.stackoverflow.ui.adapters.HistoryRowType;
-import com.example.ckpenep.stackoverflow.ui.adapters.ViewHolderHistoryFactory;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderHistoryFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -242,7 +241,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
 
     @Override
     public int getItemViewType() {
-        return HistoryRowType.HISTORY_ROW_TYPE;
+        return HistoryRowType.QUESTION_ROW_TYPE;
     }
 
     @Override
@@ -259,8 +258,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
     private void setBorderColor(View view, int count) {
         GradientDrawable bgShape = (GradientDrawable) view.getBackground();
         if (count <= 0) {
-            bgShape.setStroke(4, Color.BLACK);
-            bgShape.setAlpha(45);
+            bgShape.setStroke(4,  ContextCompat.getColor(((TextView)view).getContext(), R.color.color_line));
             ((TextView) view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.answer_color_foreground));
         } else {
 

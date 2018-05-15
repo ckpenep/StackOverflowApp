@@ -1,12 +1,16 @@
 package com.example.ckpenep.stackoverflow.model.dto.datails;
 
+import android.support.v7.widget.RecyclerView;
+
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderDetailsFactory;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AnswerItem {
+public class AnswerDetail implements DetailsRowType {
     @SerializedName("owner")
     @Expose
-    private OwnerItem owner;
+    private OwnerDetail owner;
     @SerializedName("is_accepted")
     @Expose
     private Boolean isAccepted;
@@ -26,11 +30,11 @@ public class AnswerItem {
     @Expose
     private Integer questionId;
 
-    public OwnerItem getOwner() {
+    public OwnerDetail getOwner() {
         return owner;
     }
 
-    public void setOwner(OwnerItem owner) {
+    public void setOwner(OwnerDetail owner) {
         this.owner = owner;
     }
 
@@ -80,5 +84,17 @@ public class AnswerItem {
 
     public void setQuestionId(Integer questionId) {
         this.questionId = questionId;
+    }
+
+    @Override
+    public int getItemViewType() {
+        return DetailsRowType.ANSWER_ROW_TYPE;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder) {
+        ViewHolderDetailsFactory.AnswerViewHolder historyViewHolder = (ViewHolderDetailsFactory.AnswerViewHolder) viewHolder;
+
+
     }
 }

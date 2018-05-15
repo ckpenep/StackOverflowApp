@@ -1,7 +1,7 @@
 package com.example.ckpenep.stackoverflow.model.dto.questions;
 
-import com.example.ckpenep.stackoverflow.model.dto.datails.AnswerItem;
-import com.example.ckpenep.stackoverflow.model.dto.datails.OwnerItem;
+import com.example.ckpenep.stackoverflow.model.dto.datails.AnswerDetail;
+import com.example.ckpenep.stackoverflow.model.dto.datails.OwnerDetail;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,10 +13,10 @@ public class QuestionItem {
     private List<String> tags = null;
     @SerializedName("answers")
     @Expose
-    private List<AnswerItem> answers = null;
+    private List<AnswerDetail> answers = null;
     @SerializedName("owner")
     @Expose
-    private OwnerItem owner;
+    private OwnerDetail owner;
     @SerializedName("comment_count")
     @Expose
     private Integer commentCount;
@@ -167,19 +167,19 @@ public class QuestionItem {
         this.protectedDate = protectedDate;
     }
 
-    public List<AnswerItem> getAnswers() {
+    public List<AnswerDetail> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<AnswerItem> answers) {
+    public void setAnswers(List<AnswerDetail> answers) {
         this.answers = answers;
     }
 
-    public OwnerItem getOwner() {
+    public OwnerDetail getOwner() {
         return owner;
     }
 
-    public void setOwner(OwnerItem owner) {
+    public void setOwner(OwnerDetail owner) {
         this.owner = owner;
     }
 
