@@ -33,10 +33,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
                 android:text="1234"
-                android:textSize="@dimen/text.15"/>
+                android:textSize="@dimen/text.18"/>
 
             <ImageButton
                 android:id="@+id/button_question_down"
@@ -64,9 +64,8 @@
 
             <TextView
                 android:id="@+id/detail_question_tags"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:ellipsize="end"
                 android:gravity="left"
                 android:maxLines="1"
@@ -85,12 +84,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_9"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
         android:background="@android:color/transparent"/>
 
     <com.google.android.flexbox.FlexboxLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_12"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
         app:flexWrap="wrap">
 
         <LinearLayout
@@ -225,7 +228,8 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_small">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -235,20 +239,24 @@
 
             <Button
                 android:id="@+id/favorite_button"
-                style="@style/Owner_button"
+                style="@style/OwnerButton"
                 android:drawableLeft="@drawable/ic_star_black_24dp"
+                android:layout_marginLeft="@dimen/margin_9"
+                android:paddingRight="@dimen/margin_small"
                 android:text="@string/favorite"/>
 
             <Button
                 android:id="@+id/edit_button"
-                style="@style/Owner_button"
+                style="@style/OwnerButton"
                 android:drawableLeft="@drawable/ic_edit_black_24dp"
+                android:layout_marginLeft="@dimen/margin_large"
                 android:text="@string/edit"/>
 
             <Button
                 android:id="@+id/share_button"
-                style="@style/Owner_button"
+                style="@style/OwnerButton"
                 android:drawableLeft="@drawable/ic_share_black_24dp"
+                android:layout_marginLeft="@dimen/margin_large"
                 android:text="@string/share"/>
         </LinearLayout>
     </HorizontalScrollView>

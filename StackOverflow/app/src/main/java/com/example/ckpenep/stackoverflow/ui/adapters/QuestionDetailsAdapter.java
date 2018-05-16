@@ -3,15 +3,15 @@ package com.example.ckpenep.stackoverflow.ui.adapters;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
-import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderHistoryFactory;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderDetailsFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionDetailsAdapter extends RecyclerView.Adapter {
 
-    private List<HistoryRowType> details;
+    private List<DetailsRowType> details;
 
     public QuestionDetailsAdapter() {
         details = new ArrayList<>();
@@ -24,8 +24,7 @@ public class QuestionDetailsAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = ViewHolderHistoryFactory.create(parent, viewType);
-
+        RecyclerView.ViewHolder holder = ViewHolderDetailsFactory.create(parent, viewType);
 
         return holder;
     }
@@ -38,6 +37,12 @@ public class QuestionDetailsAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return details.size();
+    }
+
+    public void updateDetails(List<DetailsRowType> questions) {
+        this.details.clear();
+        this.details.addAll(questions);
+        notifyDataSetChanged();
     }
 
 }

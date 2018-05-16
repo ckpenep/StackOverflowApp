@@ -3,6 +3,9 @@ package com.example.ckpenep.stackoverflow.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,8 +20,12 @@ import com.example.ckpenep.stackoverflow.common.RouterProvider;
 import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionDetailsView;
+import com.example.ckpenep.stackoverflow.ui.adapters.QuestionDetailsAdapter;
+import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 import com.example.ckpenep.stackoverflow.utils.FrameSwipeRefreshLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +44,9 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
     FrameSwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.question_details_list)
     RecyclerView mRecyclerView;
+
+    private QuestionDetailsAdapter mAdapter;
+    private LinearLayoutManager layoutManager;
 
     public static QuestionDetailsFragment newInstance(Question question) {
         QuestionDetailsFragment fragment = new QuestionDetailsFragment();
@@ -91,7 +101,19 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
     }
 
     private void initList() {
+        mAdapter = new QuestionDetailsAdapter();
+        //mAdapter.setOnItemClickListener(this);
+        layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
+    }
 
+    @Override
+    public void showResult(List<DetailsRowType> result) {
+        mAdapter.updateDetails(result);
     }
 
     @Override

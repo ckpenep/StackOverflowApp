@@ -1,55 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/button_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginRight="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:elevation="3dp"
-        android:translationZ="3dp"
-        android:stateListAnimator="@null"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:background="@color/colorWhite">
-        <Button
-            android:id="@+id/sign_in"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:text="@string/sign_in"
-            android:textColor="@color/colorTextPrimary"
-            android:padding="24dp"
-            android:textSize="@dimen/text.18"
-            android:textAllCaps="false"/>
-    </FrameLayout>
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="@color/colorWhite"
+            android:elevation="3dp"
+            android:stateListAnimator="@null"
 
-    <Button
-        android:id="@+id/ask_question_button"
-        style="@style/Button"
-        android:layout_marginTop="@dimen/margin_xxlarge"
-        android:text="@string/ask_question"/>
+            android:translationZ="3dp">
 
-    <Button
-        android:id="@+id/drafts_button"
-        style="@style/Button"
-        android:layout_marginTop="@dimen/margin_16"
-        android:text="@string/drafts"/>
+            <Button
+                android:id="@+id/sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:padding="24dp"
+                android:text="@string/sign_in"
+                android:textAllCaps="false"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/text.18"/>
+        </FrameLayout>
 
-    <Button
-        android:id="@+id/favorite_button"
-        style="@style/Button"
-        android:layout_marginTop="@dimen/margin_xxlarge"
-        android:text="@string/favorite_question"/>
+        <Button
+            android:id="@+id/ask_question_button"
+            style="@style/Button"
+            android:layout_marginTop="@dimen/margin_xxlarge"
+            android:text="@string/ask_question"/>
 
-    <Button
-        android:id="@+id/history_button"
-        style="@style/Button"
-        android:layout_marginTop="@dimen/margin_16"
-        android:text="@string/history"/>
+        <Button
+            android:id="@+id/drafts_button"
+            style="@style/Button"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="@string/drafts"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/favorite_button"
+            style="@style/Button"
+            android:layout_marginTop="@dimen/margin_xxlarge"
+            android:text="@string/favorite_question"/>
+
+        <Button
+            android:id="@+id/history_button"
+            style="@style/Button"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:text="@string/history"/>
+    </LinearLayout>
+</ScrollView>

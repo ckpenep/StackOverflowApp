@@ -5,11 +5,11 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.ckpenep.stackoverflow.app.App;
-import com.example.ckpenep.stackoverflow.common.Utils;
 import com.example.ckpenep.stackoverflow.db.DataDao;
 import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.model.StackoverflowService;
-import com.example.ckpenep.stackoverflow.presentation.mappers.DetailsMapper;
+import com.example.ckpenep.stackoverflow.model.dto.datails.QuestionDetail;
+import com.example.ckpenep.stackoverflow.presentation.mappers.QuestionDetailsMapper;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionDetailsView;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
 
@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import ru.terrakok.cicerone.Router;
@@ -30,7 +29,7 @@ public class QuestionDetailsPresenter extends MvpPresenter<QuestionDetailsView> 
     @Inject
     DataDao mDataDao;
     @Inject
-    DetailsMapper mDetailsMapper;
+    QuestionDetailsMapper mDetailsMapper;
     @Inject
     StackoverflowService mStackoverflowService;
 
@@ -52,6 +51,10 @@ public class QuestionDetailsPresenter extends MvpPresenter<QuestionDetailsView> 
         super.onFirstViewAttach();
         saveQuestionToDB(mQuestion);
 
+        QuestionDetail questionDetail = mDetailsMapper.apply(mQuestion);
+        mResultsItems.add(questionDetail);
+        getViewState().showResult(mResultsItems);
+
         loadData(mQuestion.getId());
     }
 
@@ -62,19 +65,19 @@ public class QuestionDetailsPresenter extends MvpPresenter<QuestionDetailsView> 
         }
         mIsInLoading = true;
 
-        final Observable<DetailsRowType> observable = mStackoverflowService.getAnswersByQuestion(id);
-        if (!subscription.isDisposed()) {
-            subscription.dispose();
-        }
-        subscription = observable
-                .compose(Utils.applySchedulers())
-                //.map(mDetailsMapper)
-                .subscribe(resp -> {
-                    onLoadingFinish();
-                    onLoadingSuccess(resp);
-                }, error -> {
-
-                });
+//        final Observable<DetailsRowType> observable = mStackoverflowService.getAnswersByQuestion(id);
+//        if (!subscription.isDisposed()) {
+//            subscription.dispose();
+//        }
+//        subscription = observable
+//                .compose(Utils.applySchedulers())
+//                //.map(mDetailsMapper)
+//                .subscribe(resp -> {
+//                    onLoadingFinish();
+//                    onLoadingSuccess(resp);
+//                }, error -> {
+//
+//                });
     }
 
     private void onLoadingSuccess(DetailsRowType response) {

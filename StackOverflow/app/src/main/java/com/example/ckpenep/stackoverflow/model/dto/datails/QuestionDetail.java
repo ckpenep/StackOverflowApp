@@ -1,6 +1,7 @@
 package com.example.ckpenep.stackoverflow.model.dto.datails;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.example.ckpenep.stackoverflow.model.Owner;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
@@ -109,6 +110,17 @@ public class QuestionDetail implements DetailsRowType {
         return owner;
     }
 
+    public String getTagsByString() {
+        String result = "";
+
+        if(tags != null && tags.size() > 0) {
+            for (int i = 0; i < tags.size(); i++) {
+                if (i != 0) result += ", ";
+                result += tags.get(i);
+            }
+        }
+        return result;
+    }
 
     @Override
     public int getItemViewType() {
@@ -117,8 +129,11 @@ public class QuestionDetail implements DetailsRowType {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder) {
-        ViewHolderDetailsFactory.QuestionViewHolder historyViewHolder = (ViewHolderDetailsFactory.QuestionViewHolder) viewHolder;
+        ViewHolderDetailsFactory.QuestionViewHolder questionViewHolder = (ViewHolderDetailsFactory.QuestionViewHolder) viewHolder;
 
-
+        Log.d("TAGS", getTagsByString());
+        questionViewHolder.title.setText(getTitle());
+        questionViewHolder.count_likes.setText(getAnswerCount().toString());
+        questionViewHolder.tags.setText(getTagsByString());
     }
 }
