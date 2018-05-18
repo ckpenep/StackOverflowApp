@@ -4,14 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -92,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_12"
-        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_12"
         android:layout_marginRight="@dimen/margin_small"
         app:flexWrap="wrap">
 
@@ -108,7 +107,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="Asked 20 минут назад "
                 android:textSize="@dimen/text.14"/>
 
             <LinearLayout
@@ -139,7 +137,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text="SamirTenculdar"
                         android:textColor="@color/answer_color_foreground"
                         android:textSize="@dimen/text.14"/>
 
@@ -148,7 +145,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_small"
-                        android:text="52"
                         android:textColor="@color/answer_color_foreground"
                         android:textSize="@dimen/text.14"/>
 
@@ -168,7 +164,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="Edited 20 минут назад "
                 android:textSize="@dimen/text.14"/>
 
             <LinearLayout
@@ -199,7 +194,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text="ckpenep"
                         android:textColor="@color/answer_color_foreground"
                         android:textSize="@dimen/text.14"/>
 
@@ -208,7 +202,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_small"
-                        android:text="1"
                         android:textColor="@color/answer_color_foreground"
                         android:textSize="@dimen/text.14"/>
 
@@ -229,33 +222,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_small">
+        android:layout_marginTop="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_small"
-            android:paddingTop="@dimen/margin_small">
+            android:paddingBottom="@dimen/margin_small">
 
             <Button
                 android:id="@+id/favorite_button"
-                style="@style/OwnerButton"
-                android:drawableLeft="@drawable/ic_star_black_24dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/margin_9"
-                android:paddingRight="@dimen/margin_small"
-                android:text="@string/favorite"/>
+                android:drawableLeft="@drawable/ic_star_black_24dp"
+                android:text="@string/favorite"
+                android:drawablePadding="@dimen/margin_small"/>
 
             <Button
                 android:id="@+id/edit_button"
-                style="@style/OwnerButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:drawableLeft="@drawable/ic_edit_black_24dp"
+                android:drawablePadding="@dimen/margin_small"
                 android:layout_marginLeft="@dimen/margin_large"
                 android:text="@string/edit"/>
 
             <Button
                 android:id="@+id/share_button"
-                style="@style/OwnerButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:drawableLeft="@drawable/ic_share_black_24dp"
+                android:drawablePadding="@dimen/margin_small"
                 android:layout_marginLeft="@dimen/margin_large"
                 android:text="@string/share"/>
         </LinearLayout>

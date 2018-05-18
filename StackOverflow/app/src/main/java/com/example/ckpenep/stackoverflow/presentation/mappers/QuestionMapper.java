@@ -26,7 +26,8 @@ public class QuestionMapper {
                         showDTO.getTags(),
                         showDTO.getBodyMarkdown(),
                         showDTO.getBody(),
-                        OwnerMapper.fromResultsItemToTasks(showDTO.getOwner())
+                        OwnerMapper.fromResultsItemToTasks(showDTO.getOwner()),
+                        OwnerMapper.fromResultsItemToTasks(showDTO.getEditor())
                         ))
                 .toList()
                 .toObservable()

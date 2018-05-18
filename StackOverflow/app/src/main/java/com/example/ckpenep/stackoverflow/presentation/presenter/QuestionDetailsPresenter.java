@@ -8,6 +8,7 @@ import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.db.DataDao;
 import com.example.ckpenep.stackoverflow.model.Question;
 import com.example.ckpenep.stackoverflow.model.StackoverflowService;
+import com.example.ckpenep.stackoverflow.model.dto.datails.HeaderDetail;
 import com.example.ckpenep.stackoverflow.model.dto.datails.QuestionDetail;
 import com.example.ckpenep.stackoverflow.presentation.mappers.QuestionDetailsMapper;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionDetailsView;
@@ -50,7 +51,7 @@ public class QuestionDetailsPresenter extends MvpPresenter<QuestionDetailsView> 
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         saveQuestionToDB(mQuestion);
-
+        mResultsItems.add(new HeaderDetail());
         QuestionDetail questionDetail = mDetailsMapper.apply(mQuestion);
         mResultsItems.add(questionDetail);
         getViewState().showResult(mResultsItems);

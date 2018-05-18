@@ -289,14 +289,14 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
     @Override
     public void refreshRepositories(List<Question> questions, boolean maybeMore) {
         mAdapter.refreshAll(questions);
-        if (mAdapter.getFootersCount() == 0)
+        if (mAdapter.getFootersCount() == 0 && maybeMore)
             mAdapter.addFooter(mFooter);
     }
 
     @Override
     public void addRepositories(List<Question> questions, boolean maybeMore) {
         mAdapter.addAll(questions);
-        if (mAdapter.getFootersCount() == 0)
+        if (mAdapter.getFootersCount() == 0 && maybeMore)
             mAdapter.addFooter(mFooter);
     }
 

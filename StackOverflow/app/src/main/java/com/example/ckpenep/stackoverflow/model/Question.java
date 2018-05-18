@@ -46,8 +46,10 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
     private String body;
     @TypeConverters(OwnerConverter.class)
     private Owner owner;
+    @TypeConverters(OwnerConverter.class)
+    private Owner editor;
 
-    public Question(@NonNull Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, Owner owner) {
+    public Question(@NonNull Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, Owner owner, Owner editor) {
         mId = id;
         this.isAnswered = isAnswered;
         this.viewCount = viewCount;
@@ -64,6 +66,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         this.bodyMarkdown = bodyMarkdown;
         this.body = body;
         this.owner = owner;
+        this.editor = editor;
     }
 
     @NonNull
@@ -130,6 +133,8 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
     public Owner getOwner() {
         return owner;
     }
+
+    public Owner getEditor() { return editor; }
 
     public Long getSaveDate() {
         return saveDate;
@@ -204,6 +209,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         if (this.bodyMarkdown != null) dest.writeString(this.bodyMarkdown);
         if (this.body != null) dest.writeString(this.body);
         if (this.owner != null) dest.writeParcelable(owner, flags);
+        if (this.editor != null) dest.writeParcelable(editor, flags);
     }
 
     protected Question(Parcel in) {
@@ -225,6 +231,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         this.bodyMarkdown = in.readString();
         this.body = in.readString();
         this.owner = (Owner) in.readParcelable(Owner.class.getClassLoader());
+        this.editor = (Owner) in.readParcelable(Owner.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {

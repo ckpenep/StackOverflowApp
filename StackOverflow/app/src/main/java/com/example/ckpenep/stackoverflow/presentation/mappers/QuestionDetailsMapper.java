@@ -20,7 +20,7 @@ public class QuestionDetailsMapper implements Function<Question, QuestionDetail>
         return Observable.just(detailsMovie)
                 .map(dQuestion -> new QuestionDetail(dQuestion.getId(), dQuestion.getAnswered(), dQuestion.getViewCount(), dQuestion.getAnswerCount(), dQuestion.getScore(),
                         dQuestion.getLastActivityDate(), dQuestion.getCreationDate(), dQuestion.getLink(), dQuestion.getTitle(), dQuestion.getLastEditDate(),
-                        dQuestion.getAcceptedAnswerId(), dQuestion.getProtectedDate(), dQuestion.getTags(), dQuestion.getBodyMarkdown(), dQuestion.getBody(), dQuestion.getOwner()))
+                        dQuestion.getAcceptedAnswerId(), dQuestion.getProtectedDate(), dQuestion.getTags(), dQuestion.getBodyMarkdown(), dQuestion.getBody(), dQuestion.getOwner(), detailsMovie.getEditor()))
                 .blockingFirst();
     }
 }

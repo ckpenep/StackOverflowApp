@@ -17,6 +17,9 @@ public class QuestionItem {
     @SerializedName("owner")
     @Expose
     private OwnerDetail owner;
+    @SerializedName("last_editor")
+    @Expose
+    private OwnerDetail editor;
     @SerializedName("comment_count")
     @Expose
     private Integer commentCount;
@@ -181,6 +184,14 @@ public class QuestionItem {
 
     public void setOwner(OwnerDetail owner) {
         this.owner = owner;
+    }
+
+    public OwnerDetail getEditor() {
+        return editor;
+    }
+
+    public void setEditor(OwnerDetail editor) {
+        this.editor = editor;
     }
 
     public Integer getCommentCount() {

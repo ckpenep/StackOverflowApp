@@ -42,6 +42,7 @@ public class QuestionDetailsAdapter extends RecyclerView.Adapter {
     public void updateDetails(List<DetailsRowType> questions) {
         this.details.clear();
         this.details.addAll(questions);
+
         notifyDataSetChanged();
     }
 
