@@ -5,7 +5,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.example.ckpenep.stackoverflow.model.Question;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 
 import java.util.List;
 

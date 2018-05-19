@@ -11,6 +11,6 @@ import retrofit2.http.QueryMap;
 public interface Api {
     Integer PAGE_SIZE = 10;
 
-    @GET("questions?order=desc&site=stackoverflow&filter=!3ykawFZ-n._I(oGZl")
+    @GET("questions?order=desc&site=stackoverflow&filter=!)rwibkp50r6joDt8-ZS7")
     Observable<QuestionsList> searchQuestions(@QueryMap Map<String, String> params);
 }

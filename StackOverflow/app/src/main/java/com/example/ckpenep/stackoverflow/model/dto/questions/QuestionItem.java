@@ -1,7 +1,6 @@
 package com.example.ckpenep.stackoverflow.model.dto.questions;
 
-import com.example.ckpenep.stackoverflow.model.dto.datails.AnswerDetail;
-import com.example.ckpenep.stackoverflow.model.dto.datails.OwnerDetail;
+import com.example.ckpenep.stackoverflow.model.datails.AnswerDetail;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,12 +13,15 @@ public class QuestionItem {
     @SerializedName("answers")
     @Expose
     private List<AnswerDetail> answers = null;
+    @SerializedName("comments")
+    @Expose
+    private List<CommentItem> comments = null;
     @SerializedName("owner")
     @Expose
-    private OwnerDetail owner;
+    private OwnerItem owner;
     @SerializedName("last_editor")
     @Expose
-    private OwnerDetail editor;
+    private OwnerItem editor;
     @SerializedName("comment_count")
     @Expose
     private Integer commentCount;
@@ -72,6 +74,14 @@ public class QuestionItem {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public List<CommentItem> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentItem> comments) {
+        this.comments = comments;
     }
 
     public Boolean getIsAnswered() {
@@ -178,19 +188,19 @@ public class QuestionItem {
         this.answers = answers;
     }
 
-    public OwnerDetail getOwner() {
+    public OwnerItem getOwner() {
         return owner;
     }
 
-    public void setOwner(OwnerDetail owner) {
+    public void setOwner(OwnerItem owner) {
         this.owner = owner;
     }
 
-    public OwnerDetail getEditor() {
+    public OwnerItem getEditor() {
         return editor;
     }
 
-    public void setEditor(OwnerDetail editor) {
+    public void setEditor(OwnerItem editor) {
         this.editor = editor;
     }
 

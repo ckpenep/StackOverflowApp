@@ -1,30 +1,24 @@
-package com.example.ckpenep.stackoverflow.model.dto.datails;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.example.ckpenep.stackoverflow.model.datails;
 
 public class OwnerDetail {
-    @SerializedName("reputation")
-    @Expose
+
     private Integer reputation;
-    @SerializedName("user_id")
-    @Expose
     private Integer userId;
-    @SerializedName("user_type")
-    @Expose
     private String userType;
-    @SerializedName("accept_rate")
-    @Expose
     private Integer acceptRate;
-    @SerializedName("profile_image")
-    @Expose
     private String profileImage;
-    @SerializedName("display_name")
-    @Expose
     private String displayName;
-    @SerializedName("link")
-    @Expose
     private String link;
+
+    public OwnerDetail(Integer reputation, Integer userId, String userType, Integer acceptRate, String profileImage, String displayName, String link) {
+        this.reputation = reputation;
+        this.userId = userId;
+        this.userType = userType;
+        this.acceptRate = acceptRate;
+        this.profileImage = profileImage;
+        this.displayName = displayName;
+        this.link = link;
+    }
 
     public Integer getReputation() {
         return reputation;

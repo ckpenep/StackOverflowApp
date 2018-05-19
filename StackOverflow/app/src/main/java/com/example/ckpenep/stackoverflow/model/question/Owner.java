@@ -1,4 +1,4 @@
-package com.example.ckpenep.stackoverflow.model;
+package com.example.ckpenep.stackoverflow.model.question;
 
 import android.arch.persistence.room.Entity;
 import android.os.Parcel;
@@ -60,12 +60,12 @@ public class Owner implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        if(this.userId != null)dest.writeString(this.link);
-        if(this.reputation != null)dest.writeString(this.link);
-        if(this.userType != null)dest.writeString(this.link);
-        if(this.acceptRate != null)dest.writeString(this.link);
-        if(this.profileImage != null)dest.writeString(this.link);
-        if(this.displayName != null)dest.writeString(this.link);
+        if(this.userId != null)dest.writeInt(this.userId);
+        if(this.reputation != null)dest.writeInt(this.reputation);
+        if(this.userType != null)dest.writeString(this.userType);
+        if(this.acceptRate != null)dest.writeInt(this.acceptRate);
+        if(this.profileImage != null)dest.writeString(this.profileImage);
+        if(this.displayName != null)dest.writeString(this.displayName);
         if(this.link != null)dest.writeString(this.link);
     }
 

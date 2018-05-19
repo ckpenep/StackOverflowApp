@@ -167,6 +167,7 @@
                 android:textSize="@dimen/text.14"/>
 
             <LinearLayout
+                android:id="@+id/editor_block"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
@@ -263,4 +264,18 @@
                 android:text="@string/share"/>
         </LinearLayout>
     </HorizontalScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/color_line"/>
+
+    <LinearLayout
+        android:id="@+id/comments_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
 </LinearLayout>

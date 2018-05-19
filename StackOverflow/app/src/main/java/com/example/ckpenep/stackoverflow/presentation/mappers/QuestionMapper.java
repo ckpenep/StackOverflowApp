@@ -1,6 +1,6 @@
 package com.example.ckpenep.stackoverflow.presentation.mappers;
 
-import com.example.ckpenep.stackoverflow.model.Question;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionItem;
 
 import java.util.List;
@@ -27,7 +27,8 @@ public class QuestionMapper {
                         showDTO.getBodyMarkdown(),
                         showDTO.getBody(),
                         OwnerMapper.fromResultsItemToTasks(showDTO.getOwner()),
-                        OwnerMapper.fromResultsItemToTasks(showDTO.getEditor())
+                        OwnerMapper.fromResultsItemToTasks(showDTO.getEditor()),
+                        CommentMapper.fromResultsItemToTasks(showDTO.getComments())
                         ))
                 .toList()
                 .toObservable()

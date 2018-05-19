@@ -1,4 +1,4 @@
-package com.example.ckpenep.stackoverflow.model;
+package com.example.ckpenep.stackoverflow.model.question;
 
 import android.support.v7.widget.RecyclerView;
 

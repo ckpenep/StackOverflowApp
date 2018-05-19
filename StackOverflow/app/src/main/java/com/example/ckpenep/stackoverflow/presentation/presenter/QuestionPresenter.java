@@ -5,7 +5,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.example.ckpenep.stackoverflow.app.Api;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.common.Utils;
-import com.example.ckpenep.stackoverflow.model.Question;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.model.StackoverflowService;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionItem;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionsList;

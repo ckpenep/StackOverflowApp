@@ -1,4 +1,4 @@
-package com.example.ckpenep.stackoverflow.model.dto.datails;
+package com.example.ckpenep.stackoverflow.model.datails;
 
 import android.support.v7.widget.RecyclerView;
 

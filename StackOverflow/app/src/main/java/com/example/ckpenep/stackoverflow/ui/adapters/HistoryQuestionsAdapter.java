@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ckpenep.stackoverflow.model.Question;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderHistoryFactory;
 import com.example.ckpenep.stackoverflow.utils.QuestionDiffCallback;

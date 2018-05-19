@@ -6,7 +6,7 @@ import android.arch.persistence.room.DatabaseConfiguration;
 import android.arch.persistence.room.InvalidationTracker;
 import android.arch.persistence.room.RoomDatabase;
 
-import com.example.ckpenep.stackoverflow.model.Question;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 
 @Database(entities = { Question.class }, version = 1, exportSchema = false)
 public abstract class DatabaseHelper extends RoomDatabase {

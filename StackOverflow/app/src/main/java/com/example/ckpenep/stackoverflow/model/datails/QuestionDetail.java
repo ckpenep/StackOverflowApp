@@ -1,10 +1,9 @@
-package com.example.ckpenep.stackoverflow.model.dto.datails;
+package com.example.ckpenep.stackoverflow.model.datails;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import com.example.ckpenep.stackoverflow.model.Owner;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderDetailsFactory;
 import com.squareup.picasso.Picasso;
@@ -29,10 +28,11 @@ public class QuestionDetail implements DetailsRowType {
     private List<String> tags = null;
     private String bodyMarkdown;
     private String body;
-    private Owner owner;
-    private Owner editor;
+    private OwnerDetail owner;
+    private OwnerDetail editor;
+    private List<CommentDetail> comments;
 
-    public QuestionDetail(Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, Owner owner, Owner editor) {
+    public QuestionDetail(Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, OwnerDetail owner, OwnerDetail editor, List<CommentDetail> comments) {
         mId = id;
         this.isAnswered = isAnswered;
         this.viewCount = viewCount;
@@ -50,6 +50,7 @@ public class QuestionDetail implements DetailsRowType {
         this.body = body;
         this.owner = owner;
         this.editor = editor;
+        this.comments = comments;
     }
 
     public Integer getId() {
@@ -112,8 +113,16 @@ public class QuestionDetail implements DetailsRowType {
         return body;
     }
 
-    public Owner getOwner() {
+    public OwnerDetail getOwner() {
         return owner;
+    }
+
+    public OwnerDetail getEditor() {
+        return editor;
+    }
+
+    public List<CommentDetail> getComments() {
+        return comments;
     }
 
     public String getTagsByString() {
@@ -185,16 +194,27 @@ public class QuestionDetail implements DetailsRowType {
                 questionViewHolder.dateCreateQuestion.setText("Asked " + getDateByString(getCreationDate()));
         }
         if (editor != null) {
-            if (editor.getProfileImage() != null)
-                Picasso.get().load(editor.getProfileImage()).into(questionViewHolder.editorImage);
-            if (editor.getDisplayName() != null)
-                questionViewHolder.editorName.setText(editor.getDisplayName());
-            if (editor.getReputation() != null)
-                questionViewHolder.editorRating.setText(Integer.toString(editor.getReputation()));
+            if(!owner.getUserId().equals(editor.getUserId())) {
+                if (editor.getProfileImage() != null)
+                    Picasso.get().load(editor.getProfileImage()).into(questionViewHolder.editorImage);
+                if (editor.getDisplayName() != null)
+                    questionViewHolder.editorName.setText(editor.getDisplayName());
+                if (editor.getReputation() != null)
+                    questionViewHolder.editorRating.setText(Integer.toString(editor.getReputation()));
+            }
+            else
+            {
+                questionViewHolder.editorBlock.setVisibility(View.GONE);
+            }
             if (getLastEditDate() != null)
                 questionViewHolder.dateEditQuestion.setText("Edited " + getDateByString(getLastEditDate()));
         } else {
             questionViewHolder.editorContainer.setVisibility(View.GONE);
+        }
+
+        if(getComments() != null && getComments().size() != 0)
+        {
+
         }
     }
 }

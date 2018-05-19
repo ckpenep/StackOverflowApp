@@ -26,6 +26,8 @@ public class ViewHolderDetailsFactory {
         public TextView ownerRating;
 
         public LinearLayout editorContainer;
+        public LinearLayout commentContainer;
+        public LinearLayout editorBlock;
 
         public TextView dateEditQuestion;
         public ImageView editorImage;
@@ -48,6 +50,8 @@ public class ViewHolderDetailsFactory {
             ownerRating = (TextView) itemView.findViewById(R.id.owner_rating);
 
             editorContainer = (LinearLayout) itemView.findViewById(R.id.editor_container);
+            commentContainer = (LinearLayout) itemView.findViewById(R.id.comments_container);
+            editorBlock = (LinearLayout) itemView.findViewById(R.id.editor_block);
 
             dateEditQuestion = (TextView) itemView.findViewById(R.id.editor_date_create_question);
             editorImage = (ImageView) itemView.findViewById(R.id.editor_image);

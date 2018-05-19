@@ -2,7 +2,7 @@ package com.example.ckpenep.stackoverflow.model.converters;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.example.ckpenep.stackoverflow.model.Owner;
+import com.example.ckpenep.stackoverflow.model.question.Owner;
 import com.google.gson.Gson;
 
 public class OwnerConverter {

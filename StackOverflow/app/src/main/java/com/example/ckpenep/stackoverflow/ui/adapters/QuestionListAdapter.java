@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.ckpenep.stackoverflow.R;
-import com.example.ckpenep.stackoverflow.model.Question;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -2,8 +2,6 @@ package com.example.ckpenep.stackoverflow.model.converters;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.example.ckpenep.stackoverflow.model.Question;
-
 import java.util.Arrays;
 import java.util.List;
 

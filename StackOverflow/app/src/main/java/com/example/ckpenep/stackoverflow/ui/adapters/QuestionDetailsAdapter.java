@@ -45,5 +45,4 @@ public class QuestionDetailsAdapter extends RecyclerView.Adapter {
 
         notifyDataSetChanged();
     }
-
 }

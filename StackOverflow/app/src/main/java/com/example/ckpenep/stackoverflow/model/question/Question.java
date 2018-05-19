@@ -1,4 +1,4 @@
-package com.example.ckpenep.stackoverflow.model;
+package com.example.ckpenep.stackoverflow.model.question;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.ckpenep.stackoverflow.R;
+import com.example.ckpenep.stackoverflow.model.converters.CommentConverter;
 import com.example.ckpenep.stackoverflow.model.converters.OwnerConverter;
 import com.example.ckpenep.stackoverflow.model.converters.TagConverter;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
@@ -48,8 +49,10 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
     private Owner owner;
     @TypeConverters(OwnerConverter.class)
     private Owner editor;
+    @TypeConverters(CommentConverter.class)
+    private List<Comment> comments;
 
-    public Question(@NonNull Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, Owner owner, Owner editor) {
+    public Question(@NonNull Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, Owner owner, Owner editor, List<Comment> comments) {
         mId = id;
         this.isAnswered = isAnswered;
         this.viewCount = viewCount;
@@ -67,6 +70,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         this.body = body;
         this.owner = owner;
         this.editor = editor;
+        this.comments = comments;
     }
 
     @NonNull
@@ -185,6 +189,10 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         return result;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -210,6 +218,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         if (this.body != null) dest.writeString(this.body);
         if (this.owner != null) dest.writeParcelable(owner, flags);
         if (this.editor != null) dest.writeParcelable(editor, flags);
+        if(this.comments != null) dest.writeList(comments);
     }
 
     protected Question(Parcel in) {
