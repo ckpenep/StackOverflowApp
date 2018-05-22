@@ -31,6 +31,8 @@ public class QuestionDetailsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        holder.setIsRecyclable(false);
+
         details.get(position).onBindViewHolder(holder);
     }
 

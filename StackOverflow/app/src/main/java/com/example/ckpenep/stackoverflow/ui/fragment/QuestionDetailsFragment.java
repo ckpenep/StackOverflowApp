@@ -3,6 +3,7 @@ package com.example.ckpenep.stackoverflow.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -99,10 +100,10 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
         //mAdapter.setOnItemClickListener(this);
         layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
-       // mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 

@@ -1,12 +1,9 @@
 package com.example.ckpenep.stackoverflow.model.datails;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderDetailsFactory;
-import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 import java.util.List;
@@ -31,6 +28,7 @@ public class QuestionDetail implements DetailsRowType {
     private OwnerDetail owner;
     private OwnerDetail editor;
     private List<CommentDetail> comments;
+    private boolean expanded = false;
 
     public QuestionDetail(Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, OwnerDetail owner, OwnerDetail editor, List<CommentDetail> comments) {
         mId = id;
@@ -125,6 +123,14 @@ public class QuestionDetail implements DetailsRowType {
         return comments;
     }
 
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
     public String getTagsByString() {
         String result = "";
 
@@ -177,44 +183,30 @@ public class QuestionDetail implements DetailsRowType {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder) {
         ViewHolderDetailsFactory.QuestionViewHolder questionViewHolder = (ViewHolderDetailsFactory.QuestionViewHolder) viewHolder;
 
-        Log.d("TAGS", getTagsByString());
-        questionViewHolder.title.setText(getTitle());
-        questionViewHolder.count_likes.setText(getAnswerCount().toString());
-        questionViewHolder.tags.setText(getTagsByString());
-        questionViewHolder.webView.loadData(getBody(), "text/html", null);
+        questionViewHolder.bind(this);
+    }
 
-        if (owner != null) {
-            if (owner.getProfileImage() != null)
-                Picasso.get().load(owner.getProfileImage()).into(questionViewHolder.ownerImage);
-            if (owner.getDisplayName() != null)
-                questionViewHolder.ownerName.setText(owner.getDisplayName());
-            if (owner.getReputation() != null)
-                questionViewHolder.ownerRating.setText(Integer.toString(owner.getReputation()));
-            if (getCreationDate() != null)
-                questionViewHolder.dateCreateQuestion.setText("Asked " + getDateByString(getCreationDate()));
-        }
-        if (editor != null) {
-            if(!owner.getUserId().equals(editor.getUserId())) {
-                if (editor.getProfileImage() != null)
-                    Picasso.get().load(editor.getProfileImage()).into(questionViewHolder.editorImage);
-                if (editor.getDisplayName() != null)
-                    questionViewHolder.editorName.setText(editor.getDisplayName());
-                if (editor.getReputation() != null)
-                    questionViewHolder.editorRating.setText(Integer.toString(editor.getReputation()));
-            }
-            else
-            {
-                questionViewHolder.editorBlock.setVisibility(View.GONE);
-            }
-            if (getLastEditDate() != null)
-                questionViewHolder.dateEditQuestion.setText("Edited " + getDateByString(getLastEditDate()));
-        } else {
-            questionViewHolder.editorContainer.setVisibility(View.GONE);
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof QuestionDetail)) {
+            return false;
         }
 
-        if(getComments() != null && getComments().size() != 0)
-        {
+        QuestionDetail question = (QuestionDetail) o;
 
-        }
+        return question.getId().equals(mId) &&
+                question.getBody().equals(body) &&
+                question.getBodyMarkdown().equals(bodyMarkdown);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + mId.hashCode();
+        result = 31 * result + body.hashCode();
+        result = 31 * result + bodyMarkdown.hashCode();
+        return result;
     }
 }

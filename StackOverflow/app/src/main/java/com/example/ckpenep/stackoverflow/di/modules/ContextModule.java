@@ -27,7 +27,7 @@ public class ContextModule {
 
     @Singleton @Provides
     public DatabaseHelper provideMyDatabase(Context context){
-        return Room.databaseBuilder(context, DatabaseHelper.class, "my-db").allowMainThreadQueries().build();
+        return Room.databaseBuilder(context, DatabaseHelper.class, "my-db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
     }
 
     @Singleton @Provides

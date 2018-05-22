@@ -86,15 +86,15 @@ public class Comment implements Parcelable {
         this.bodyMarkdown = in.readString();
     }
 
-    public static final Parcelable.Creator<Owner> CREATOR = new Parcelable.Creator<Owner>() {
+    public static final Parcelable.Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {
         @Override
-        public Owner createFromParcel(Parcel source) {
-            return new Owner(source);
+        public Comment createFromParcel(Parcel source) {
+            return new Comment(source);
         }
 
         @Override
-        public Owner[] newArray(int size) {
-            return new Owner[size];
+        public Comment[] newArray(int size) {
+            return new Comment[size];
         }
     };
 }
