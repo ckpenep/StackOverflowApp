@@ -74,7 +74,6 @@ public class Comment implements Parcelable {
         if(this.bodyMarkdown != null)dest.writeString(this.bodyMarkdown);
     }
 
-
     protected Comment(Parcel in) {
         this.commentId = in.readInt();
         this.edited = in.readByte() != 0;

@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -33,6 +32,7 @@ public class ViewAnimation {
 
     public static void expand(final View v) {
         Animation a = expandAction(v);
+        v.startAnimation(a);
     }
 
     private static Animation expandAction(final View v) {
@@ -44,8 +44,9 @@ public class ViewAnimation {
         Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                int h = interpolatedTime == 1 ? ViewGroup.LayoutParams.WRAP_CONTENT : (int) (targtetHeight * interpolatedTime);
-                v.getLayoutParams().height = h;
+                v.getLayoutParams().height = interpolatedTime == 1
+                        ? ViewGroup.LayoutParams.WRAP_CONTENT
+                        : (int) (targtetHeight * interpolatedTime);
                 v.requestLayout();
             }
 
@@ -54,7 +55,7 @@ public class ViewAnimation {
                 return true;
             }
         };
-        Log.d("DURATION", Float.toString(targtetHeight / v.getContext().getResources().getDisplayMetrics().density));
+
         a.setDuration((int) (targtetHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
         return a;

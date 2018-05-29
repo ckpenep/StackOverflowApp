@@ -1,9 +1,6 @@
 package com.example.ckpenep.stackoverflow.model.datails;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class CommentDetail implements Parcelable {
+public class CommentDetail {
     private Integer commentId;
     private Boolean edited;
     private Integer score;
@@ -55,45 +52,4 @@ public class CommentDetail implements Parcelable {
     public String getBody() {
         return body;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if(this.commentId != null)dest.writeInt(this.commentId);
-        if(this.edited != null)dest.writeByte((byte) (this.edited ? 1 : 0));
-        if(this.score != null)dest.writeInt(this.score);
-        if(this.creationDate != null)dest.writeInt(this.creationDate);
-        if(this.owner != null)dest.writeParcelable((Parcelable) owner, flags);
-        if(this.postId != null)dest.writeInt(this.postId);
-        if(this.body != null)dest.writeString(this.body);
-        if(this.bodyMarkdown != null)dest.writeString(this.bodyMarkdown);
-    }
-
-
-    protected CommentDetail(Parcel in) {
-        this.commentId = in.readInt();
-        this.edited = in.readByte() != 0;
-        this.score = in.readInt();
-        this.creationDate = in.readInt();
-        this.postId = in.readInt();
-        this.owner = (OwnerDetail) in.readParcelable(OwnerDetail.class.getClassLoader());
-        this.body = in.readString();
-        this.bodyMarkdown = in.readString();
-    }
-
-    public static final Parcelable.Creator<CommentDetail> CREATOR = new Parcelable.Creator<CommentDetail>() {
-        @Override
-        public CommentDetail createFromParcel(Parcel source) {
-            return new CommentDetail(source);
-        }
-
-        @Override
-        public CommentDetail[] newArray(int size) {
-            return new CommentDetail[size];
-        }
-    };
 }

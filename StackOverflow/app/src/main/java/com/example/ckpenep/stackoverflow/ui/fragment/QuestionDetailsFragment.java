@@ -2,6 +2,7 @@ package com.example.ckpenep.stackoverflow.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -104,6 +105,8 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.getRecycledViewPool().setMaxRecycledViews(DetailsRowType.QUESTION_ROW_TYPE, 1);
+        mRecyclerView.getRecycledViewPool().setMaxRecycledViews(DetailsRowType.HEADER_ROW_TYPE, 1);
 
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -135,6 +138,13 @@ public class QuestionDetailsFragment extends MvpAppCompatFragment implements Que
     @Override
     public void showResult(List<DetailsRowType> result) {
         mAdapter.updateDetails(result);
+    }
+
+    @Override
+    public void showError(String error) {
+        Snackbar
+                .make(getView(), "No network connection.",Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     @Override

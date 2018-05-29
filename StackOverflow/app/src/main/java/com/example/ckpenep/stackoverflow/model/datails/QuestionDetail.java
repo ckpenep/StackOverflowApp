@@ -28,9 +28,10 @@ public class QuestionDetail implements DetailsRowType {
     private OwnerDetail owner;
     private OwnerDetail editor;
     private List<CommentDetail> comments;
+    private List<AnswerDetail> answers;
     private boolean expanded = false;
 
-    public QuestionDetail(Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, OwnerDetail owner, OwnerDetail editor, List<CommentDetail> comments) {
+    public QuestionDetail(Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, OwnerDetail owner, OwnerDetail editor, List<CommentDetail> comments, List<AnswerDetail> answers) {
         mId = id;
         this.isAnswered = isAnswered;
         this.viewCount = viewCount;
@@ -49,6 +50,7 @@ public class QuestionDetail implements DetailsRowType {
         this.owner = owner;
         this.editor = editor;
         this.comments = comments;
+        this.answers = answers;
     }
 
     public Integer getId() {
@@ -121,6 +123,10 @@ public class QuestionDetail implements DetailsRowType {
 
     public List<CommentDetail> getComments() {
         return comments;
+    }
+
+    public List<AnswerDetail> getAnswers() {
+        return answers;
     }
 
     public boolean isExpanded() {

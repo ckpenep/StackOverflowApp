@@ -4,86 +4,139 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderDetailsFactory;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AnswerDetail implements DetailsRowType {
-    @SerializedName("owner")
-    @Expose
+
+    private List<CommentDetail> comments = null;
     private OwnerDetail owner;
-    @SerializedName("is_accepted")
-    @Expose
+    private OwnerDetail lastEditor;
+    private Integer commentCount;
     private Boolean isAccepted;
-    @SerializedName("score")
-    @Expose
     private Integer score;
-    @SerializedName("last_activity_date")
-    @Expose
     private Integer lastActivityDate;
-    @SerializedName("creation_date")
-    @Expose
     private Integer creationDate;
-    @SerializedName("answer_id")
-    @Expose
     private Integer answerId;
-    @SerializedName("question_id")
-    @Expose
     private Integer questionId;
+    private String bodyMarkdown;
+    private String title;
+    private String body;
+    private Integer lastEditDate;
+    private boolean expanded = false;
+
+    public AnswerDetail(List<CommentDetail> comments, OwnerDetail owner, OwnerDetail lastEditor, Integer commentCount, Boolean isAccepted, Integer score, Integer lastActivityDate, Integer creationDate, Integer answerId, Integer questionId, String bodyMarkdown, String title, String body, Integer lastEditDate) {
+        this.comments = comments;
+        this.owner = owner;
+        this.lastEditor = lastEditor;
+        this.commentCount = commentCount;
+        this.isAccepted = isAccepted;
+        this.score = score;
+        this.lastActivityDate = lastActivityDate;
+        this.creationDate = creationDate;
+        this.answerId = answerId;
+        this.questionId = questionId;
+        this.bodyMarkdown = bodyMarkdown;
+        this.title = title;
+        this.body = body;
+        this.lastEditDate = lastEditDate;
+    }
+
+    public List<CommentDetail> getComments() {
+        return comments;
+    }
 
     public OwnerDetail getOwner() {
         return owner;
     }
 
-    public void setOwner(OwnerDetail owner) {
-        this.owner = owner;
+    public OwnerDetail getLastEditor() {
+        return lastEditor;
     }
 
-    public Boolean getIsAccepted() {
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public Boolean getAccepted() {
         return isAccepted;
-    }
-
-    public void setIsAccepted(Boolean isAccepted) {
-        this.isAccepted = isAccepted;
     }
 
     public Integer getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
     public Integer getLastActivityDate() {
         return lastActivityDate;
-    }
-
-    public void setLastActivityDate(Integer lastActivityDate) {
-        this.lastActivityDate = lastActivityDate;
     }
 
     public Integer getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Integer creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public Integer getAnswerId() {
         return answerId;
-    }
-
-    public void setAnswerId(Integer answerId) {
-        this.answerId = answerId;
     }
 
     public Integer getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
+    public String getBodyMarkdown() {
+        return bodyMarkdown;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public Integer getLastEditDate() {
+        return lastEditDate;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    public String getDateByString(Integer createDate) {
+        String result = "";
+        try {
+
+            Date dd = new Date(createDate * 1000L);
+            Date nowTime = new Date();
+
+            long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(nowTime.getTime() - dd.getTime());
+
+            if (differenceInSeconds < 60) {
+                result = differenceInSeconds + " seconds ago";
+            } else if (differenceInSeconds < 3600) {
+                long minutes = differenceInSeconds / 60;
+                result = minutes + " minutes ago";
+            } else if (differenceInSeconds < 86400) {
+                long hours = differenceInSeconds / (60 * 60);
+                result = hours + " hours ago";
+            } else if (differenceInSeconds < 31_536_000) {
+                long days = differenceInSeconds / (60 * 60 * 24);
+                result = days + " days ago";
+            } else {
+                long years = differenceInSeconds / (60 * 60 * 24 * 365);
+                result = years + " years ago";
+            }
+        } catch (Exception e) {
+            return "";
+        }
+
+        return result;
     }
 
     @Override
@@ -93,8 +146,7 @@ public class AnswerDetail implements DetailsRowType {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder) {
-        ViewHolderDetailsFactory.AnswerViewHolder historyViewHolder = (ViewHolderDetailsFactory.AnswerViewHolder) viewHolder;
-
-
+        ViewHolderDetailsFactory.AnswerViewHolder answerViewHolder = (ViewHolderDetailsFactory.AnswerViewHolder) viewHolder;
+        answerViewHolder.bind(this);
     }
 }

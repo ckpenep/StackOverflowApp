@@ -3,6 +3,7 @@ package com.example.ckpenep.stackoverflow.di;
 import android.content.Context;
 
 import com.example.ckpenep.stackoverflow.di.modules.ContextModule;
+import com.example.ckpenep.stackoverflow.di.modules.FabricModule;
 import com.example.ckpenep.stackoverflow.di.modules.LocalNavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.NavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.StackoverflowModule;
@@ -11,6 +12,8 @@ import com.example.ckpenep.stackoverflow.presentation.presenter.MainPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionPresenter;
 import com.example.ckpenep.stackoverflow.ui.activity.MainActivity;
+import com.example.ckpenep.stackoverflow.ui.adapters.HistoryQuestionsAdapter;
+import com.example.ckpenep.stackoverflow.ui.adapters.QuestionDetailsAdapter;
 import com.example.ckpenep.stackoverflow.ui.fragment.container.ContainerFragment;
 
 import javax.inject.Singleton;
@@ -22,7 +25,8 @@ import dagger.Component;
         ContextModule.class,
         NavigationModule.class,
         LocalNavigationModule.class,
-        StackoverflowModule.class
+        StackoverflowModule.class,
+        FabricModule.class
 })
 public interface AppComponent {
 
@@ -39,4 +43,8 @@ public interface AppComponent {
     void inject (QuestionDetailsPresenter questionDetailsPresenter);
 
     void inject (HistoryPresenter historyPresenter);
+
+    void inject (QuestionDetailsAdapter questionDetailsAdapter);
+
+    void inject (HistoryQuestionsAdapter historyQuestionsAdapter);
 }

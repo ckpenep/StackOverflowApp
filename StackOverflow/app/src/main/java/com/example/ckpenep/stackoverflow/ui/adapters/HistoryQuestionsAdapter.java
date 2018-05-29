@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderHistoryFactory;
@@ -13,13 +14,19 @@ import com.example.ckpenep.stackoverflow.utils.QuestionDiffCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class HistoryQuestionsAdapter extends RecyclerView.Adapter {
+
+    @Inject
+    ViewHolderHistoryFactory historyFactory;
 
     private HistoryQuestionsAdapter.OnItemClickListener onItemClickListener;
 
     private List<HistoryRowType> mQuestions;
 
     public HistoryQuestionsAdapter() {
+        App.getAppComponent().inject(this);
         mQuestions = new ArrayList<>();
     }
 
@@ -30,7 +37,7 @@ public class HistoryQuestionsAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = ViewHolderHistoryFactory.create(parent, viewType);
+        RecyclerView.ViewHolder holder = historyFactory.create(parent, viewType);
 
         if(holder instanceof ViewHolderHistoryFactory.HistoryViewHolder) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

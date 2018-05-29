@@ -24,6 +24,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY', THE_MOVIE_DB_API_KEY
+    }
     sourceSets {
         main {
             res.srcDirs = ['src/main/res', 'src/main/res/layouts/layout', 'src/main/res/layouts/activities', 'src/main/res/layouts/fragments', 'src/main/res/layouts/items']

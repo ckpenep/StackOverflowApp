@@ -1,6 +1,5 @@
 package com.example.ckpenep.stackoverflow.model.dto.questions;
 
-import com.example.ckpenep.stackoverflow.model.datails.AnswerDetail;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,7 +11,7 @@ public class QuestionItem {
     private List<String> tags = null;
     @SerializedName("answers")
     @Expose
-    private List<AnswerDetail> answers = null;
+    private List<AnswerItem> answers = null;
     @SerializedName("comments")
     @Expose
     private List<CommentItem> comments = null;
@@ -180,11 +179,11 @@ public class QuestionItem {
         this.protectedDate = protectedDate;
     }
 
-    public List<AnswerDetail> getAnswers() {
+    public List<AnswerItem> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<AnswerDetail> answers) {
+    public void setAnswers(List<AnswerItem> answers) {
         this.answers = answers;
     }
 

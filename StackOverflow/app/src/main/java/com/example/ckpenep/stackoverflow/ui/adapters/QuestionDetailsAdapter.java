@@ -3,17 +3,24 @@ package com.example.ckpenep.stackoverflow.ui.adapters;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.ViewHolderDetailsFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class QuestionDetailsAdapter extends RecyclerView.Adapter {
+
+    @Inject
+    ViewHolderDetailsFactory detailFactory;
 
     private List<DetailsRowType> details;
 
     public QuestionDetailsAdapter() {
+        App.getAppComponent().inject(this);
         details = new ArrayList<>();
     }
 
@@ -24,15 +31,13 @@ public class QuestionDetailsAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = ViewHolderDetailsFactory.create(parent, viewType);
+        RecyclerView.ViewHolder holder = detailFactory.create(parent, viewType);
 
         return holder;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        holder.setIsRecyclable(false);
-
         details.get(position).onBindViewHolder(holder);
     }
 
@@ -41,9 +46,9 @@ public class QuestionDetailsAdapter extends RecyclerView.Adapter {
         return details.size();
     }
 
-    public void updateDetails(List<DetailsRowType> questions) {
+    public void updateDetails(List<DetailsRowType> items) {
         this.details.clear();
-        this.details.addAll(questions);
+        this.details.addAll(items);
 
         notifyDataSetChanged();
     }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.ckpenep.stackoverflow.R;
+import com.example.ckpenep.stackoverflow.model.converters.AnswerConverter;
 import com.example.ckpenep.stackoverflow.model.converters.CommentConverter;
 import com.example.ckpenep.stackoverflow.model.converters.OwnerConverter;
 import com.example.ckpenep.stackoverflow.model.converters.TagConverter;
@@ -51,8 +52,10 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
     private Owner editor;
     @TypeConverters(CommentConverter.class)
     private List<Comment> comments;
+    @TypeConverters(AnswerConverter.class)
+    private List<Answer> answers;
 
-    public Question(@NonNull Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, Owner owner, Owner editor, List<Comment> comments) {
+    public Question(@NonNull Integer id, Boolean isAnswered, Integer viewCount, Integer answerCount, Integer score, Integer lastActivityDate, Integer creationDate, String link, String title, Integer lastEditDate, Integer acceptedAnswerId, Integer protectedDate, List<String> tags, String bodyMarkdown, String body, Owner owner, Owner editor, List<Comment> comments, List<Answer> answers) {
         mId = id;
         this.isAnswered = isAnswered;
         this.viewCount = viewCount;
@@ -71,6 +74,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         this.owner = owner;
         this.editor = editor;
         this.comments = comments;
+        this.answers = answers;
     }
 
     @NonNull
@@ -151,9 +155,11 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
     public String getTagsByString() {
         String result = "";
 
-        for (int i = 0; i < tags.size(); i++) {
-            if (i != 0) result += ", ";
-            result += tags.get(i);
+        if(tags != null && tags.size() > 0) {
+            for (int i = 0; i < tags.size(); i++) {
+                if (i != 0) result += ", ";
+                result += tags.get(i);
+            }
         }
         return result;
     }
@@ -193,6 +199,10 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         return comments;
     }
 
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -219,6 +229,7 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         if (this.owner != null) dest.writeParcelable(owner, flags);
         if (this.editor != null) dest.writeParcelable(editor, flags);
         if(this.comments != null) dest.writeList(comments);
+        if(this.answers != null) dest.writeList(answers);
     }
 
     protected Question(Parcel in) {
@@ -241,6 +252,10 @@ public class Question implements Parcelable, HistoryRowType, Comparable<Question
         this.body = in.readString();
         this.owner = (Owner) in.readParcelable(Owner.class.getClassLoader());
         this.editor = (Owner) in.readParcelable(Owner.class.getClassLoader());
+        this.comments = new ArrayList<>();
+        in.readArrayList(Comment.class.getClassLoader());
+        this.answers = new ArrayList<>();
+        in.readArrayList(Answer.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {

@@ -8,7 +8,7 @@ import android.arch.persistence.room.RoomDatabase;
 
 import com.example.ckpenep.stackoverflow.model.question.Question;
 
-@Database(entities = { Question.class }, version = 2, exportSchema = false)
+@Database(entities = { Question.class }, version = 3, exportSchema = false)
 public abstract class DatabaseHelper extends RoomDatabase {
     public abstract DataDao getDataDao();
 

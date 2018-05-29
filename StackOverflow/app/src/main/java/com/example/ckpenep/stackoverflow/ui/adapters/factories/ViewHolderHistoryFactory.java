@@ -10,7 +10,7 @@ import com.example.ckpenep.stackoverflow.R;
 
 public class ViewHolderHistoryFactory {
 
-    public static class HistoryViewHolder extends RecyclerView.ViewHolder {
+    public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
         public TextView title;
         public TextView count_answers;
@@ -25,7 +25,7 @@ public class ViewHolderHistoryFactory {
         }
     }
 
-    public static  class HistoryWithDateViewHolder extends RecyclerView.ViewHolder {
+    public class HistoryWithDateViewHolder extends RecyclerView.ViewHolder {
         public TextView date;
 
         public HistoryWithDateViewHolder(View itemView) {
@@ -35,7 +35,7 @@ public class ViewHolderHistoryFactory {
         }
     }
 
-    public static RecyclerView.ViewHolder create(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder create(ViewGroup parent, int viewType) {
 
         switch (viewType) {
             case HistoryRowType.QUESTION_ROW_TYPE:

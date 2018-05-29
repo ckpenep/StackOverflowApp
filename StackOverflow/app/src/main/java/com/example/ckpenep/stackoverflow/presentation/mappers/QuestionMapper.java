@@ -28,8 +28,9 @@ public class QuestionMapper {
                         showDTO.getBody(),
                         OwnerMapper.fromResultsItemToTasks(showDTO.getOwner()),
                         OwnerMapper.fromResultsItemToTasks(showDTO.getEditor()),
-                        CommentMapper.fromResultsItemToTasks(showDTO.getComments())
-                        ))
+                        CommentMapper.fromResultsItemToTasks(showDTO.getComments()),
+                        AnswerMapper.fromResultsItemToTasks(showDTO.getAnswers())
+                ))
                 .toList()
                 .toObservable()
                 .blockingFirst();

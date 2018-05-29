@@ -83,7 +83,7 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
             params.put("tagged", tagged);
         }
 
-        final Observable<QuestionsList> observable = mStackoverflowService.getUserRepos(params);
+        final Observable<QuestionsList> observable = mStackoverflowService.getAllQuestions(params);
 
         if (!subscription.isDisposed()) {
             subscription.dispose();

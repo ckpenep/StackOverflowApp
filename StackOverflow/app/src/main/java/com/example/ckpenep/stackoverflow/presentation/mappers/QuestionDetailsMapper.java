@@ -21,9 +21,10 @@ public class QuestionDetailsMapper implements Function<Question, QuestionDetail>
                 .map(dQuestion -> new QuestionDetail(dQuestion.getId(), dQuestion.getAnswered(), dQuestion.getViewCount(), dQuestion.getAnswerCount(), dQuestion.getScore(),
                         dQuestion.getLastActivityDate(), dQuestion.getCreationDate(), dQuestion.getLink(), dQuestion.getTitle(), dQuestion.getLastEditDate(),
                         dQuestion.getAcceptedAnswerId(), dQuestion.getProtectedDate(), dQuestion.getTags(), dQuestion.getBodyMarkdown(), dQuestion.getBody(),
-                        OwnerDetailMapper.fromResultsItemToTasks(dQuestion.getOwner()),
-                        OwnerDetailMapper.fromResultsItemToTasks(dQuestion.getEditor()),
-                        CommentDetailMapper.fromResultsItemToTasks(dQuestion.getComments())
+                        OwnerDetailMapper.fromOwnerToOwnerDetails(dQuestion.getOwner()),
+                        OwnerDetailMapper.fromOwnerToOwnerDetails(dQuestion.getEditor()),
+                        CommentDetailMapper.fromCommentToCommentDetails(dQuestion.getComments()),
+                        AnswerDetailMapper.fromAnswerToAnswerDetail(dQuestion.getAnswers())
                 ))
                 .blockingFirst();
     }

@@ -5,11 +5,16 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.ckpenep.stackoverflow.app.App;
+import com.example.ckpenep.stackoverflow.common.Utils;
 import com.example.ckpenep.stackoverflow.db.DataDao;
-import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.model.StackoverflowService;
+import com.example.ckpenep.stackoverflow.model.datails.AnswerDetail;
 import com.example.ckpenep.stackoverflow.model.datails.HeaderDetail;
 import com.example.ckpenep.stackoverflow.model.datails.QuestionDetail;
+import com.example.ckpenep.stackoverflow.model.dto.answer.AnswersList;
+import com.example.ckpenep.stackoverflow.model.dto.questions.AnswerItem;
+import com.example.ckpenep.stackoverflow.model.question.Question;
+import com.example.ckpenep.stackoverflow.presentation.mappers.AnswerDetailMapper;
 import com.example.ckpenep.stackoverflow.presentation.mappers.QuestionDetailsMapper;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionDetailsView;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.DetailsRowType;
@@ -20,6 +25,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import ru.terrakok.cicerone.Router;
@@ -51,42 +57,59 @@ public class QuestionDetailsPresenter extends MvpPresenter<QuestionDetailsView> 
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         saveQuestionToDB(mQuestion);
+
         mResultsItems.add(new HeaderDetail());
+
         QuestionDetail questionDetail = mDetailsMapper.apply(mQuestion);
         mResultsItems.add(questionDetail);
+
         getViewState().showResult(mResultsItems);
 
-        loadData(mQuestion.getId());
+        if(mQuestion.getAnswerCount() > 0)
+        {
+            loadData(getAnswersId());
+        }
     }
 
-    private void loadData(Integer id) {
+    private void loadData(String ids) {
 
         if (mIsInLoading) {
             return;
         }
         mIsInLoading = true;
 
-//        final Observable<DetailsRowType> observable = mStackoverflowService.getAnswersByQuestion(id);
-//        if (!subscription.isDisposed()) {
-//            subscription.dispose();
-//        }
-//        subscription = observable
-//                .compose(Utils.applySchedulers())
-//                //.map(mDetailsMapper)
-//                .subscribe(resp -> {
-//                    onLoadingFinish();
-//                    onLoadingSuccess(resp);
-//                }, error -> {
-//
-//                });
+        final Observable<AnswersList> observable = mStackoverflowService.getAnswersByIds(ids);
+
+        if (!subscription.isDisposed()) {
+            subscription.dispose();
+        }
+
+        subscription = observable
+                .compose(Utils.applySchedulers())
+                .subscribe(answers -> {
+                    onLoadingFinish();
+                    onLoadingSuccess(answers);
+                }, error -> {
+                    onLoadingFinish();
+                    onLoadingFailed(error);
+                });
     }
 
-    private void onLoadingSuccess(DetailsRowType response) {
+    private void onLoadingSuccess(AnswersList response) {
+        List<AnswerItem> resultsItems = response.getItems();
+        List<AnswerDetail> answersList = AnswerDetailMapper.fromAnswerItemToAnswerDetail(resultsItems);
 
+        mResultsItems.addAll(answersList);
+        getViewState().showResult(mResultsItems);
     }
 
     private void onLoadingFinish() {
         mIsInLoading = false;
+    }
+
+    private void onLoadingFailed(Throwable error) {
+        Log.d("ERROR", error.getMessage());
+        getViewState().showError(error.toString());
     }
 
     public void onBackPressed() {
@@ -111,6 +134,25 @@ public class QuestionDetailsPresenter extends MvpPresenter<QuestionDetailsView> 
         {
             Log.e("SAVE ROOM", ex.getMessage());
         }
+    }
+
+    private String getAnswersId()
+    {
+        if(mQuestion != null && mQuestion.getAnswerCount() > 0)
+        {
+            String ids = "";
+
+            for(int i=0; i < mQuestion.getAnswers().size(); i++)
+            {
+                if(i != 0) ids += ";";
+
+                ids += mQuestion.getAnswers().get(i).getAnswerId();
+            }
+
+            return ids;
+        }
+
+        return null;
     }
 
     @Override
