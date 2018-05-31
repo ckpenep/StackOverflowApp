@@ -1,6 +1,6 @@
 package com.example.ckpenep.stackoverflow.ui.adapters.factories;
 
-import android.os.Handler;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,8 +43,8 @@ public class ViewHolderDetailsFactory {
         public TextView question_editorRating;
 
         public RecyclerView question_commentsRecycerView;
-        public ImageView question_commentsButtonExpend;
-        public LinearLayout question_commentsExpanded;
+        //public ImageView question_commentsButtonExpend;
+        //public LinearLayout question_commentsExpanded;
 
         public QuestionViewHolder(View itemView) {
             super(itemView);
@@ -68,8 +67,8 @@ public class ViewHolderDetailsFactory {
             question_editorName = (TextView) itemView.findViewById(R.id.editor_name);
             question_editorRating = (TextView) itemView.findViewById(R.id.editor_rating);
 
-            question_commentsButtonExpend = (ImageView) itemView.findViewById(R.id.bt_expand);
-            question_commentsExpanded = (LinearLayout) itemView.findViewById(R.id.comments_expanded);
+            //question_commentsButtonExpend = (ImageView) itemView.findViewById(R.id.bt_expand);
+            //question_commentsExpanded = (LinearLayout) itemView.findViewById(R.id.comments_expanded);
 
 
             question_commentsRecycerView = (RecyclerView) itemView.findViewById(R.id.comments_recycler_view);
@@ -89,22 +88,26 @@ public class ViewHolderDetailsFactory {
             question_tags.setText(questionDetail.getTagsByString());
 
             question_webView.getSettings().setJavaScriptEnabled(true);
+            question_webView.getSettings().setLoadWithOverviewMode(true);
+
             question_webView.setVerticalScrollBarEnabled(false);
+            question_webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+
             question_webView.loadData(questionDetail.getBody(), "text/html", null);
 
-            question_webView.setWebViewClient(new WebViewClient() {
-
-                public void onPageFinished(WebView view, String url) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            question_webView.setVisibility(View.GONE);
-                            question_webView.setVisibility(View.VISIBLE);
-                        }
-                    }, 300);
-                }
-            });
+//            question_webView.setWebViewClient(new WebViewClient() {
+//
+//                public void onPageFinished(WebView view, String url) {
+//                    final Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            question_webView.setVisibility(View.GONE);
+//                            question_webView.setVisibility(View.VISIBLE);
+//                        }
+//                    }, 300);
+//                }
+//            });
 
             if (questionDetail.getOwner() != null) {
                 if (questionDetail.getOwner().getProfileImage() != null)
@@ -134,27 +137,27 @@ public class ViewHolderDetailsFactory {
             }
 
             if (questionDetail.getComments() != null && questionDetail.getComments().size() != 0) {
-                question_commentsButtonExpend.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean show = toggleLayoutExpand(!questionDetail.isExpanded(), v, question_commentsRecycerView);
-                        questionDetail.setExpanded(show);
-
-                    }
-                });
+//                question_commentsButtonExpend.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        boolean show = toggleLayoutExpand(!questionDetail.isExpanded(), v, question_commentsRecycerView);
+//                        questionDetail.setExpanded(show);
+//
+//                    }
+//                });
                 CommentsDetailsAdapter mAdapter = new CommentsDetailsAdapter(questionDetail.getComments());
                 question_commentsRecycerView.setAdapter(mAdapter);
             } else {
-                question_commentsExpanded.setVisibility(View.GONE);
+                question_commentsRecycerView.setVisibility(View.GONE);
             }
 
             // void recycling view
-            if (questionDetail.isExpanded()) {
-                question_commentsRecycerView.setVisibility(View.VISIBLE);
-            } else {
-                question_commentsRecycerView.setVisibility(View.GONE);
-            }
-            Tools.toggleArrow(questionDetail.isExpanded(), question_commentsButtonExpend, false);
+//            if (questionDetail.isExpanded()) {
+//                question_commentsRecycerView.setVisibility(View.VISIBLE);
+//            } else {
+//                question_commentsRecycerView.setVisibility(View.GONE);
+//            }
+//            Tools.toggleArrow(questionDetail.isExpanded(), question_commentsButtonExpend, false);
         }
     }
 
@@ -178,11 +181,15 @@ public class ViewHolderDetailsFactory {
         public TextView answer_editorRating;
 
         public RecyclerView answer_commentsRecycerView;
-        public ImageView answer_commentsButtonExpend;
-        public LinearLayout answer_commentsExpanded;
+        //public ImageView answer_commentsButtonExpend;
+        //public LinearLayout answer_commentsExpanded;
+
+        public NestedScrollView nested_scroll_view;
 
         public AnswerViewHolder(View itemView) {
             super(itemView);
+
+            nested_scroll_view = (NestedScrollView) itemView.findViewById(R.id.nested_scroll_view);
 
             answer_count_likes = (TextView) itemView.findViewById(R.id.detail_answer_count_likes);
             answer_title = (TextView) itemView.findViewById(R.id.detail_answer_title);
@@ -202,8 +209,8 @@ public class ViewHolderDetailsFactory {
             answer_editorRating = (TextView) itemView.findViewById(R.id.detail_answer_editor_rating);
 
 
-            answer_commentsButtonExpend = (ImageView) itemView.findViewById(R.id.detail_answer_bt_expand);
-            answer_commentsExpanded = (LinearLayout) itemView.findViewById(R.id.detail_answer_comments_expanded);
+            //answer_commentsButtonExpend = (ImageView) itemView.findViewById(R.id.detail_answer_bt_expand);
+            //answer_commentsExpanded = (LinearLayout) itemView.findViewById(R.id.detail_answer_comments_expanded);
 
 
             answer_commentsRecycerView = (RecyclerView) itemView.findViewById(R.id.detail_answer_comments_recycler_view);
@@ -222,22 +229,24 @@ public class ViewHolderDetailsFactory {
             answer_count_likes.setText(answerDetail.getScore().toString());
 
             answer_webView.getSettings().setJavaScriptEnabled(true);
+            answer_webView.getSettings().setLoadWithOverviewMode(true);
+
             answer_webView.setVerticalScrollBarEnabled(false);
             answer_webView.loadData(answerDetail.getBody(), "text/html", null);
 
-            answer_webView.setWebViewClient(new WebViewClient() {
-
-                public void onPageFinished(WebView view, String url) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            answer_webView.setVisibility(View.GONE);
-                            answer_webView.setVisibility(View.VISIBLE);
-                        }
-                    }, 300);
-                }
-            });
+//            answer_webView.setWebViewClient(new WebViewClient() {
+//
+//                public void onPageFinished(WebView view, String url) {
+//                    final Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            answer_webView.setVisibility(View.GONE);
+//                            answer_webView.setVisibility(View.VISIBLE);
+//                        }
+//                    }, 300);
+//                }
+//            });
 
             if (answerDetail.getOwner() != null) {
                 if (answerDetail.getOwner().getProfileImage() != null)
@@ -267,27 +276,26 @@ public class ViewHolderDetailsFactory {
             }
 
             if (answerDetail.getComments() != null && answerDetail.getComments().size() != 0) {
-                answer_commentsButtonExpend.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean show = toggleLayoutExpand(!answerDetail.isExpanded(), v, answer_commentsRecycerView);
-                        answerDetail.setExpanded(show);
-
-                    }
-                });
+//                answer_commentsButtonExpend.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        boolean show = toggleLayoutExpand(!answerDetail.isExpanded(), v, answer_commentsRecycerView);
+//                        answerDetail.setExpanded(show);
+//                    }
+//                });
                 CommentsDetailsAdapter mAdapter = new CommentsDetailsAdapter(answerDetail.getComments());
                 answer_commentsRecycerView.setAdapter(mAdapter);
             } else {
-                answer_commentsExpanded.setVisibility(View.GONE);
+                answer_commentsRecycerView.setVisibility(View.GONE);
             }
 
             // void recycling view
-            if (answerDetail.isExpanded()) {
-                answer_commentsRecycerView.setVisibility(View.VISIBLE);
-            } else {
-                answer_commentsRecycerView.setVisibility(View.GONE);
-            }
-            Tools.toggleArrow(answerDetail.isExpanded(), answer_commentsButtonExpend, false);
+//            if (answerDetail.isExpanded()) {
+//                answer_commentsRecycerView.setVisibility(View.VISIBLE);
+//            } else {
+//                answer_commentsRecycerView.setVisibility(View.GONE);
+//            }
+            //Tools.toggleArrow(answerDetail.isExpanded(), answer_commentsButtonExpend, false);
         }
     }
 
@@ -320,7 +328,12 @@ public class ViewHolderDetailsFactory {
     private boolean toggleLayoutExpand(boolean show, View view, View lyt_expand) {
         Tools.toggleArrow(show, view);
         if (show) {
-            ViewAnimation.expand(lyt_expand);
+            ViewAnimation.expand(lyt_expand, new ViewAnimation.AnimListener() {
+                @Override
+                public void onFinish() {
+                    //answer_webView.clearFocus();
+                }
+            });
         } else {
             ViewAnimation.collapse(lyt_expand);
         }
