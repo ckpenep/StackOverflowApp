@@ -1,4 +1,6 @@
 package com.example.ckpenep.stackoverflow.presentation.view;
 
-public interface TagsView {
+import com.arellomobile.mvp.MvpView;
+
+public interface TagsView extends MvpView {
 }

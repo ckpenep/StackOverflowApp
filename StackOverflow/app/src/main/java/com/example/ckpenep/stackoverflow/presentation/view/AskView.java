@@ -1,4 +1,6 @@
 package com.example.ckpenep.stackoverflow.presentation.view;
 
-public interface AskView {
+import com.arellomobile.mvp.MvpView;
+
+public interface AskView extends MvpView {
 }

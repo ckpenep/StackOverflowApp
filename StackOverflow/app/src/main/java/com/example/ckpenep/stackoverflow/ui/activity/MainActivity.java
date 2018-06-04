@@ -95,8 +95,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.activity_main_container);
-        if (fragment != null
-                && fragment instanceof BackButtonListener) {
+        if (fragment != null && fragment instanceof BackButtonListener) {
             ((BackButtonListener) fragment).onBackPressed();
         } else {
             mMainPresenter.onBackPressed();

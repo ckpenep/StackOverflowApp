@@ -12,4 +12,7 @@ public class Screens {
 
     public static final String QUESTIONS_DETAILS_SCREEN = "QuestionDetailsFragment";
     public static final String HISTORY_SCREEN = "HistoryFragment";
+
+    public static final String ASK_SCREEN = "AskFragment";
+    public static final String TAGS_SCREEN = "TagsFragment";
 }

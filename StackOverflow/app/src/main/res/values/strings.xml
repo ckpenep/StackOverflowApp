@@ -18,6 +18,9 @@
     <string name="show_all_comments">Show All Comments</string>
     <string name="inbox_signin">The inbox is where you receive notifications when someone answers one of your questions or comments on one of your posts.</string>
     <string name="achievements_signin">The achievements tray is where you are notified when you earn reputation, badges and privilegas that reward your actions on the site.</string>
+    <string name="question_title">Question title</string>
+    <string name="question_body">Question body goes here</string>
+    <string name="tags">Tags</string>
 
     <string-array name="menu_actions">
         <item>Login or sign up</item>

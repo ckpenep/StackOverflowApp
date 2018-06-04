@@ -11,6 +11,7 @@ import com.example.ckpenep.stackoverflow.presentation.presenter.HistoryPresenter
 import com.example.ckpenep.stackoverflow.presentation.presenter.MainPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionPresenter;
+import com.example.ckpenep.stackoverflow.ui.activity.AskActivity;
 import com.example.ckpenep.stackoverflow.ui.activity.MainActivity;
 import com.example.ckpenep.stackoverflow.ui.adapters.HistoryQuestionsAdapter;
 import com.example.ckpenep.stackoverflow.ui.adapters.QuestionDetailsAdapter;
@@ -35,6 +36,8 @@ public interface AppComponent {
     void inject (MainActivity mainActivity);
 
     void inject (MainPresenter mainPresenter);
+
+    void inject (AskActivity askActivity);
 
     void inject (ContainerFragment containerFragment);
 
