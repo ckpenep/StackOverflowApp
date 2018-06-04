@@ -4,6 +4,7 @@ public class Screens {
 
     public static final String MAIN_ACTIVITY_SCREEN = "main activity screen";
     public static final String SETTINGS_ACTIVITY_SCREEN = "settings activity screen";
+    public static final String ASK_ACTIVITY_SCREEN = "main activity screen";
 
     public static final String QUESTIONS_SCREEN = "QuestionListFragment";
     public static final String INBOX_SCREEN = "InboxFragment";
@@ -13,6 +14,6 @@ public class Screens {
     public static final String QUESTIONS_DETAILS_SCREEN = "QuestionDetailsFragment";
     public static final String HISTORY_SCREEN = "HistoryFragment";
 
-    public static final String ASK_SCREEN = "AskFragment";
     public static final String TAGS_SCREEN = "TagsFragment";
+    public static final String ASK_SCREEN = "AskFragment";
 }

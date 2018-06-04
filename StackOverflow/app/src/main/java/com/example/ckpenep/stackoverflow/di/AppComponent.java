@@ -15,6 +15,7 @@ import com.example.ckpenep.stackoverflow.ui.activity.AskActivity;
 import com.example.ckpenep.stackoverflow.ui.activity.MainActivity;
 import com.example.ckpenep.stackoverflow.ui.adapters.HistoryQuestionsAdapter;
 import com.example.ckpenep.stackoverflow.ui.adapters.QuestionDetailsAdapter;
+import com.example.ckpenep.stackoverflow.ui.fragment.AskFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.container.ContainerFragment;
 
 import javax.inject.Singleton;
@@ -50,4 +51,6 @@ public interface AppComponent {
     void inject (QuestionDetailsAdapter questionDetailsAdapter);
 
     void inject (HistoryQuestionsAdapter historyQuestionsAdapter);
+
+    void inject (AskFragment askFragment);
 }

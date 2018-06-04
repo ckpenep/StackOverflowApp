@@ -126,7 +126,7 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
 
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("FAB CLICK", "CLICK");
+                mPresenter.FABclick();
             }
         });
     }

@@ -10,24 +10,28 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.ckpenep.stackoverflow.R;
-import com.example.ckpenep.stackoverflow.common.RouterProvider;
+import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.presentation.presenter.AskPresenter;
-import com.example.ckpenep.stackoverflow.presentation.presenter.MorePresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.AskView;
-import com.example.ckpenep.stackoverflow.presentation.view.MoreView;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import ru.terrakok.cicerone.Router;
 
 public class AskFragment extends MvpAppCompatFragment implements AskView, BackButtonListener {
+
+    @Inject
+    Router router;
 
     @InjectPresenter
     AskPresenter presenter;
 
     @ProvidePresenter
-    AskPresenter provideDetailsPresenter() {
-        return new AskPresenter(((RouterProvider) getParentFragment()).getRouter());
+    AskPresenter providePlacePresenter() {
+        return new AskPresenter(router);
     }
 
     private Unbinder mUnbinder;
@@ -35,6 +39,12 @@ public class AskFragment extends MvpAppCompatFragment implements AskView, BackBu
     public static AskFragment newInstance() {
         AskFragment fragment = new AskFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        App.getAppComponent().inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable

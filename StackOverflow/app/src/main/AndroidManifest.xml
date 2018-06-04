@@ -21,5 +21,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.SettingsActivity"/>
+        <activity android:name=".ui.activity.AskActivity"/>
     </application>
 </manifest>

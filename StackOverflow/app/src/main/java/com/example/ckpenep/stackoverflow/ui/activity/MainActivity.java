@@ -222,6 +222,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Rout
                 case Screens.SETTINGS_ACTIVITY_SCREEN:
                     startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                     break;
+
+                case Screens.ASK_ACTIVITY_SCREEN:
+                    startActivity(new Intent(MainActivity.this, AskActivity.class));
+                    break;
                 default:
                     Log.e("Cicerone", "Unknown screen: " + command.getScreenKey());
                     break;

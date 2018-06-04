@@ -16,6 +16,7 @@ import com.example.ckpenep.stackoverflow.common.RouterProvider;
 import com.example.ckpenep.stackoverflow.di.LocalCiceroneHolder;
 import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.ui.Screens;
+import com.example.ckpenep.stackoverflow.ui.activity.AskActivity;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 import com.example.ckpenep.stackoverflow.ui.fragment.AchievementFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.HistoryFragment;
@@ -101,11 +102,6 @@ public class ContainerFragment extends Fragment implements RouterProvider, BackB
             navigator = new SupportAppNavigator(getActivity(), getChildFragmentManager(), R.id.ftc_container) {
 
                 @Override
-                protected Intent createActivityIntent(Context context, String screenKey, Object data) {
-                    return null;
-                }
-
-                @Override
                 protected Fragment createFragment(String screenKey, Object data) {
                     switch (screenKey) {
                         case Screens.QUESTIONS_SCREEN:
@@ -127,6 +123,14 @@ public class ContainerFragment extends Fragment implements RouterProvider, BackB
                             return HistoryFragment.newInstance();
                     }
 
+                    return null;
+                }
+
+                @Override
+                protected Intent createActivityIntent(Context context, String screenKey, Object data) {
+                    if (screenKey.equals(Screens.ASK_ACTIVITY_SCREEN)) {
+                        return new Intent(getActivity(), AskActivity.class);
+                    }
                     return null;
                 }
 

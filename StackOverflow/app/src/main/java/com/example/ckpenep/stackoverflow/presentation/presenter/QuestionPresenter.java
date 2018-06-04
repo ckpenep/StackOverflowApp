@@ -133,6 +133,11 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         router.navigateTo(Screens.QUESTIONS_DETAILS_SCREEN, question);
     }
 
+    public void FABclick()
+    {
+        router.navigateTo(Screens.ASK_ACTIVITY_SCREEN);
+    }
+
     private void showProgress(boolean isPageLoading, boolean isRefreshing) {
         if (isPageLoading) {
             return;
