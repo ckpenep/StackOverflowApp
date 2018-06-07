@@ -19,6 +19,7 @@ import com.example.ckpenep.stackoverflow.ui.adapters.CommentsDetailsAdapter;
 import com.example.ckpenep.stackoverflow.utils.Tools;
 import com.example.ckpenep.stackoverflow.utils.ViewAnimation;
 import com.squareup.picasso.Picasso;
+import com.tobiasrohloff.view.NestedScrollWebView;
 
 public class ViewHolderDetailsFactory {
 
@@ -27,7 +28,7 @@ public class ViewHolderDetailsFactory {
         public TextView question_count_likes;
         public TextView question_title;
         public TextView question_tags;
-        public WebView question_webView;
+        public NestedScrollWebView question_webView;
 
         public TextView question_dateCreateQuestion;
         public ImageView question_ownerImage;
@@ -43,8 +44,8 @@ public class ViewHolderDetailsFactory {
         public TextView question_editorRating;
 
         public RecyclerView question_commentsRecycerView;
-        //public ImageView question_commentsButtonExpend;
-        //public LinearLayout question_commentsExpanded;
+        public ImageView question_commentsButtonExpend;
+        public LinearLayout question_commentsExpanded;
 
         public QuestionViewHolder(View itemView) {
             super(itemView);
@@ -52,7 +53,7 @@ public class ViewHolderDetailsFactory {
             question_count_likes = (TextView) itemView.findViewById(R.id.question_count_likes);
             question_title = (TextView) itemView.findViewById(R.id.detail_question_title);
             question_tags = (TextView) itemView.findViewById(R.id.detail_question_tags);
-            question_webView = (WebView) itemView.findViewById(R.id.detail_question_webview);
+            question_webView = (NestedScrollWebView) itemView.findViewById(R.id.detail_question_webview);
 
             question_dateCreateQuestion = (TextView) itemView.findViewById(R.id.owner_date_create_question);
             question_ownerImage = (ImageView) itemView.findViewById(R.id.owner_image);
@@ -67,8 +68,8 @@ public class ViewHolderDetailsFactory {
             question_editorName = (TextView) itemView.findViewById(R.id.editor_name);
             question_editorRating = (TextView) itemView.findViewById(R.id.editor_rating);
 
-            //question_commentsButtonExpend = (ImageView) itemView.findViewById(R.id.bt_expand);
-            //question_commentsExpanded = (LinearLayout) itemView.findViewById(R.id.comments_expanded);
+            question_commentsButtonExpend = (ImageView) itemView.findViewById(R.id.bt_expand);
+            question_commentsExpanded = (LinearLayout) itemView.findViewById(R.id.comments_expanded);
 
 
             question_commentsRecycerView = (RecyclerView) itemView.findViewById(R.id.comments_recycler_view);
@@ -137,27 +138,27 @@ public class ViewHolderDetailsFactory {
             }
 
             if (questionDetail.getComments() != null && questionDetail.getComments().size() != 0) {
-//                question_commentsButtonExpend.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        boolean show = toggleLayoutExpand(!questionDetail.isExpanded(), v, question_commentsRecycerView);
-//                        questionDetail.setExpanded(show);
-//
-//                    }
-//                });
+                question_commentsButtonExpend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean show = toggleLayoutExpand(!questionDetail.isExpanded(), v, question_commentsRecycerView);
+                        questionDetail.setExpanded(show);
+
+                    }
+                });
                 CommentsDetailsAdapter mAdapter = new CommentsDetailsAdapter(questionDetail.getComments());
                 question_commentsRecycerView.setAdapter(mAdapter);
             } else {
-                question_commentsRecycerView.setVisibility(View.GONE);
+                question_commentsExpanded.setVisibility(View.GONE);
             }
 
             // void recycling view
-//            if (questionDetail.isExpanded()) {
-//                question_commentsRecycerView.setVisibility(View.VISIBLE);
-//            } else {
-//                question_commentsRecycerView.setVisibility(View.GONE);
-//            }
-//            Tools.toggleArrow(questionDetail.isExpanded(), question_commentsButtonExpend, false);
+            if (questionDetail.isExpanded()) {
+                question_commentsRecycerView.setVisibility(View.VISIBLE);
+            } else {
+                question_commentsRecycerView.setVisibility(View.GONE);
+            }
+            Tools.toggleArrow(questionDetail.isExpanded(), question_commentsButtonExpend, false);
         }
     }
 
@@ -165,7 +166,7 @@ public class ViewHolderDetailsFactory {
 
         public TextView answer_count_likes;
         public TextView answer_title;
-        public WebView answer_webView;
+        public NestedScrollWebView answer_webView;
 
         public TextView answer_dateCreateAnswer;
         public ImageView answer_ownerImage;
@@ -181,8 +182,8 @@ public class ViewHolderDetailsFactory {
         public TextView answer_editorRating;
 
         public RecyclerView answer_commentsRecycerView;
-        //public ImageView answer_commentsButtonExpend;
-        //public LinearLayout answer_commentsExpanded;
+        public ImageView answer_commentsButtonExpend;
+        public LinearLayout answer_commentsExpanded;
 
         public NestedScrollView nested_scroll_view;
 
@@ -193,7 +194,7 @@ public class ViewHolderDetailsFactory {
 
             answer_count_likes = (TextView) itemView.findViewById(R.id.detail_answer_count_likes);
             answer_title = (TextView) itemView.findViewById(R.id.detail_answer_title);
-            answer_webView = (WebView) itemView.findViewById(R.id.detail_answer_webview);
+            answer_webView = (NestedScrollWebView) itemView.findViewById(R.id.detail_answer_webview);
 
             answer_dateCreateAnswer = (TextView) itemView.findViewById(R.id.detail_answer_owner_date_created);
             answer_ownerImage = (ImageView) itemView.findViewById(R.id.detail_answer_owner_image);
@@ -209,8 +210,8 @@ public class ViewHolderDetailsFactory {
             answer_editorRating = (TextView) itemView.findViewById(R.id.detail_answer_editor_rating);
 
 
-            //answer_commentsButtonExpend = (ImageView) itemView.findViewById(R.id.detail_answer_bt_expand);
-            //answer_commentsExpanded = (LinearLayout) itemView.findViewById(R.id.detail_answer_comments_expanded);
+            answer_commentsButtonExpend = (ImageView) itemView.findViewById(R.id.detail_answer_bt_expand);
+            answer_commentsExpanded = (LinearLayout) itemView.findViewById(R.id.detail_answer_comments_expanded);
 
 
             answer_commentsRecycerView = (RecyclerView) itemView.findViewById(R.id.detail_answer_comments_recycler_view);
@@ -276,26 +277,26 @@ public class ViewHolderDetailsFactory {
             }
 
             if (answerDetail.getComments() != null && answerDetail.getComments().size() != 0) {
-//                answer_commentsButtonExpend.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        boolean show = toggleLayoutExpand(!answerDetail.isExpanded(), v, answer_commentsRecycerView);
-//                        answerDetail.setExpanded(show);
-//                    }
-//                });
+                answer_commentsButtonExpend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean show = toggleLayoutExpand(!answerDetail.isExpanded(), v, answer_commentsRecycerView);
+                        answerDetail.setExpanded(show);
+                    }
+                });
                 CommentsDetailsAdapter mAdapter = new CommentsDetailsAdapter(answerDetail.getComments());
                 answer_commentsRecycerView.setAdapter(mAdapter);
             } else {
-                answer_commentsRecycerView.setVisibility(View.GONE);
+                answer_commentsExpanded.setVisibility(View.GONE);
             }
 
             // void recycling view
-//            if (answerDetail.isExpanded()) {
-//                answer_commentsRecycerView.setVisibility(View.VISIBLE);
-//            } else {
-//                answer_commentsRecycerView.setVisibility(View.GONE);
-//            }
-            //Tools.toggleArrow(answerDetail.isExpanded(), answer_commentsButtonExpend, false);
+            if (answerDetail.isExpanded()) {
+                answer_commentsRecycerView.setVisibility(View.VISIBLE);
+            } else {
+                answer_commentsRecycerView.setVisibility(View.GONE);
+            }
+            Tools.toggleArrow(answerDetail.isExpanded(), answer_commentsButtonExpend, false);
         }
     }
 
@@ -328,12 +329,7 @@ public class ViewHolderDetailsFactory {
     private boolean toggleLayoutExpand(boolean show, View view, View lyt_expand) {
         Tools.toggleArrow(show, view);
         if (show) {
-            ViewAnimation.expand(lyt_expand, new ViewAnimation.AnimListener() {
-                @Override
-                public void onFinish() {
-                    //answer_webView.clearFocus();
-                }
-            });
+            ViewAnimation.expand(lyt_expand);
         } else {
             ViewAnimation.collapse(lyt_expand);
         }

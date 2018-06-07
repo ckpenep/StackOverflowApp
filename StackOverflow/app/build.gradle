@@ -93,6 +93,9 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //NestedWebView
+    implementation 'com.github.rhlff:NestedScrollWebView:v1.0.2'
 }
 
 retrolambda {
