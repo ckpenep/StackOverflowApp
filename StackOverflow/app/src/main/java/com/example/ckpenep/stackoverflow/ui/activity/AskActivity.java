@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.example.ckpenep.stackoverflow.R;
@@ -12,6 +14,7 @@ import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.ui.Screens;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 import com.example.ckpenep.stackoverflow.ui.fragment.AskFragment;
+import com.example.ckpenep.stackoverflow.ui.fragment.TagsFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.container.AskFragmentContainer;
 
 import javax.inject.Inject;
@@ -85,9 +88,30 @@ public class AskActivity extends MvpAppCompatActivity  {
                 case Screens.ASK_SCREEN:
                     return AskFragment.newInstance();
                 case Screens.TAGS_SCREEN:
-
+                    return TagsFragment.newInstance();
             }
             return null;
         }
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ask_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_preview:
+
+                break;
+            case R.id.menu_post:
+
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 }

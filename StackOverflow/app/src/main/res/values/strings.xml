@@ -21,6 +21,8 @@
     <string name="question_title">Question title</string>
     <string name="question_body">Question body goes here</string>
     <string name="tags">Tags</string>
+    <string name="preview">preview</string>
+    <string name="post">post</string>
 
     <string-array name="menu_actions">
         <item>Login or sign up</item>
