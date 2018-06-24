@@ -5,6 +5,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.example.ckpenep.stackoverflow.app.Api;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.common.Utils;
+import com.example.ckpenep.stackoverflow.error.handler.ErrorHandler;
 import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.model.StackoverflowService;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionItem;
@@ -31,6 +32,8 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
 
     @Inject
     StackoverflowService mStackoverflowService;
+    @Inject
+    ErrorHandler mErrorHandler;
 
     private Disposable subscription = Disposables.empty();
 
@@ -46,6 +49,18 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         if (!subscription.isDisposed()) {
             subscription.dispose();
         }
+    }
+
+    @Override
+    public void attachView(QuestionView view) {
+        super.attachView(view);
+        mErrorHandler.attachView(view);
+    }
+
+    @Override
+    public void detachView(QuestionView view) {
+        super.detachView(view);
+        mErrorHandler.detachView();
     }
 
     @Override
@@ -122,7 +137,8 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
 
     private void onLoadingFailed(Throwable error) {
         getViewState().hideProgressBar();
-        getViewState().showError(error.toString());
+        //getViewState().showError(error.toString());
+        mErrorHandler.handleError(error);
     }
 
     public void onErrorCancel() {

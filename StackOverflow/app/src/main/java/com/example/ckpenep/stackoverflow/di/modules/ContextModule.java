@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.example.ckpenep.stackoverflow.db.DataDao;
 import com.example.ckpenep.stackoverflow.db.DatabaseHelper;
+import com.example.ckpenep.stackoverflow.error.handler.DefaultErrorHandler;
+import com.example.ckpenep.stackoverflow.error.handler.ErrorHandler;
+import com.example.ckpenep.stackoverflow.model.system.ResourceManager;
 
 import javax.inject.Singleton;
 
@@ -25,13 +28,25 @@ public class ContextModule {
         return mContext;
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public DatabaseHelper provideMyDatabase(Context context){
         return Room.databaseBuilder(context, DatabaseHelper.class, "my-db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public DataDao provideUserDao(DatabaseHelper myDatabase){
         return myDatabase.getDataDao();
     }
+
+    @Singleton
+    @Provides
+    ErrorHandler provideSubscriberFactory() {
+        return new DefaultErrorHandler();
+    }
+
+    @Singleton
+    @Provides
+    public ResourceManager provideResourceManager(Context context) { return new ResourceManager(context); }
 }

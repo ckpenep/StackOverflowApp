@@ -7,6 +7,7 @@ import com.example.ckpenep.stackoverflow.di.modules.FabricModule;
 import com.example.ckpenep.stackoverflow.di.modules.LocalNavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.NavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.StackoverflowModule;
+import com.example.ckpenep.stackoverflow.error.handler.ErrorHandler;
 import com.example.ckpenep.stackoverflow.presentation.presenter.HistoryPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.MainPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
@@ -34,6 +35,8 @@ import dagger.Component;
 public interface AppComponent {
 
     Context getContext();
+
+    void inject (ErrorHandler errorHandler);
 
     void inject (MainActivity mainActivity);
 

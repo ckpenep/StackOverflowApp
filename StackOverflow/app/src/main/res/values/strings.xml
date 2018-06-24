@@ -30,4 +30,6 @@
         <item>Drafts</item>
         <item>Browsing history</item>
     </string-array>
+
+    <string name="error">error</string>
 </resources>

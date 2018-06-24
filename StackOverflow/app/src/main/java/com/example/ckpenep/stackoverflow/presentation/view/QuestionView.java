@@ -1,17 +1,13 @@
 package com.example.ckpenep.stackoverflow.presentation.view;
 
-import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndStrategy;
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.example.ckpenep.stackoverflow.error.ErrorOutput;
 import com.example.ckpenep.stackoverflow.model.question.Question;
 
 import java.util.List;
 
-public interface QuestionView extends MvpView {
-
-    @StateStrategyType(SkipStrategy.class)
-    void showError(String error);
+public interface QuestionView extends ErrorOutput {
 
     void hideProgressBar();
 
