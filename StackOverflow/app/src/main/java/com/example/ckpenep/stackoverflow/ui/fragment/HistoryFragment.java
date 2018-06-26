@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.example.ckpenep.stackoverflow.presentation.view.HistoryView;
 import com.example.ckpenep.stackoverflow.ui.adapters.HistoryQuestionsAdapter;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
+import com.example.ckpenep.stackoverflow.ui.common.SimpleItemTouchHelperCallback;
 
 import java.util.List;
 
@@ -112,6 +114,11 @@ public class HistoryFragment extends MvpAppCompatFragment implements HistoryView
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     @Override
