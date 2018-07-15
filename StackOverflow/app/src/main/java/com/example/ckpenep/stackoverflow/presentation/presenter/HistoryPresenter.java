@@ -6,8 +6,8 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.db.DataDao;
-import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.model.dto.history.QuestionDate;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.presentation.view.HistoryView;
 import com.example.ckpenep.stackoverflow.ui.Screens;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
@@ -19,10 +19,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Consumer;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
@@ -62,28 +62,21 @@ public class HistoryPresenter extends MvpPresenter<HistoryView> {
 
             mIsInLoading = true;
 
+            final Flowable<List<Question>> observable = mDataDao.getAllQuestions();
             if (!subscription.isDisposed()) {
                 subscription.dispose();
             }
 
-            mDataDao.getAllQuestions()
+            subscription = observable
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(unsortedList ->
-                    {
-                       return sortedList(unsortedList);
-                    })
-                    .subscribe(new Consumer<List<HistoryRowType>>() {
-                        @Override
-                        public void accept(List<HistoryRowType> questions) throws Exception {
-                            onLoadingSuccess(questions);
-                            onLoadingFinish();
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            onLoadingFailed(throwable.getMessage());
-                            onLoadingFinish();
-                        }
+                            sortedList(unsortedList))
+                    .subscribe(questions -> {
+                        onLoadingSuccess(questions);
+                        onLoadingFinish();
+                    }, throwable -> {
+                        onLoadingFailed(throwable.getMessage());
+                        onLoadingFinish();
                     });
         } catch (Exception ex) {
             Log.d("DB EXCEPTION", ex.getMessage());
@@ -129,6 +122,11 @@ public class HistoryPresenter extends MvpPresenter<HistoryView> {
 
     public void clickItem(HistoryRowType question) {
         if(question instanceof Question) router.navigateTo(Screens.QUESTIONS_DETAILS_SCREEN, (Question)question);
+    }
+
+    public void deleteQuestion(Question question)
+    {
+        mDataDao.delete(question);
     }
 
     public void onBackPressed() {

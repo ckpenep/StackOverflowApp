@@ -21,6 +21,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.ckpenep.stackoverflow.R;
 import com.example.ckpenep.stackoverflow.common.RouterProvider;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.presentation.presenter.HistoryPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.HistoryView;
 import com.example.ckpenep.stackoverflow.ui.adapters.HistoryQuestionsAdapter;
@@ -34,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class HistoryFragment extends MvpAppCompatFragment implements HistoryView, BackButtonListener, HistoryQuestionsAdapter.OnItemClickListener {
+public class HistoryFragment extends MvpAppCompatFragment implements HistoryView, BackButtonListener, HistoryQuestionsAdapter.OnItemClickListener, HistoryQuestionsAdapter.IDeleteItem {
 
     @InjectPresenter
     HistoryPresenter presenter;
@@ -108,6 +109,7 @@ public class HistoryFragment extends MvpAppCompatFragment implements HistoryView
     private void initList() {
         mAdapter = new HistoryQuestionsAdapter();
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnDeleteItem(this);
         layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -127,6 +129,11 @@ public class HistoryFragment extends MvpAppCompatFragment implements HistoryView
     }
 
     @Override
+    public void onDeleteItem(Question question) {
+        presenter.deleteQuestion(question);
+    }
+
+    @Override
     public void showError(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
@@ -138,6 +145,6 @@ public class HistoryFragment extends MvpAppCompatFragment implements HistoryView
 
     @Override
     public void showResultsItemList(List<HistoryRowType> questionsList) {
-        mAdapter.updateContacts(questionsList);
+        mAdapter.setQuestions(questionsList);
     }
 }

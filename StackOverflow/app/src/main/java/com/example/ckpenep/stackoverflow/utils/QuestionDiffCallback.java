@@ -3,8 +3,8 @@ package com.example.ckpenep.stackoverflow.utils;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
-import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.model.dto.history.QuestionDate;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.ui.adapters.factories.HistoryRowType;
 
 import java.util.List;
@@ -32,12 +32,17 @@ public class QuestionDiffCallback extends DiffUtil.Callback {
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) //сравнивает id из коллекции, появился ли новый элемент
     {
-        if (oldList.get(oldItemPosition) instanceof Question && newList.get(newItemPosition) instanceof Question) {
-            return ((Question) oldList.get(oldItemPosition)).getId() == ((Question) newList.get(newItemPosition)).getId();
+        try {
+            if (oldList.get(oldItemPosition).getClass() == Question.class && newList.get(newItemPosition).getClass() == Question.class) {
+                return ((Question) oldList.get(oldItemPosition)).getId().equals(((Question) newList.get(newItemPosition)).getId());
+            }
+            if (oldList.get(oldItemPosition) instanceof QuestionDate && newList.get(newItemPosition) instanceof QuestionDate) {
+                return (((QuestionDate) oldList.get(oldItemPosition)).getDate().equals(((QuestionDate) newList.get(oldItemPosition)).getDate()));
+            }
+        } catch (Exception e) {
+            return false;
         }
-        if (oldList.get(oldItemPosition) instanceof QuestionDate && newList.get(newItemPosition) instanceof QuestionDate) {
-            return (((QuestionDate) oldList.get(oldItemPosition)).getDate() == ((QuestionDate) newList.get(oldItemPosition)).getDate());
-        }
+
         return false;
     }
 

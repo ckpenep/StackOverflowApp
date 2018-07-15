@@ -24,6 +24,7 @@ public class HistoryQuestionsAdapter extends RecyclerView.Adapter implements Ite
     ViewHolderHistoryFactory historyFactory;
 
     private HistoryQuestionsAdapter.OnItemClickListener onItemClickListener;
+    private HistoryQuestionsAdapter.IDeleteItem mIDeleteItem;
 
     private List<HistoryRowType> mQuestions;
 
@@ -72,9 +73,10 @@ public class HistoryQuestionsAdapter extends RecyclerView.Adapter implements Ite
             }
         }
 
+        if (mIDeleteItem != null)
+            mIDeleteItem.onDeleteItem((Question) this.mQuestions.get(position));
+
         this.mQuestions.remove(position);
-        //CrimeLab.Instance(getActivity()).deleteCrime(mCrimes.get(position));
-        //mICrimeUpdate.onCrimeUpdated(null, position, true);
         notifyItemRemoved(position);
 
         if (flag) {
@@ -83,12 +85,13 @@ public class HistoryQuestionsAdapter extends RecyclerView.Adapter implements Ite
         }
     }
 
-    public void updateContacts(List<HistoryRowType> questions) {
+    public void setQuestions(List<HistoryRowType> questions) {
         final QuestionDiffCallback diffCallback = new QuestionDiffCallback(this.mQuestions, questions);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         this.mQuestions.clear();
         this.mQuestions.addAll(questions);
+
         diffResult.dispatchUpdatesTo(this);
     }
 
@@ -108,7 +111,15 @@ public class HistoryQuestionsAdapter extends RecyclerView.Adapter implements Ite
         this.onItemClickListener = onItemClickListener;
     }
 
+    public void setOnDeleteItem(HistoryQuestionsAdapter.IDeleteItem onItemDelete) {
+        this.mIDeleteItem = onItemDelete;
+    }
+
     public interface OnItemClickListener {
         void onItemClick(HistoryRowType question);
+    }
+
+    public interface IDeleteItem {
+        void onDeleteItem(Question question);
     }
 }
