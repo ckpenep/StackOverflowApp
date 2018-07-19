@@ -3,6 +3,7 @@ package com.example.ckpenep.stackoverflow.model;
 import com.example.ckpenep.stackoverflow.app.Api;
 import com.example.ckpenep.stackoverflow.model.dto.answer.AnswersList;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionsList;
+import com.example.ckpenep.stackoverflow.model.dto.tag.TagsList;
 
 import java.util.Map;
 
@@ -21,5 +22,10 @@ public class StackoverflowService {
 
     public Observable<AnswersList> getAnswersByIds(String ids) {
         return api.getAnswersByIds(ids);
+    }
+
+    public Observable<TagsList> getTagList()
+    {
+        return api.getTagList();
     }
 }

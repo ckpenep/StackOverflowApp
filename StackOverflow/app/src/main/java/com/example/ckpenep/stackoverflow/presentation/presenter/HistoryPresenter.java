@@ -93,7 +93,6 @@ public class HistoryPresenter extends MvpPresenter<HistoryView> {
         int separateCount =0;
         for (int i=0; i < unsortedList.size(); i++)
         {
-            Log.d("DATES", "Date: " + date + "   Qdate: " + unsortedList.get(i).getSaveDate());
             if(!date.equals(unsortedList.get(i).getSaveDate()))
             {
                 separatedList.add(i + separateCount, new QuestionDate(unsortedList.get(i).getSaveDate()));
@@ -111,7 +110,6 @@ public class HistoryPresenter extends MvpPresenter<HistoryView> {
     }
 
     private void onLoadingSuccess(List<HistoryRowType> questions) {
-        Log.d("SEPARATED", questions.toString());
         getViewState().showResultsItemList(questions);
     }
 

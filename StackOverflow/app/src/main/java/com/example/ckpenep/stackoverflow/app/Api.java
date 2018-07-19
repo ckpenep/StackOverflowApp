@@ -2,6 +2,7 @@ package com.example.ckpenep.stackoverflow.app;
 
 import com.example.ckpenep.stackoverflow.model.dto.answer.AnswersList;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionsList;
+import com.example.ckpenep.stackoverflow.model.dto.tag.TagsList;
 
 import java.util.Map;
 
@@ -18,4 +19,7 @@ public interface Api {
 
     @GET("answers/{ids}?order=asc&sort=creation&site=stackoverflow&filter=!)rFTNQds3DAgWJzc(*De")
     Observable<AnswersList> getAnswersByIds(@Path("ids") String ids);
+
+    @GET("tags?order=desc&sort=popular&site=stackoverflow")
+    Observable<TagsList> getTagList();
 }

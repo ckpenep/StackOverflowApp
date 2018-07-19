@@ -95,7 +95,7 @@ public class HistoryQuestionsAdapter extends RecyclerView.Adapter implements Ite
         diffResult.dispatchUpdatesTo(this);
     }
 
-    public void addContractsItems(List<Question> giList) {
+    public void addQuestionList(List<Question> giList) {
         for (int i = mQuestions.size(); i < giList.size(); i++) {
             mQuestions.add(giList.get(i));
             notifyItemInserted(mQuestions.size() - 1);

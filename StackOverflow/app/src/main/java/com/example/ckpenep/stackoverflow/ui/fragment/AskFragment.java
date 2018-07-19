@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,7 @@ import com.example.ckpenep.stackoverflow.R;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.presentation.presenter.AskPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.AskView;
+import com.example.ckpenep.stackoverflow.ui.activity.AskActivity;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 
 import javax.inject.Inject;
@@ -98,8 +100,10 @@ public class AskFragment extends MvpAppCompatFragment implements AskView, BackBu
 
     @Override
     public void setMenuVisibility(boolean flag) {
-        previewMenu.setEnabled(flag);
-        postMenu.setEnabled(flag);
+        if(previewMenu != null && postMenu != null) {
+            previewMenu.setEnabled(flag);
+            postMenu.setEnabled(flag);
+        }
     }
 
     @Override
@@ -124,5 +128,7 @@ public class AskFragment extends MvpAppCompatFragment implements AskView, BackBu
 
         previewMenu = menu.findItem(R.id.menu_preview);
         postMenu = menu.findItem(R.id.menu_post);
+
+        presenter.textChanged(ask_title.getText().toString(), ask_body.getText().toString());
     }
 }

@@ -20,13 +20,14 @@
             android:layout_height="wrap_content"
             android:hint="@string/question_title"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:imeOptions="flagNoExtractUi"/>
 
         <EditText
             android:id="@+id/fragment_ask_question_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:imeOptions="flagNoExtractUi"
             android:gravity="top|left"
             android:hint="@string/question_body"
             android:inputType="textMultiLine"
