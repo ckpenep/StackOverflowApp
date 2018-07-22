@@ -5,14 +5,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,14 +29,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.ckpenep.stackoverflow.R;
+import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.common.RouterProvider;
-import com.example.ckpenep.stackoverflow.error.ErrorOutput;
 import com.example.ckpenep.stackoverflow.model.question.Question;
+import com.example.ckpenep.stackoverflow.model.system.ResourceManager;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionView;
 import com.example.ckpenep.stackoverflow.ui.adapters.QuestionListAdapter;
@@ -46,6 +49,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class QuestionsListFragment extends MvpAppCompatFragment implements QuestionView, QuestionListAdapter.OnItemClickListener {
 
     Map<String, String> sortList = new HashMap<String, String>() {{
@@ -54,6 +59,9 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         put("Newest", "creation");
 
     }};
+
+    @Inject
+    ResourceManager mResourceManager;
 
     @InjectPresenter
     QuestionPresenter mPresenter;
@@ -72,6 +80,7 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
     RecyclerView mRecyclerView;
     FloatingActionButton mFloatingActionButton;
     Spinner mSpinner;
+    CoordinatorLayout mCoordinatorLayout;
 
     private AlertDialog mErrorDialog;
     private LinearLayoutManager layoutManager;
@@ -82,11 +91,18 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        App.getAppComponent().inject(this);
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_questions, container, false);
 
+        mCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.myCoordinatorLayout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.questions_list_view);
         mSwipeRefreshLayout = (FrameSwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
@@ -117,7 +133,7 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         // SwipeRefreshLayout
         mSwipeRefreshLayout.setOnRefreshListener(() ->
         {
-            String searchText = search.getText().toString().replace(' ','-');
+            String searchText = search.getText().toString().replace(' ', '-');
             String sort = sortList.get(mSpinner.getSelectedItem().toString());
             mPresenter.loadRepositories(1, searchText, sort, true);
         });
@@ -143,6 +159,7 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
     }
 
     boolean userSelect = false;
+
     private void initSpinner() {
         List<String> result2 = new ArrayList(sortList.keySet());
 
@@ -159,7 +176,7 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
                     // Your selection handling code here
                     userSelect = false;
 
-                    String searchText = search.getText().toString().replace(' ','-');
+                    String searchText = search.getText().toString().replace(' ', '-');
                     String sort = sortList.get(parent.getItemAtPosition(position).toString());
                     mPresenter.loadRepositories(1, searchText, sort, true);
                 }
@@ -205,8 +222,7 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
         });
     }
 
-    private void initEditText()
-    {
+    private void initEditText() {
         search.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before,
@@ -232,13 +248,13 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-                    String searchText = search.getText().toString().replace(' ','-');
+                    String searchText = search.getText().toString().replace(' ', '-');
                     String sort = sortList.get(mSpinner.getSelectedItem().toString());
-                    if(!searchText.isEmpty()) {
+                    if (!searchText.isEmpty()) {
                         mPresenter.loadRepositories(1, searchText, sort, true);
                         View view = getActivity().getCurrentFocus();
                         if (view != null) {
-                            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         }
                     }
@@ -326,7 +342,7 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
             int modelsCount = mAdapter.getItemCount();
 
             if (lastVisibleItemPosition == modelsCount && modelsCount > 10) {
-                String searchText = search.getText().toString().replace(' ','-');
+                String searchText = search.getText().toString().replace(' ', '-');
                 String sort = sortList.get(mSpinner.getSelectedItem().toString());
                 mPresenter.loadNextRepositories(layoutManager.getItemCount(), searchText, sort);
             }
@@ -341,11 +357,23 @@ public class QuestionsListFragment extends MvpAppCompatFragment implements Quest
 
     @Override
     public void showError(String message) {
-        mErrorDialog = new AlertDialog.Builder(getContext())
-                .setTitle(R.string.app_name)
-                .setMessage(message)
-                .setOnCancelListener(dialog -> mPresenter.onErrorCancel())
-                .show();
+        Snackbar snackbar = Snackbar
+                .make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG)
+                .setAction(mResourceManager.getString(R.string.retry), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String searchText = search.getText().toString().replace(' ', '-');
+                        String sort = sortList.get(mSpinner.getSelectedItem().toString());
+                        mPresenter.loadRepositories(1, searchText, sort, true);
+                    }
+                });
+        snackbar.show();
+
+//        mErrorDialog = new AlertDialog.Builder(getContext())
+//                .setTitle(R.string.app_name)
+//                .setMessage(message)
+//                .setOnCancelListener(dialog -> mPresenter.onErrorCancel())
+//                .show();
     }
 
     @Override

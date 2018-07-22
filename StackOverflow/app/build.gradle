@@ -94,8 +94,11 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    //Material chip
-    implementation 'com.github.pchmn:MaterialChipsInput:1.0.8'
+    //Flexbox
+    implementation 'com.google.android:flexbox:1.0.0'
+
+    //Rounded ImageView
+    implementation 'com.mikhaellopez:circularimageview:3.0.2'
 }
 
 retrolambda {

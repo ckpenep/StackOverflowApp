@@ -7,7 +7,7 @@ import com.example.ckpenep.stackoverflow.di.modules.FabricModule;
 import com.example.ckpenep.stackoverflow.di.modules.LocalNavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.NavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.StackoverflowModule;
-import com.example.ckpenep.stackoverflow.error.handler.ErrorHandler;
+import com.example.ckpenep.stackoverflow.error.handler.DefaultErrorHandler;
 import com.example.ckpenep.stackoverflow.presentation.presenter.HistoryPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.MainPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
@@ -18,6 +18,7 @@ import com.example.ckpenep.stackoverflow.ui.activity.MainActivity;
 import com.example.ckpenep.stackoverflow.ui.adapters.HistoryQuestionsAdapter;
 import com.example.ckpenep.stackoverflow.ui.adapters.QuestionDetailsAdapter;
 import com.example.ckpenep.stackoverflow.ui.fragment.AskFragment;
+import com.example.ckpenep.stackoverflow.ui.fragment.QuestionsListFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.TagsFragment;
 import com.example.ckpenep.stackoverflow.ui.fragment.container.ContainerFragment;
 
@@ -37,7 +38,7 @@ public interface AppComponent {
 
     Context getContext();
 
-    void inject (ErrorHandler errorHandler);
+    void inject (DefaultErrorHandler errorHandler);
 
     void inject (MainActivity mainActivity);
 
@@ -46,6 +47,8 @@ public interface AppComponent {
     void inject (AskActivity askActivity);
 
     void inject (ContainerFragment containerFragment);
+
+    void inject (QuestionsListFragment questionsListFragment);
 
     void inject (QuestionPresenter questionPresenter);
 

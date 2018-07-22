@@ -6,10 +6,10 @@ import com.example.ckpenep.stackoverflow.app.Api;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.common.Utils;
 import com.example.ckpenep.stackoverflow.error.handler.ErrorHandler;
-import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.model.StackoverflowService;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionItem;
 import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionsList;
+import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.presentation.mappers.QuestionMapper;
 import com.example.ckpenep.stackoverflow.presentation.view.QuestionView;
 import com.example.ckpenep.stackoverflow.ui.Screens;
@@ -93,8 +93,7 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         params.put("page", Integer.toString(page));
         params.put("pagesize", Integer.toString(Api.PAGE_SIZE));
         params.put("sort", sort);
-        if(tagged != null && !tagged.isEmpty())
-        {
+        if (tagged != null && !tagged.isEmpty()) {
             params.put("tagged", tagged);
         }
 
@@ -104,7 +103,7 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
             subscription.dispose();
         }
 
-        subscription = observable
+        observable
                 .compose(Utils.applySchedulers())
                 .subscribe(questions -> {
                     onLoadingFinish(isPageLoading, isRefreshing);
@@ -137,7 +136,6 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
 
     private void onLoadingFailed(Throwable error) {
         getViewState().hideProgressBar();
-        //getViewState().showError(error.toString());
         mErrorHandler.handleError(error);
     }
 
@@ -149,8 +147,7 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         router.navigateTo(Screens.QUESTIONS_DETAILS_SCREEN, question);
     }
 
-    public void FABclick()
-    {
+    public void FABclick() {
         router.navigateTo(Screens.ASK_ACTIVITY_SCREEN);
     }
 
@@ -179,13 +176,11 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         }
     }
 
-    public void hideFloatingActionButton()
-    {
+    public void hideFloatingActionButton() {
         getViewState().hideFloatingActionButton();
     }
 
-    public void showFloatingActionButton()
-    {
+    public void showFloatingActionButton() {
         getViewState().showFloatingActionButton();
     }
 }

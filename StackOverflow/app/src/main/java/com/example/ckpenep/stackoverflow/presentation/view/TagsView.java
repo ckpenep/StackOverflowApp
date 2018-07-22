@@ -2,7 +2,6 @@ package com.example.ckpenep.stackoverflow.presentation.view;
 
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndStrategy;
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.example.ckpenep.stackoverflow.error.ErrorOutput;
 import com.example.ckpenep.stackoverflow.model.tag.Tag;
@@ -21,5 +20,5 @@ public interface TagsView extends ErrorOutput {
     @StateStrategyType(AddToEndStrategy.class)
     void setTags(List<Tag> tags);
 
-
+    void addItemChips(String chipsName);
 }

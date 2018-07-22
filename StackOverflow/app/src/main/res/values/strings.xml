@@ -30,8 +30,9 @@
         <item>Drafts</item>
         <item>Browsing history</item>
     </string-array>
-
+    <string name="network_error">Network error, please try again later</string>
     <string name="error">error</string>
+    <string name="retry">Retry</string>
     <string name="tags_count_text">At least 1 tag, max 5 tags...</string>
     <string name="popular_tags">POPULAR TAGS</string>
     <string name="search_for_tags">Search for tags...</string>

@@ -1,7 +1,6 @@
 package com.example.ckpenep.stackoverflow.error.handler;
 
-import android.util.Log;
-
+import com.example.ckpenep.stackoverflow.R;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.error.ErrorOutput;
 import com.example.ckpenep.stackoverflow.model.system.ResourceManager;
@@ -25,8 +24,17 @@ public class DefaultErrorHandler implements ErrorHandler {
     public void handleError(Throwable e) {
         if(e != null && !e.getMessage().isEmpty() && view != null)
         {
-            Log.d("ERROR_HANDLER", e.getMessage());
-            view.showError(e.getMessage().toString());
+//            if (e instanceof HttpException) {
+//
+//            } else if (e instanceof SocketTimeoutException) {
+//
+//            } else if (e instanceof IOException) {
+//
+//            } else {
+//
+//            }
+
+            view.showError(mResourceManager.getString(R.string.network_error));
         }
     }
 

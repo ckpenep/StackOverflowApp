@@ -2,15 +2,17 @@ package com.example.ckpenep.stackoverflow.ui.fragment;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -27,21 +31,23 @@ import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.model.tag.Tag;
 import com.example.ckpenep.stackoverflow.presentation.presenter.TagsPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.TagsView;
+import com.example.ckpenep.stackoverflow.ui.adapters.ChipAdapter;
+import com.example.ckpenep.stackoverflow.ui.adapters.TagsAdapter;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
-import com.pchmn.materialchips.ChipsInput;
-import com.pchmn.materialchips.model.ChipInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.widget.Toast;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.terrakok.cicerone.Router;
 
-public class TagsFragment extends MvpAppCompatFragment implements TagsView, BackButtonListener {
+public class TagsFragment extends MvpAppCompatFragment implements TagsView, BackButtonListener, TagsAdapter.OnItemClickListener, ChipAdapter.OnChipsClickItem {
 
     @Inject
     Router router;
@@ -49,11 +55,25 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
     @InjectPresenter
     TagsPresenter presenter;
 
-    private ProgressDialog progressDialog;
-    private ChipsInput mChipsInput;
     private Unbinder mUnbinder;
+
     private Toolbar toolbar;
-    private EditText editText;
+    private ProgressDialog progressDialog;
+
+    @BindView(R.id.exist_tags_textview)
+    TextView existTags;
+    @BindView(R.id.tags_search_edittext)
+    EditText editText;
+    @BindView(R.id.tags_recyclerview)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.chips_recyclerview)
+    RecyclerView chipsRecyclerView;
+
+    private TagsAdapter mAdapter;
+    private LinearLayoutManager layoutManager;
+
+    private ChipAdapter mChipAdapter;
+    private FlexboxLayoutManager mFlexboxLayoutManager;
 
     public static TagsFragment newInstance() {
         TagsFragment fragment = new TagsFragment();
@@ -70,11 +90,26 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
         App.getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        showProgressDialog();
     }
 
-    private void showProgressDialog() {
+    @Override
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        final View v = inflater.inflate(R.layout.fragment_tags, container, false);
+        mUnbinder = ButterKnife.bind(this, v);
+
+        initProgressDialog();
+        iniComponent();
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initList();
+    }
+
+    private void initProgressDialog() {
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(getString(R.string.main_dialog_progress_title));
         progressDialog.setCancelable(true);
@@ -88,43 +123,56 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
         progressDialog.show();
     }
 
-    @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_tags, container, false);
-        mUnbinder = ButterKnife.bind(this, v);
+    private void initList() {
+        mAdapter = new TagsAdapter();
+        mAdapter.setOnItemClickListener(this);
 
-        editText = (EditText)v.findViewById(R.id.tags_search_edittext);
-        mChipsInput = (ChipsInput) v.findViewById(R.id.chips_input);
+        layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
 
-        iniComponent();
+        mChipAdapter = new ChipAdapter();
+        mChipAdapter.setOnItemClickListener(this);
 
-        return v;
+        mFlexboxLayoutManager = new FlexboxLayoutManager(getContext());
+        mFlexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+        mFlexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+        chipsRecyclerView.setLayoutManager(mFlexboxLayoutManager);
+        chipsRecyclerView.setAdapter(mChipAdapter);
     }
 
-    private void iniComponent()
-    {
+    private void iniComponent() {
         //tollbar
         toolbar = (Toolbar) getActivity().findViewById(R.id.activity_ask_toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(k -> presenter.onBackPressed());
 
         // chips listener
-        mChipsInput.addChipsListener(new ChipsInput.ChipsListener() {
-            @Override
-            public void onChipAdded(ChipInterface chip, int newSize) {
-
-            }
-
-            @Override
-            public void onChipRemoved(ChipInterface chip, int newSize) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence text) {
-                //Log.e(TAG, "text changed: " + text.toString());
-            }
-        });
+//        mChipsView.setChipsListener(new ChipsView.ChipsListener() {
+//            @Override
+//            public void onChipAdded(ChipsView.Chip chip) {
+//                // chip added
+//            }
+//
+//            @Override
+//            public void onChipDeleted(ChipsView.Chip chip) {
+//                // chip deleted
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence text) {
+//                // text was changed
+//            }
+//
+//            @Override
+//            public boolean onInputNotRecognized(String text) {
+//                // return true to delete the input
+//                return false; // keep the typed text
+//            }
+//        });
 
         //editText
         Drawable workingDrawable = getResources().getDrawable(R.drawable.ic_magnify);
@@ -136,7 +184,7 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
@@ -152,14 +200,22 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Do something that differs the Activity's menu here
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onChipsClick(int position) {
+        presenter.deleteItemChips(position);
+        mChipAdapter.deleteItem(position);
 
-        MenuItem register = menu.findItem(R.id.menu_preview);
-        register.setVisible(false);
-        MenuItem post = menu.findItem(R.id.menu_post);
-        post.setVisible(false);
+        if (presenter.countSelectedTags() == 0) {
+            existTags.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onItemClick(Tag tag) {
+        if (presenter.countSelectedTags() < 5) {
+            if(!presenter.isExistTag(tag)) presenter.clickItem(tag);
+        } else {
+            Toast.makeText(getContext(), "Sorry, maximum five tags", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -179,11 +235,30 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
 
     @Override
     public void setTags(List<Tag> tags) {
+        if (mAdapter != null && tags != null && tags.size() > 0) {
+            mAdapter.setData(tags);
+        }
+    }
 
+    @Override
+    public void addItemChips(String title) {
+        existTags.setVisibility(View.GONE);
+        mChipAdapter.addItem(title);
     }
 
     @Override
     public void showError(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        super.onCreateOptionsMenu(menu, inflater);
+
+        MenuItem register = menu.findItem(R.id.menu_preview);
+        register.setVisible(false);
+        MenuItem post = menu.findItem(R.id.menu_post);
+        post.setVisible(false);
     }
 }

@@ -4,28 +4,22 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.ckpenep.stackoverflow.app.Api;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.common.Utils;
 import com.example.ckpenep.stackoverflow.error.handler.ErrorHandler;
 import com.example.ckpenep.stackoverflow.model.StackoverflowService;
-import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionItem;
-import com.example.ckpenep.stackoverflow.model.dto.questions.QuestionsList;
 import com.example.ckpenep.stackoverflow.model.dto.tag.TagItem;
 import com.example.ckpenep.stackoverflow.model.dto.tag.TagsList;
-import com.example.ckpenep.stackoverflow.model.question.Question;
 import com.example.ckpenep.stackoverflow.model.tag.Tag;
-import com.example.ckpenep.stackoverflow.presentation.mappers.QuestionMapper;
 import com.example.ckpenep.stackoverflow.presentation.mappers.TagMapper;
-import com.example.ckpenep.stackoverflow.presentation.view.QuestionView;
 import com.example.ckpenep.stackoverflow.presentation.view.TagsView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 import ru.terrakok.cicerone.Router;
@@ -43,9 +37,12 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
 
     private boolean mIsInLoading;
 
+    private List<Tag> selectedTags;
+
     public TagsPresenter(Router router) {
         App.getAppComponent().inject(this);
         this.router = router;
+        this.selectedTags = new ArrayList<>();
     }
 
     @Override
@@ -112,8 +109,29 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
 
     private void onLoadingFailed(Throwable error) {
         getViewState().hideListProgress();
-        //getViewState().showError(error.toString());
         mErrorHandler.handleError(error);
+    }
+
+    public int countSelectedTags()
+    {
+        return selectedTags.size();
+    }
+
+    public boolean isExistTag(Tag tag)
+    {
+        return selectedTags.contains(tag);
+    }
+
+    public void clickItem(Tag item)
+    {
+        if(selectedTags != null) selectedTags.add(item);
+        getViewState().addItemChips(item.getName());
+    }
+
+    public void deleteItemChips(int position)
+    {
+        if(selectedTags != null) selectedTags.remove(selectedTags.get(position));
+        Log.d("TAGS", selectedTags.toString());
     }
 
     public void onBackPressed() {
