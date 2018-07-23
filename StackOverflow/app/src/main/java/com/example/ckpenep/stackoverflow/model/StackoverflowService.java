@@ -28,4 +28,9 @@ public class StackoverflowService {
     {
         return api.getTagList();
     }
+
+    public Observable<TagsList> getTagListByName(String tagName)
+    {
+        return api.getTagListByName(tagName);
+    }
 }

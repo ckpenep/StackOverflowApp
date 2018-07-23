@@ -13,6 +13,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,12 +65,14 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
 
     @BindView(R.id.exist_tags_textview)
     TextView existTags;
-    @BindView(R.id.tags_search_edittext)
-    EditText editText;
+    @BindView(R.id.search_tags_edittext)
+    EditText searchEditText;
     @BindView(R.id.tags_recyclerview)
-    RecyclerView mRecyclerView;
+    RecyclerView tagsRecyclerView;
     @BindView(R.id.chips_recyclerview)
     RecyclerView chipsRecyclerView;
+    @BindView(R.id.progress_bar)
+    ProgressBar loadingTagsProgressBar;
 
     private TagsAdapter mAdapter;
     private LinearLayoutManager layoutManager;
@@ -128,10 +133,10 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
         mAdapter.setOnItemClickListener(this);
 
         layoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
+        tagsRecyclerView.setHasFixedSize(true);
+        tagsRecyclerView.setLayoutManager(layoutManager);
+        tagsRecyclerView.setAdapter(mAdapter);
+        tagsRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
 
         mChipAdapter = new ChipAdapter();
         mChipAdapter.setOnItemClickListener(this);
@@ -150,35 +155,24 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(k -> presenter.onBackPressed());
 
-        // chips listener
-//        mChipsView.setChipsListener(new ChipsView.ChipsListener() {
-//            @Override
-//            public void onChipAdded(ChipsView.Chip chip) {
-//                // chip added
-//            }
-//
-//            @Override
-//            public void onChipDeleted(ChipsView.Chip chip) {
-//                // chip deleted
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence text) {
-//                // text was changed
-//            }
-//
-//            @Override
-//            public boolean onInputNotRecognized(String text) {
-//                // return true to delete the input
-//                return false; // keep the typed text
-//            }
-//        });
-
-        //editText
+        //searchEditText
         Drawable workingDrawable = getResources().getDrawable(R.drawable.ic_magnify);
         Bitmap bitmap = ((BitmapDrawable) workingDrawable).getBitmap();
         Drawable draw = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 100, 100, true));
-        editText.setCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
+        searchEditText.setCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+
+            @Override
+            public void afterTextChanged(Editable arg0) {}
+        });
     }
 
     @Override
@@ -202,7 +196,6 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
     @Override
     public void onChipsClick(int position) {
         presenter.deleteItemChips(position);
-        mChipAdapter.deleteItem(position);
 
         if (presenter.countSelectedTags() == 0) {
             existTags.setVisibility(View.VISIBLE);
@@ -210,9 +203,9 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
     }
 
     @Override
-    public void onItemClick(Tag tag) {
+    public void onTagClick(Tag tag) {
         if (presenter.countSelectedTags() < 5) {
-            if(!presenter.isExistTag(tag)) presenter.clickItem(tag);
+            if(!presenter.isExistTag(tag)) presenter.addItemChips(tag);
         } else {
             Toast.makeText(getContext(), "Sorry, maximum five tags", Toast.LENGTH_SHORT).show();
         }
@@ -225,12 +218,14 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
 
     @Override
     public void showListProgress() {
-
+        tagsRecyclerView.setVisibility(View.GONE);
+        loadingTagsProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideListProgress() {
-
+        loadingTagsProgressBar.setVisibility(View.GONE);
+        tagsRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -241,9 +236,9 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
     }
 
     @Override
-    public void addItemChips(String title) {
+    public void setChips(List<String> names) {
         existTags.setVisibility(View.GONE);
-        mChipAdapter.addItem(title);
+        mChipAdapter.setData(names);
     }
 
     @Override

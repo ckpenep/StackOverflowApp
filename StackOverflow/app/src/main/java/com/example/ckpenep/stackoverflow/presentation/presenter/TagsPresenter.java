@@ -1,15 +1,13 @@
 package com.example.ckpenep.stackoverflow.presentation.presenter;
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.ckpenep.stackoverflow.app.App;
 import com.example.ckpenep.stackoverflow.common.Utils;
 import com.example.ckpenep.stackoverflow.error.handler.ErrorHandler;
-import com.example.ckpenep.stackoverflow.model.StackoverflowService;
 import com.example.ckpenep.stackoverflow.model.dto.tag.TagItem;
 import com.example.ckpenep.stackoverflow.model.dto.tag.TagsList;
+import com.example.ckpenep.stackoverflow.model.interactor.tag.TagInteractor;
 import com.example.ckpenep.stackoverflow.model.tag.Tag;
 import com.example.ckpenep.stackoverflow.presentation.mappers.TagMapper;
 import com.example.ckpenep.stackoverflow.presentation.view.TagsView;
@@ -28,7 +26,7 @@ import ru.terrakok.cicerone.Router;
 public class TagsPresenter extends MvpPresenter<TagsView> {
 
     @Inject
-    StackoverflowService mStackoverflowService;
+    TagInteractor mTagInteractor;
     @Inject
     ErrorHandler mErrorHandler;
 
@@ -38,11 +36,13 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
     private boolean mIsInLoading;
 
     private List<Tag> selectedTags;
+    private List<String> selectedChipsName;
 
     public TagsPresenter(Router router) {
         App.getAppComponent().inject(this);
         this.router = router;
         this.selectedTags = new ArrayList<>();
+        this.selectedChipsName = new ArrayList<>();
     }
 
     @Override
@@ -67,17 +67,22 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        loadTags();
+        loadTags(null);
     }
 
-    private void loadTags() {
+    public void loadTagsByName(String tagName)
+    {
+        getViewState().showListProgress();
+    }
+
+    private void loadTags(String tagName) {
         if (mIsInLoading) {
             return;
         }
 
         mIsInLoading = true;
 
-        final Observable<TagsList> observable = mStackoverflowService.getTagList();
+        final Observable<TagsList> observable = mTagInteractor.getTagList(tagName);
 
         if (!subscription.isDisposed()) {
             subscription.dispose();
@@ -97,6 +102,7 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
     private void onLoadingFinish() {
         mIsInLoading = false;
         getViewState().hideProgressDialog();
+        getViewState().hideListProgress();
     }
 
     private void onLoadingSuccess(TagsList tags) {
@@ -122,16 +128,22 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
         return selectedTags.contains(tag);
     }
 
-    public void clickItem(Tag item)
+    public void addItemChips(Tag item)
     {
-        if(selectedTags != null) selectedTags.add(item);
-        getViewState().addItemChips(item.getName());
+        if(selectedTags != null && selectedChipsName != null) {
+            selectedTags.add(item);
+            selectedChipsName.add(item.getName());
+        }
+        getViewState().setChips(selectedChipsName);
     }
 
     public void deleteItemChips(int position)
     {
-        if(selectedTags != null) selectedTags.remove(selectedTags.get(position));
-        Log.d("TAGS", selectedTags.toString());
+        if(selectedTags != null && selectedChipsName != null) {
+            selectedTags.remove(selectedTags.get(position));
+            selectedChipsName.remove(position);
+        }
+        getViewState().setChips(selectedChipsName);
     }
 
     public void onBackPressed() {

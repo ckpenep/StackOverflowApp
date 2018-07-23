@@ -55,7 +55,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClick(tags.get(getAdapterPosition()));
+                    onItemClickListener.onTagClick(tags.get(getAdapterPosition()));
                 }
             });
         }
@@ -70,6 +70,6 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Tag tag);
+        void onTagClick(Tag tag);
     }
 }

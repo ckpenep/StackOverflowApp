@@ -20,5 +20,6 @@ public interface TagsView extends ErrorOutput {
     @StateStrategyType(AddToEndStrategy.class)
     void setTags(List<Tag> tags);
 
-    void addItemChips(String chipsName);
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void setChips(List<String> names);
 }

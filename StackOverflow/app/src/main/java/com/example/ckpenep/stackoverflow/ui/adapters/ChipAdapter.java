@@ -1,5 +1,6 @@
 package com.example.ckpenep.stackoverflow.ui.adapters;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ckpenep.stackoverflow.R;
+import com.example.ckpenep.stackoverflow.utils.ChipsDiffCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,22 +39,14 @@ public class ChipAdapter extends RecyclerView.Adapter<ChipAdapter.ChipHolder> {
     }
 
     public void setData(List<String> items) {
+
+        final ChipsDiffCallback diffCallback = new ChipsDiffCallback(this.chips, items);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
         this.chips.clear();
         this.chips.addAll(items);
 
-        notifyDataSetChanged();
-    }
-
-    public void addItem(String item)
-    {
-        this.chips.add(item);
-        notifyItemInserted(chips.size() - 1);
-    }
-
-    public void deleteItem(int position)
-    {
-        this.chips.remove(position);
-        notifyItemRemoved(position);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     class ChipHolder extends RecyclerView.ViewHolder {

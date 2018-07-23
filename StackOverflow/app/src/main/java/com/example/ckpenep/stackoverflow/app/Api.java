@@ -22,4 +22,7 @@ public interface Api {
 
     @GET("tags?order=desc&sort=popular&site=stackoverflow")
     Observable<TagsList> getTagList();
+
+    @GET("tags?page=1&order=desc&sort=popular&inname={tag}&site=stackoverflow")
+    Observable<TagsList> getTagListByName(@Path("tag") String tag);
 }

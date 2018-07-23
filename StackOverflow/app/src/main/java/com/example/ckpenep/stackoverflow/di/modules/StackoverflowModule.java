@@ -2,6 +2,7 @@ package com.example.ckpenep.stackoverflow.di.modules;
 
 import com.example.ckpenep.stackoverflow.app.Api;
 import com.example.ckpenep.stackoverflow.model.StackoverflowService;
+import com.example.ckpenep.stackoverflow.model.interactor.tag.TagInteractor;
 
 import javax.inject.Singleton;
 
@@ -14,5 +15,11 @@ public class StackoverflowModule {
     @Singleton
     public StackoverflowService provideGithubService(Api api) {
         return new StackoverflowService(api);
+    }
+
+    @Provides
+    @Singleton
+    public TagInteractor provideTagInteractor() {
+        return new TagInteractor();
     }
 }
