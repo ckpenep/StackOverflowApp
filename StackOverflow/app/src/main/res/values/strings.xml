@@ -38,4 +38,7 @@
     <string name="search_for_tags">Search for tags...</string>
 
     <string name="main_dialog_progress_title">Progress dialog...</string>
+    <string name="last_draft">LAST DRAFT</string>
+    <string name="start_new_post">START NEW POST</string>
+    <string name="dialog_tag_question">Would you like to resume a dratf, or start a new post?</string>
 </resources>

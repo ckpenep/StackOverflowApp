@@ -9,4 +9,13 @@ public interface AskView extends MvpView {
 
     @StateStrategyType(SkipStrategy.class)
     void setMenuVisibility(boolean flag);
+
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void setSelectedTags(String tags);
+
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void showQuestionDialog();
+
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void hideQuestionDialog();
 }

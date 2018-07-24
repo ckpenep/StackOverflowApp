@@ -12,7 +12,6 @@ import com.example.ckpenep.stackoverflow.model.tag.Tag;
 import com.example.ckpenep.stackoverflow.presentation.mappers.TagMapper;
 import com.example.ckpenep.stackoverflow.presentation.view.TagsView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,14 +34,9 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
 
     private boolean mIsInLoading;
 
-    private List<Tag> selectedTags;
-    private List<String> selectedChipsName;
-
     public TagsPresenter(Router router) {
         App.getAppComponent().inject(this);
         this.router = router;
-        this.selectedTags = new ArrayList<>();
-        this.selectedChipsName = new ArrayList<>();
     }
 
     @Override
@@ -68,10 +62,15 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         loadTags(null);
+        loadChips();
     }
 
-    public void loadTagsByName(String tagName)
-    {
+    private void loadChips() {
+        List<String> chips = mTagInteractor.getSelectedChips();
+        getViewState().setChips(chips);
+    }
+
+    public void loadTagsByName(String tagName) {
         getViewState().showListProgress();
     }
 
@@ -118,32 +117,26 @@ public class TagsPresenter extends MvpPresenter<TagsView> {
         mErrorHandler.handleError(error);
     }
 
-    public int countSelectedTags()
-    {
-        return selectedTags.size();
+    public int countSelectedTags() {
+        return mTagInteractor.getSelectedTags().size();
     }
 
-    public boolean isExistTag(Tag tag)
-    {
-        return selectedTags.contains(tag);
+    public boolean isExistTag(Tag tag) {
+        return mTagInteractor.getSelectedTags().contains(tag);
     }
 
-    public void addItemChips(Tag item)
-    {
-        if(selectedTags != null && selectedChipsName != null) {
-            selectedTags.add(item);
-            selectedChipsName.add(item.getName());
-        }
-        getViewState().setChips(selectedChipsName);
+    public void addItemChips(Tag item) {
+        mTagInteractor.getSelectedTags().add(item);
+        mTagInteractor.getSelectedChips().add(item.getName());
+
+        getViewState().setChips(mTagInteractor.getSelectedChips());
     }
 
-    public void deleteItemChips(int position)
-    {
-        if(selectedTags != null && selectedChipsName != null) {
-            selectedTags.remove(selectedTags.get(position));
-            selectedChipsName.remove(position);
-        }
-        getViewState().setChips(selectedChipsName);
+    public void deleteItemChips(int position) {
+        mTagInteractor.getSelectedTags().remove(position);
+        mTagInteractor.getSelectedChips().remove(position);
+
+        getViewState().setChips(mTagInteractor.getSelectedChips());
     }
 
     public void onBackPressed() {

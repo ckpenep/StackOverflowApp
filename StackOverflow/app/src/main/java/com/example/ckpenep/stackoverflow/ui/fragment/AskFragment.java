@@ -2,9 +2,10 @@ package com.example.ckpenep.stackoverflow.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,9 +20,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.ckpenep.stackoverflow.R;
 import com.example.ckpenep.stackoverflow.app.App;
+import com.example.ckpenep.stackoverflow.model.system.ResourceManager;
 import com.example.ckpenep.stackoverflow.presentation.presenter.AskPresenter;
 import com.example.ckpenep.stackoverflow.presentation.view.AskView;
-import com.example.ckpenep.stackoverflow.ui.activity.AskActivity;
 import com.example.ckpenep.stackoverflow.ui.common.BackButtonListener;
 
 import javax.inject.Inject;
@@ -35,7 +36,8 @@ public class AskFragment extends MvpAppCompatFragment implements AskView, BackBu
 
     @Inject
     Router router;
-
+    @Inject
+    ResourceManager resourceManager;
     @InjectPresenter
     AskPresenter presenter;
 
@@ -53,6 +55,7 @@ public class AskFragment extends MvpAppCompatFragment implements AskView, BackBu
 
     private Unbinder mUnbinder;
     private MenuItem previewMenu, postMenu;
+    private AlertDialog mAlertDialog;
 
     public static AskFragment newInstance() {
         AskFragment fragment = new AskFragment();
@@ -70,7 +73,6 @@ public class AskFragment extends MvpAppCompatFragment implements AskView, BackBu
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ask, container, false);
-
         mUnbinder = ButterKnife.bind(this, view);
 
         return view;
@@ -87,6 +89,46 @@ public class AskFragment extends MvpAppCompatFragment implements AskView, BackBu
     }
 
     @Override
+    public void showQuestionDialog() {
+        AlertDialog.Builder sayWindows = new AlertDialog.Builder(getContext());
+        sayWindows.setTitle(resourceManager.getString(R.string.dialog_tag_question));
+        sayWindows.setPositiveButton(resourceManager.getString(R.string.start_new_post), null);
+        sayWindows.setNegativeButton(resourceManager.getString(R.string.last_draft), null);
+
+        mAlertDialog = sayWindows.create();
+        mAlertDialog.setOnShowListener(dialog -> {
+
+            mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> presenter.clickNewPostButton());
+
+            mAlertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(view -> {
+                presenter.isShowDialog();
+                presenter.getSelectedTags();
+            });
+        });
+        mAlertDialog.setCanceledOnTouchOutside(false); //ToDO: ??
+        mAlertDialog.setOnKeyListener((arg0, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                mAlertDialog.dismiss();
+                presenter.clickNewPostButton();
+            }
+            return true;
+        });
+        mAlertDialog.show();
+    }
+
+    @Override
+    public void hideQuestionDialog() {
+        if(mAlertDialog != null) mAlertDialog.dismiss();
+    }
+
+    @Override
+    public void setSelectedTags(String tags) {
+        if (tags != null && !tags.isEmpty()) {
+            tagsTextView.setText(tags);
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
@@ -100,7 +142,7 @@ public class AskFragment extends MvpAppCompatFragment implements AskView, BackBu
 
     @Override
     public void setMenuVisibility(boolean flag) {
-        if(previewMenu != null && postMenu != null) {
+        if (previewMenu != null && postMenu != null) {
             previewMenu.setEnabled(flag);
             postMenu.setEnabled(flag);
         }

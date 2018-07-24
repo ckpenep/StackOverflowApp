@@ -237,8 +237,10 @@ public class TagsFragment extends MvpAppCompatFragment implements TagsView, Back
 
     @Override
     public void setChips(List<String> names) {
-        existTags.setVisibility(View.GONE);
-        mChipAdapter.setData(names);
+        if(names != null && names.size() > 0) {
+            existTags.setVisibility(View.GONE);
+            mChipAdapter.setData(names);
+        }
     }
 
     @Override

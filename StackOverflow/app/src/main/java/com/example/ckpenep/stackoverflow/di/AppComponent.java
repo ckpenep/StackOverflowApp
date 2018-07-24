@@ -9,6 +9,7 @@ import com.example.ckpenep.stackoverflow.di.modules.NavigationModule;
 import com.example.ckpenep.stackoverflow.di.modules.StackoverflowModule;
 import com.example.ckpenep.stackoverflow.error.handler.DefaultErrorHandler;
 import com.example.ckpenep.stackoverflow.model.interactor.tag.TagInteractor;
+import com.example.ckpenep.stackoverflow.presentation.presenter.AskPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.HistoryPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.MainPresenter;
 import com.example.ckpenep.stackoverflow.presentation.presenter.QuestionDetailsPresenter;
@@ -47,6 +48,8 @@ public interface AppComponent {
 
     void inject (AskActivity askActivity);
 
+    void inject (AskPresenter askPresenter);
+
     void inject (ContainerFragment containerFragment);
 
     void inject (QuestionsListFragment questionsListFragment);
@@ -68,4 +71,5 @@ public interface AppComponent {
     void inject (TagsPresenter tagsPresenter);
 
     void inject (TagInteractor tagInteractor);
+
 }
